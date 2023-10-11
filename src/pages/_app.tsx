@@ -30,10 +30,8 @@ export default function App({
     }
 
     return (
-        <>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
-        </>
+        <Layout>
+            <Component {...pageProps} />
+        </Layout>
     );
 }

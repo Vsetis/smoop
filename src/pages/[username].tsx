@@ -64,54 +64,50 @@ export default function UserPage() {
     };
 
     return (
-        <>
-            <UserProfile
-                user={{
-                    username: user!.username,
-                    name: user!.username,
-                    bio: user?.bio,
-                    avatar: user!.avatar || null,
-                }}
-            >
-                <div className="rounded border border-white/20 md:min-w-[600px]">
-                    <div className="p-4 border-b border-white/20 mb-4">
-                        <h2 className="font-semibold text-white/80">Posts</h2>
-                    </div>
-                    <div className=" flex flex-col p-4 gap-4">
-                        {post.length > 0 ? (
-                            post.map((p) => (
-                                <PostCard
-                                    key={p.id}
-                                    id={p.id}
-                                    user={{
-                                        username: p!.author.username,
-                                        name: p!.author.name,
-                                        avatar: p!.author.avatar,
-                                    }}
-                                    content={p.content}
-                                    likes={p.likes}
-                                    isLiked={p.liked}
-                                    click={() =>
-                                        p.liked
-                                            ? removeLike(p.id)
-                                            : addLike(p.id)
-                                    }
-                                    postDelete={() =>
-                                        deletePost(p.id, p.author.username)
-                                    }
-                                />
-                            ))
-                        ) : (
-                            <>
-                                <div className="flex items-center justify-center min-h-[400px]">
-                                    <p>This user hasn't post yet</p>
-                                </div>
-                            </>
-                        )}
-                    </div>
+        <UserProfile
+            user={{
+                username: user!.username,
+                name: user!.username,
+                bio: user?.bio,
+                avatar: user!.avatar || null,
+            }}
+        >
+            <div className="rounded border border-white/20 md:min-w-[600px]">
+                <div className="p-4 border-b border-white/20 mb-4">
+                    <h2 className="font-semibold text-white/80">Posts</h2>
                 </div>
-            </UserProfile>
-        </>
+                <div className=" flex flex-col p-4 gap-4">
+                    {post.length > 0 ? (
+                        post.map((p) => (
+                            <PostCard
+                                key={p.id}
+                                id={p.id}
+                                user={{
+                                    username: p!.author.username,
+                                    name: p!.author.name,
+                                    avatar: p!.author.avatar,
+                                }}
+                                content={p.content}
+                                likes={p.likes}
+                                isLiked={p.liked}
+                                click={() =>
+                                    p.liked ? removeLike(p.id) : addLike(p.id)
+                                }
+                                postDelete={() =>
+                                    deletePost(p.id, p.author.username)
+                                }
+                            />
+                        ))
+                    ) : (
+                        <>
+                            <div className="flex items-center justify-center min-h-[400px]">
+                                <p>This user hasn't post yet</p>
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        </UserProfile>
     );
 }
 

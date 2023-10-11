@@ -72,73 +72,69 @@ export default function Sidebar() {
     const [open, setOpen] = useState(false);
 
     return (
-        <>
-            <div className="h-screen border-r border-white/20 top-0 left-0 min-w-[270px] py-4 flex flex-col justify-between sticky z-50 bg-black">
-                <div>
-                    <div className="border-b border-white/20 pb-4 px-4">
-                        <img
-                            className="w-6 h-6"
-                            src="/logo.svg"
-                            alt="Smoop Social Network"
-                        />
-                    </div>
-                    <div className="mt-8">
-                        {links.map((link) => (
-                            <Link
-                                key={link.label}
-                                className="flex font-semibold text-white/80 items-center px-4 gap-6 w-full transition-all hover:bg-white/5 py-3"
-                                href={link.target.replace(
-                                    '[username]',
-                                    `/${session?.user?.username}`
-                                )}
-                            >
-                                <div className="relative rounded p-1.5 bg-purple-800/20">
-                                    {link.label === 'Notifications' &&
-                                        !!notifications && (
-                                            <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
-                                        )}
-                                    <link.icon className="w-5 h-5 text-purple-500" />
-                                </div>
-                                {link.label}
-                            </Link>
-                        ))}
-                    </div>
+        <div className="h-screen border-r border-white/20 top-0 left-0 min-w-[270px] py-4 flex flex-col justify-between sticky z-50 bg-black">
+            <div>
+                <div className="border-b border-white/20 pb-4 px-4">
+                    <img
+                        className="w-6 h-6"
+                        src="/logo.svg"
+                        alt="Smoop Social Network"
+                    />
                 </div>
-                <div>
-                    <div className="px-4">
-                        <Dialog.Root open={open} onOpenChange={setOpen}>
-                            <Dialog.Trigger className=" w-full bg-purple-700 rounded py-1 font-semibold mb-8 transition-all hover:bg-purple-600">
-                                New Post
-                            </Dialog.Trigger>
-                            <Dialog.Portal>
-                                <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
-                                <Dialog.Content className="bg-black min-w-[650px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
-                                    {session.user && (
-                                        <CreatePost
-                                            avatar={
-                                                session?.user?.avatar || null
-                                            }
-                                            username={session?.user?.username}
-                                        />
+                <div className="mt-8">
+                    {links.map((link) => (
+                        <Link
+                            key={link.label}
+                            className="flex font-semibold text-white/80 items-center px-4 gap-6 w-full transition-all hover:bg-white/5 py-3"
+                            href={link.target.replace(
+                                '[username]',
+                                `/${session?.user?.username}`
+                            )}
+                        >
+                            <div className="relative rounded p-1.5 bg-purple-800/20">
+                                {link.label === 'Notifications' &&
+                                    !!notifications && (
+                                        <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
                                     )}
-                                </Dialog.Content>
-                            </Dialog.Portal>
-                        </Dialog.Root>
-                    </div>
-                    <div className="border-t pt-8 border-white/20">
-                        {session.user && (
-                            <ProfileCard
-                                user={{
-                                    username: session!.user!.username,
-                                    name: session!.user!.name,
-                                    bio: session!.user?.bio,
-                                    avatar: session!.user?.avatar || null,
-                                }}
-                            />
-                        )}
-                    </div>
+                                <link.icon className="w-5 h-5 text-purple-500" />
+                            </div>
+                            {link.label}
+                        </Link>
+                    ))}
                 </div>
             </div>
-        </>
+            <div>
+                <div className="px-4">
+                    <Dialog.Root open={open} onOpenChange={setOpen}>
+                        <Dialog.Trigger className=" w-full bg-purple-700 rounded py-1 font-semibold mb-8 transition-all hover:bg-purple-600">
+                            New Post
+                        </Dialog.Trigger>
+                        <Dialog.Portal>
+                            <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
+                            <Dialog.Content className="bg-black min-w-[650px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
+                                {session.user && (
+                                    <CreatePost
+                                        avatar={session?.user?.avatar || null}
+                                        username={session?.user?.username}
+                                    />
+                                )}
+                            </Dialog.Content>
+                        </Dialog.Portal>
+                    </Dialog.Root>
+                </div>
+                <div className="border-t pt-8 border-white/20">
+                    {session.user && (
+                        <ProfileCard
+                            user={{
+                                username: session!.user!.username,
+                                name: session!.user!.name,
+                                bio: session!.user?.bio,
+                                avatar: session!.user?.avatar || null,
+                            }}
+                        />
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }

@@ -10,21 +10,19 @@ export default function UserProfile({
     children: React.ReactNode;
 }) {
     return (
-        <>
-            <div className="flex flex-col gap-8 md:flex-row flex-wrap flex-grow">
-                <ProfileCard
-                    user={{
-                        username: user!.username,
-                        name: user!.name,
-                        bio: user?.bio,
-                        avatar: user?.avatar || null,
-                    }}
-                />
-                <div className="order-3 xl:order-2 grow">{children}</div>
-                <div className="order-2 grow ">
-                    <Sugestion />
-                </div>
+        <div className="flex flex-col gap-8 md:flex-row flex-wrap flex-grow">
+            <ProfileCard
+                user={{
+                    username: user!.username,
+                    name: user!.name,
+                    bio: user?.bio,
+                    avatar: user?.avatar || null,
+                }}
+            />
+            <div className="order-3 xl:order-2 grow">{children}</div>
+            <div className="order-2 grow ">
+                <Sugestion />
             </div>
-        </>
+        </div>
     );
 }
