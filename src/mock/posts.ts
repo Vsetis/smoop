@@ -5,6 +5,13 @@ export const posts = [
         content: 'First Post',
         liked: false,
         likes: 6,
+        comments: [
+            {
+                id: 1,
+                content: 'ff',
+                author: { username: 'guest', name: 'guest', avatar: null },
+            },
+        ],
     },
     {
         id: 2,

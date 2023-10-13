@@ -13,28 +13,40 @@ import { useState } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { User } from '@/types';
 import { session } from '@/mock/session';
+import { useRouter } from 'next/router';
 
 export default function PostCard({
     user,
     content,
     isLiked,
-    likes,
     id,
     click,
     postDelete,
+    children,
+    router,
+    count,
 }: {
     id: number;
     user: User;
     content: string;
     isLiked: boolean;
-    likes: number;
     click: () => void;
     postDelete: () => void;
+    children?: React.ReactNode;
+    router?: boolean;
+    count: { likes: number; comments: number };
 }) {
     const [liked, setLike] = useState(isLiked);
 
+    const { push } = useRouter();
+
     return (
-        <div className="flex w-full gap-4">
+        <div
+            onClick={() => {
+                router === true && push(`/${user.username}/posts/${id}`);
+            }}
+            className="flex w-full gap-4"
+        >
             <div>
                 {!!user.avatar ? (
                     <Image
@@ -48,7 +60,11 @@ export default function PostCard({
                     <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                 )}
             </div>
-            <div className="rounded mx-2 w-full border p-4 border-white/20">
+            <div
+                className={`${
+                    router === true && 'hover:bg-white/5 cursor-pointer'
+                } rounded mx-2 w-full border p-4 border-white/20  transition-all `}
+            >
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 mb-2">
                         <p className="text-lg text-white/80 font-semibold">
@@ -57,12 +73,18 @@ export default function PostCard({
                         <p className="text-sm text-white/60">@{user.name}</p>
                     </div>
                     <DropdownMenu.Root>
-                        <DropdownMenu.Trigger asChild>
+                        <DropdownMenu.Trigger
+                            onClick={(e) => e.stopPropagation()}
+                            asChild
+                        >
                             <IconDots className="transition-all hover:text-white/80" />
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Portal>
-                            <DropdownMenu.Content className="w-max bg-zinc-800 rounded py-2 text-white/80">
+                            <DropdownMenu.Content
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-max bg-zinc-800 rounded py-2 text-white/80"
+                            >
                                 <DropdownMenu.Item className="hover:outline-none">
                                     {session?.user?.username ===
                                     user.username ? (
@@ -107,9 +129,10 @@ export default function PostCard({
                 </div>
                 <div className="flex gap-8">
                     <button
-                        onClick={() => {
+                        onClick={(e) => {
                             click();
                             setLike(!liked);
+                            e.stopPropagation();
                         }}
                         className="flex gap-2"
                     >
@@ -120,16 +143,20 @@ export default function PostCard({
                                     : 'stroke-white'
                             }
                         />
-                        <span className="font-semibold">{likes}</span>
+                        <span className="font-semibold">{count.likes}</span>
                     </button>
-                    <button className="flex gap-2">
+                    <button
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex gap-2"
+                    >
                         <IconMessage />
-                        <span className="font-semibold">0</span>
+                        <span className="font-semibold">{count.comments}</span>
                     </button>
-                    <button>
+                    <button onClick={(e) => e.stopPropagation()}>
                         <IconShare />
                     </button>
                 </div>
+                {children}
             </div>
         </div>
     );

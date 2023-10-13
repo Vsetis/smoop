@@ -1,22 +1,11 @@
-import PostCard from '@/components/User/PostCard';
+import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
 import { posts } from '@/mock/posts';
 import { session } from '@/mock/session';
 import { users } from '@/mock/user';
+import { usePosts } from '@/utils/atom';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-
-type Post = {
-    id: number;
-    author: {
-        username: string;
-        name: string;
-        avatar: string | null;
-    };
-    content: string;
-    liked: boolean;
-    likes: number;
-};
+import { useEffect } from 'react';
 
 export default function UserPage() {
     const { query } = useRouter();
@@ -28,11 +17,11 @@ export default function UserPage() {
         .map((p) => p)
         .filter((p) => p.author.username === username);
 
+    const [post, setPost] = usePosts();
+
     useEffect(() => {
         setPost(postQuery);
     }, [username]);
-
-    const [post, setPost] = useState<Post[]>(postQuery);
 
     const addLike = (id: number) => {
         const updatePosts = post.map((post) => {
@@ -63,7 +52,7 @@ export default function UserPage() {
         }
     };
 
-    return (
+    return user ? (
         <UserProfile
             user={{
                 username: user!.username,
@@ -78,26 +67,31 @@ export default function UserPage() {
                 </div>
                 <div className=" flex flex-col p-4 gap-4">
                     {post.length > 0 ? (
-                        post.map((p) => (
-                            <PostCard
-                                key={p.id}
-                                id={p.id}
-                                user={{
-                                    username: p!.author.username,
-                                    name: p!.author.name,
-                                    avatar: p!.author.avatar,
-                                }}
-                                content={p.content}
-                                likes={p.likes}
-                                isLiked={p.liked}
-                                click={() =>
-                                    p.liked ? removeLike(p.id) : addLike(p.id)
-                                }
-                                postDelete={() =>
-                                    deletePost(p.id, p.author.username)
-                                }
-                            />
-                        ))
+                        post
+                            .map((p) => (
+                                <PostCard
+                                    key={p.id}
+                                    id={p.id}
+                                    user={{
+                                        username: p!.author.username,
+                                        name: p!.author.name,
+                                        avatar: p!.author.avatar,
+                                    }}
+                                    content={p.content}
+                                    likes={p.likes}
+                                    isLiked={p.liked}
+                                    click={() =>
+                                        p.liked
+                                            ? removeLike(p.id)
+                                            : addLike(p.id)
+                                    }
+                                    postDelete={() =>
+                                        deletePost(p.id, p.author.username)
+                                    }
+                                    router={true}
+                                />
+                            ))
+                            .reverse()
                     ) : (
                         <>
                             <div className="flex items-center justify-center min-h-[400px]">
@@ -108,6 +102,8 @@ export default function UserPage() {
                 </div>
             </div>
         </UserProfile>
+    ) : (
+        <>404 - user not found</>
     );
 }
 
