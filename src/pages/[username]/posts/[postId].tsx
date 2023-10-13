@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 import { posts } from '@/mock/posts';
@@ -15,21 +15,40 @@ import CommentCard from '@/components/Post/CommentCard';
 export default function PostPage() {
     const { query, push } = useRouter();
 
-    const postId = query.postId as string;
     const username = query.username;
+    const postId = query.postId as string;
+
+    const user = users.find((user) => user.username === username);
 
     const [post, setPost] = usePosts();
 
-    const user = users.find((user) => user.username === query.username);
-
-    const postQuery = posts
-        .map((p) => p)
-        .filter((p) => p.author.username === username);
-
-    const postFound = post.filter(
-        (p) =>
-            p.id.toString() === postId && query.username === p.author.username
+    const postFound = post.find(
+        (p) => p.id.toString() === postId && username === p.author.username
     );
+
+    const [value, setValue] = useState('');
+    const [isReplying, setRyplying] = useState(false);
+
+    const addComment = (postId: number) => {
+        const updatedPosts = post.map((post) => {
+            if (post.id === postId && session.user) {
+                const newComment = {
+                    id: post.comments?.filter(
+                        (p) => p.id === post.comments?.length
+                    )
+                        ? post.comments?.length + 1
+                        : 1,
+                    author: session!.user,
+                    content: value,
+                };
+                const comments = post.comments || [];
+                return { ...post, comments: [...comments, newComment] };
+            }
+            return post;
+        });
+        setPost(updatedPosts);
+        setValue('');
+    };
 
     const addLike = (id: number) => {
         const updatePosts = post.map((post) => {
@@ -61,8 +80,6 @@ export default function PostPage() {
         }
     };
 
-    const [isReplying, setRyplying] = useState(false);
-
     return user ? (
         <UserProfile
             user={{
@@ -77,128 +94,145 @@ export default function PostPage() {
                     <h2 className="font-semibold text-white/80">Post</h2>
                 </div>
                 <div className=" flex flex-col p-4 gap-4">
-                    {postFound.length > 0 ? (
-                        postFound.map((p) => (
-                            <PostCard
-                                key={p.id}
-                                id={p.id}
-                                user={{
-                                    username: p!.author.username,
-                                    name: p!.author.name,
-                                    avatar: p!.author.avatar,
-                                }}
-                                content={p.content}
-                                isLiked={p.liked}
-                                count={{
-                                    likes: p.likes,
-                                    comments: p.comments?.length || 0,
-                                }}
-                                click={() =>
-                                    p.liked ? removeLike(p.id) : addLike(p.id)
-                                }
-                                postDelete={() =>
-                                    deletePost(p.id, p.author.username)
-                                }
-                                router={false}
+                    {postFound ? (
+                        <PostCard
+                            key={postFound.id}
+                            id={postFound.id}
+                            user={{
+                                username: postFound.author.username,
+                                name: postFound.author.name,
+                                avatar: postFound.author.avatar,
+                            }}
+                            content={postFound.content}
+                            isLiked={postFound.liked}
+                            count={{
+                                likes: postFound.likes,
+                                comments: postFound.comments?.length || 0,
+                            }}
+                            click={() =>
+                                postFound.liked
+                                    ? removeLike(postFound.id)
+                                    : addLike(postFound.id)
+                            }
+                            postDelete={() =>
+                                deletePost(
+                                    postFound.id,
+                                    postFound.author.username
+                                )
+                            }
+                            router={false}
+                        >
+                            <div
+                                className={`${
+                                    isReplying ? 'pt-2' : 'pt-4'
+                                } border-t border-white/20  mt-4`}
                             >
-                                <div
-                                    className={`${
-                                        isReplying ? 'pt-2' : 'pt-4'
-                                    } border-t border-white/20  mt-4`}
+                                <p
+                                    className={
+                                        isReplying
+                                            ? 'mb-2 text-white/50 text-sm'
+                                            : 'hidden'
+                                    }
                                 >
-                                    <p
-                                        className={
-                                            isReplying
-                                                ? 'mb-2 text-white/50 text-sm'
-                                                : 'hidden'
-                                        }
-                                    >
-                                        Replying to{' '}
-                                        <span className="text-purple-600">
-                                            @{p.author.username}
-                                        </span>
-                                    </p>
-                                    <div className="relative flex flex-col">
-                                        <div className="flex gap-4 ">
-                                            <div>
-                                                {!!user.avatar ? (
-                                                    <Image
-                                                        width={36}
-                                                        height={36}
-                                                        className="rounded-full"
-                                                        src={user.avatar}
-                                                        alt={`${user.username} profile avatar`}
-                                                    ></Image>
-                                                ) : (
-                                                    <>
-                                                        <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
-                                                        {p.comments && (
-                                                            <div className="translate-x-4 w-[1px] bg-white/20 h-[40px] top-0"></div>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </div>
-
-                                            <textarea
-                                                onClick={() =>
-                                                    setRyplying(true)
-                                                }
-                                                className="w-full flex bg-transparent min-h-[75px] overflow-auto resize-none focus:outline-none"
-                                                placeholder="Reply"
-                                                maxLength={280}
-                                            ></textarea>
-                                            <button
-                                                disabled
-                                                className={
-                                                    isReplying
-                                                        ? 'hidden'
-                                                        : 'bg-purple-900 text-white/50 font-semibold text-sm px-4 py-2  h-max w-max rounded'
-                                                }
-                                            >
-                                                Reply
-                                            </button>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            {p.comments && (
-                                                <div className="translate-x-4 w-[1px] bg-white/20 h-[40px] top-0"></div>
+                                    Replying to{' '}
+                                    <span className="text-purple-600">
+                                        @{postFound.author.username}
+                                    </span>
+                                </p>
+                                <div className="relative flex flex-col">
+                                    <div className="flex gap-4 ">
+                                        <div>
+                                            {!!user.avatar ? (
+                                                <Image
+                                                    width={36}
+                                                    height={36}
+                                                    className="rounded-full"
+                                                    src={user.avatar}
+                                                    alt={`${user.username} profile avatar`}
+                                                ></Image>
+                                            ) : (
+                                                <>
+                                                    <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
+                                                    {postFound.comments && (
+                                                        <div className="translate-x-4 w-[1px] bg-white/20 h-[40px] top-0"></div>
+                                                    )}
+                                                </>
                                             )}
-                                            <button
-                                                className={`${
-                                                    isReplying ? '' : 'hidden'
-                                                } w-max bg-purple-700 font-semibold text-sm px-4 py-2 transition-all hover:bg-purple-600 h-max rounded ml-auto`}
-                                            >
-                                                Reply
-                                            </button>
                                         </div>
-                                        {!!p.comments &&
-                                            p.comments.map((comment) => (
+
+                                        <textarea
+                                            onClick={() => setRyplying(true)}
+                                            onChange={(e) =>
+                                                setValue(e.target.value)
+                                            }
+                                            value={value}
+                                            className="w-full flex bg-transparent min-h-[75px] overflow-auto resize-none focus:outline-none"
+                                            placeholder="Reply"
+                                            maxLength={280}
+                                        ></textarea>
+                                        <button
+                                            disabled
+                                            className={
+                                                isReplying
+                                                    ? 'hidden'
+                                                    : 'bg-purple-900 text-white/50 font-semibold text-sm px-4 py-2  h-max w-max rounded'
+                                            }
+                                        >
+                                            Reply
+                                        </button>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        {postFound.comments && (
+                                            <div className="translate-x-4 w-[1px] bg-white/20 min-h-[50px] top-0"></div>
+                                        )}
+                                        <button
+                                            onClick={() =>
+                                                addComment(postFound.id)
+                                            }
+                                            disabled={value === ''}
+                                            className={`${
+                                                isReplying ? '' : 'hidden'
+                                            } ${
+                                                value === ''
+                                                    ? 'bg-purple-900 text-white/50'
+                                                    : 'hover:bg-purple-600'
+                                            } w-max bg-purple-700 font-semibold text-sm px-4 py-2 transition-all  h-max rounded ml-auto`}
+                                        >
+                                            Reply
+                                        </button>
+                                    </div>
+                                    {!!postFound.comments ? (
+                                        postFound.comments
+                                            .map((comment) => (
                                                 <CommentCard
                                                     id={comment.id}
                                                     avatar={
-                                                        comment.author.avatar
+                                                        comment?.author
+                                                            ?.avatar || null
                                                     }
                                                     username={
-                                                        comment.author.username
+                                                        comment?.author
+                                                            ?.username
                                                     }
-                                                    name={comment.author.name}
+                                                    name={comment?.author?.name}
                                                     last={
-                                                        p.comments &&
-                                                        p.comments[
-                                                            p.comments.length -
-                                                                1
-                                                        ].id === comment.id
+                                                        postFound.comments?.[0]
+                                                            .id === comment.id
                                                             ? true
                                                             : false
                                                     }
                                                     content={comment.content}
                                                 />
-                                            ))}
-                                    </div>
+                                            ))
+                                            .reverse()
+                                    ) : (
+                                        <></>
+                                    )}
                                 </div>
-                            </PostCard>
-                        ))
+                            </div>
+                        </PostCard>
                     ) : (
-                        <>404 - no post</>
+                        <>No Post!</>
                     )}
                 </div>
             </div>

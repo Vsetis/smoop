@@ -1,4 +1,4 @@
-import { notifications } from '@/mock/user';
+import { notification } from '@/mock/notification';
 import {
     IconBell,
     IconHome2,
@@ -12,8 +12,9 @@ import Image from 'next/image';
 import { session } from '@/mock/session';
 import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import CreatePost from './CreatePost';
+
 import { User } from '@/types';
+import CreatePost from './Post/CreatePost';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
@@ -93,7 +94,7 @@ export default function Sidebar() {
                         >
                             <div className="relative rounded p-1.5 bg-purple-800/20">
                                 {link.label === 'Notifications' &&
-                                    !!notifications && (
+                                    !!notification && (
                                         <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
                                     )}
                                 <link.icon className="w-5 h-5 text-purple-500" />

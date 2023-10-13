@@ -31,7 +31,7 @@ export default function CommentCard({
                         <>
                             <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                             {last ? null : (
-                                <div className="translate-x-4 w-[1px] bg-white/20 h-[20px] top-0"></div>
+                                <div className="translate-x-4 w-[1px] bg-white/20 min-h-[50px] top-0"></div>
                             )}
                         </>
                     )}
