@@ -1,3 +1,4 @@
+import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
 export default function UserLayout({
@@ -8,10 +9,9 @@ export default function UserLayout({
     return (
         <div className="flex">
             <Sidebar />
+
             <div className="w-full">
-                <div className=" bg-black text-white sticky py-4 top-0 left-0">
-                    navbar
-                </div>
+                <Navbar />
                 <div className="relative h-64">
                     <div className="absolute w-full h-full bg-gradient-to-r from-emerald-500/40 via-purple-900 to-cyan-700 top-0 left-0" />
                 </div>

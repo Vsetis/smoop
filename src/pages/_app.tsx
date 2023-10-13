@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 import '@/styles/globals.css';
 import { useRouter } from 'next/router';
 import { session } from '@/mock/session';
+import { usePosts } from '@/utils/atom';
+import { posts } from '@/mock/posts';
 
 interface AppPropsWithComponentLayout extends AppProps {
     Component: NextComponentType & { layout: keyof typeof layouts };
