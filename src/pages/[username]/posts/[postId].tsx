@@ -26,10 +26,6 @@ export default function PostPage() {
         .map((p) => p)
         .filter((p) => p.author.username === username);
 
-    useEffect(() => {
-        setPost(postQuery);
-    }, [username]);
-
     const postFound = post.filter(
         (p) =>
             p.id.toString() === postId && query.username === p.author.username
@@ -95,7 +91,7 @@ export default function PostPage() {
                                 isLiked={p.liked}
                                 count={{
                                     likes: p.likes,
-                                    comments: p!.comments!.length || 0,
+                                    comments: p.comments?.length || 0,
                                 }}
                                 click={() =>
                                     p.liked ? removeLike(p.id) : addLike(p.id)
@@ -169,7 +165,7 @@ export default function PostPage() {
                                             <button
                                                 className={`${
                                                     isReplying ? '' : 'hidden'
-                                                } w-max bg-purple-700 font-semibold text-sm px-4 py-2 transition-all hover:bg-purple-600 h-max rounded`}
+                                                } w-max bg-purple-700 font-semibold text-sm px-4 py-2 transition-all hover:bg-purple-600 h-max rounded ml-auto`}
                                             >
                                                 Reply
                                             </button>

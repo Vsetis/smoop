@@ -13,15 +13,9 @@ export default function UserPage() {
 
     const user = users.find((user) => user.username === username);
 
-    const postQuery = posts
-        .map((p) => p)
-        .filter((p) => p.author.username === username);
-
     const [post, setPost] = usePosts();
 
-    useEffect(() => {
-        setPost(postQuery);
-    }, [username]);
+    const postQuery = post.filter((p) => p.author.username === username);
 
     const addLike = (id: number) => {
         const updatePosts = post.map((post) => {
@@ -66,8 +60,8 @@ export default function UserPage() {
                     <h2 className="font-semibold text-white/80">Posts</h2>
                 </div>
                 <div className=" flex flex-col p-4 gap-4">
-                    {post.length > 0 ? (
-                        post
+                    {postQuery?.length > 0 ? (
+                        postQuery
                             .map((p) => (
                                 <PostCard
                                     key={p.id}
@@ -78,7 +72,10 @@ export default function UserPage() {
                                         avatar: p!.author.avatar,
                                     }}
                                     content={p.content}
-                                    likes={p.likes}
+                                    count={{
+                                        likes: p.likes,
+                                        comments: p.comments?.length || 0,
+                                    }}
                                     isLiked={p.liked}
                                     click={() =>
                                         p.liked
