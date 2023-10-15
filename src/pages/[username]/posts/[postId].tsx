@@ -2,11 +2,9 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Image from 'next/image';
 
-import { posts } from '@/mock/posts';
-import { session } from '@/mock/session';
 import { users } from '@/mock/user';
 
-import { usePosts } from '@/utils/atom';
+import { usePosts, useUser } from '@/utils/atom';
 
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
@@ -18,12 +16,14 @@ export default function PostPage() {
     const username = query.username;
     const postId = query.postId as string;
 
-    const user = users.find((user) => user.username === username);
+    const [user, setUser] = useUser();
+
+    const userFound = users.find((user) => user.username === username);
 
     const [post, setPost] = usePosts();
 
     const postFound = post.find(
-        (p) => p.id.toString() === postId && username === p.author.username
+        (p) => p.id.toString() === postId && username === p!.author!.username
     );
 
     const [value, setValue] = useState('');
@@ -31,14 +31,14 @@ export default function PostPage() {
 
     const addComment = (postId: number) => {
         const updatedPosts = post.map((post) => {
-            if (post.id === postId && session.user) {
+            if (post.id === postId && !!user) {
                 const newComment = {
                     id: post.comments?.filter(
                         (p) => p.id === post.comments?.length
                     )
                         ? post.comments?.length + 1
                         : 1,
-                    author: session!.user,
+                    author: user,
                     content: value,
                 };
                 const comments = post.comments || [];
@@ -71,10 +71,10 @@ export default function PostPage() {
     };
 
     const deletePost = (id: number, author: string) => {
-        if (author === session!.user!.username) {
+        if (author === user!.username) {
             const updatePosts = post.filter((p) => p.id !== id);
             setPost(updatePosts);
-            push(`/${session!.user!.username}`);
+            push(`/${user!.username}`);
         } else {
             console.log('error');
         }
@@ -83,10 +83,10 @@ export default function PostPage() {
     return user ? (
         <UserProfile
             user={{
-                username: user!.username,
-                name: user!.username,
-                bio: user?.bio,
-                avatar: user!.avatar || null,
+                username: userFound!.username,
+                name: userFound!.username,
+                bio: userFound?.bio,
+                avatar: userFound!.avatar || null,
             }}
         >
             <div className="rounded border border-white/20 md:min-w-[600px]">
@@ -96,12 +96,11 @@ export default function PostPage() {
                 <div className=" flex flex-col p-4 gap-4">
                     {postFound ? (
                         <PostCard
-                            key={postFound.id}
                             id={postFound.id}
                             user={{
-                                username: postFound.author.username,
-                                name: postFound.author.name,
-                                avatar: postFound.author.avatar,
+                                username: postFound!.author!.username,
+                                name: postFound!.author!.name,
+                                avatar: postFound!.author!.avatar,
                             }}
                             content={postFound.content}
                             isLiked={postFound.liked}
@@ -117,7 +116,7 @@ export default function PostPage() {
                             postDelete={() =>
                                 deletePost(
                                     postFound.id,
-                                    postFound.author.username
+                                    postFound.author!.username
                                 )
                             }
                             router={false}
@@ -136,7 +135,7 @@ export default function PostPage() {
                                 >
                                     Replying to{' '}
                                     <span className="text-purple-600">
-                                        @{postFound.author.username}
+                                        @{postFound.author!.username}
                                     </span>
                                 </p>
                                 <div className="relative flex flex-col">
@@ -205,16 +204,17 @@ export default function PostPage() {
                                         postFound.comments
                                             .map((comment) => (
                                                 <CommentCard
+                                                    key={comment.id}
                                                     id={comment.id}
                                                     avatar={
                                                         comment?.author
                                                             ?.avatar || null
                                                     }
                                                     username={
-                                                        comment?.author
-                                                            ?.username
+                                                        comment!.author!
+                                                            .username
                                                     }
-                                                    name={comment?.author?.name}
+                                                    name={comment!.author!.name}
                                                     last={
                                                         postFound.comments?.[0]
                                                             .id === comment.id

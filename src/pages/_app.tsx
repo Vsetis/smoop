@@ -1,14 +1,13 @@
-import { useEffect } from 'react';
-
 import { NextComponentType } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { session } from '@/mock/session';
+import { useEffect } from 'react';
+
 import { posts } from '@/mock/posts';
 
-import { usePosts } from '@/utils/atom';
+import { usePosts, useUser } from '@/utils/atom';
 
 import '@/styles/globals.css';
 
@@ -30,12 +29,8 @@ export default function App({
 
     const { push } = useRouter();
 
+    const [user, setUser] = useUser();
     const [post, setPost] = usePosts();
-
-    if (!session) {
-        push('/');
-        console.log('Error: UNAUTHORIZED');
-    }
 
     const initialPosts = posts;
 

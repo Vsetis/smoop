@@ -1,18 +1,11 @@
 import UserProfile from '@/components/UserProfile';
-import { session } from '@/mock/session';
-
-const user = session.user;
+import { useUser } from '@/utils/atom';
 
 export default function Home() {
+    const [user, setUser] = useUser();
+
     return (
-        <UserProfile
-            user={{
-                username: user!.username,
-                name: user!.username,
-                bio: user?.bio,
-                avatar: user!.avatar || null,
-            }}
-        >
+        <UserProfile user={user}>
             <div className="rounded border border-white/20 md:min-w-[600px]">
                 <div className="p-4 border-b border-white/20 mb-4">
                     <h2 className="font-semibold text-white/80">Home</h2>

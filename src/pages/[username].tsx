@@ -1,21 +1,22 @@
+import { useRouter } from 'next/router';
+
+import { users } from '@/mock/user';
+
+import { usePosts, useUser } from '@/utils/atom';
+
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
-import { posts } from '@/mock/posts';
-import { session } from '@/mock/session';
-import { users } from '@/mock/user';
-import { usePosts } from '@/utils/atom';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 export default function UserPage() {
     const { query } = useRouter();
     const username = query.username;
 
-    const user = users.find((user) => user.username === username);
+    const [user, setUser] = useUser();
+    const userFound = users.find((user) => user.username === username);
 
     const [post, setPost] = usePosts();
 
-    const postQuery = post.filter((p) => p.author.username === username);
+    const postQuery = post.filter((p) => p.author!.username === username);
 
     const addLike = (id: number) => {
         const updatePosts = post.map((post) => {
@@ -38,7 +39,7 @@ export default function UserPage() {
     };
 
     const deletePost = (id: number, author: string) => {
-        if (author === session!.user!.username) {
+        if (author === user!.username) {
             const updatePosts = post.filter((p) => p.id !== id);
             setPost(updatePosts);
         } else {
@@ -46,16 +47,16 @@ export default function UserPage() {
         }
     };
 
-    return user ? (
+    return !!userFound ? (
         <UserProfile
             user={{
-                username: user!.username,
-                name: user!.username,
-                bio: user?.bio,
-                avatar: user!.avatar || null,
+                username: userFound!.username,
+                name: userFound!.username,
+                bio: userFound?.bio,
+                avatar: userFound!.avatar || null,
             }}
         >
-            <div className="rounded border border-white/20 md:min-w-[600px]">
+            <div className="rounded border border-white/20 md:min-w-[600px] min-h-[210px]">
                 <div className="p-4 border-b border-white/20 mb-4">
                     <h2 className="font-semibold text-white/80">Posts</h2>
                 </div>
@@ -67,9 +68,9 @@ export default function UserPage() {
                                     key={p.id}
                                     id={p.id}
                                     user={{
-                                        username: p!.author.username,
-                                        name: p!.author.name,
-                                        avatar: p!.author.avatar,
+                                        username: p.author!.username,
+                                        name: p.author!.name,
+                                        avatar: p.author!.avatar,
                                     }}
                                     content={p.content}
                                     count={{
@@ -83,7 +84,7 @@ export default function UserPage() {
                                             : addLike(p.id)
                                     }
                                     postDelete={() =>
-                                        deletePost(p.id, p.author.username)
+                                        deletePost(p.id, p.author!.username)
                                     }
                                     router={true}
                                 />
@@ -91,9 +92,7 @@ export default function UserPage() {
                             .reverse()
                     ) : (
                         <>
-                            <div className="flex items-center justify-center min-h-[400px]">
-                                <p>This user hasn't post yet</p>
-                            </div>
+                            <p>This user has not post yet</p>
                         </>
                     )}
                 </div>

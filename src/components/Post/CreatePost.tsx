@@ -1,9 +1,8 @@
-import { posts } from '@/mock/posts';
-import { session } from '@/mock/session';
-import { usePosts } from '@/utils/atom';
-import { create } from 'domain';
 import Image from 'next/image';
 import { useState } from 'react';
+
+import { usePosts, useUser } from '@/utils/atom';
+
 export default function CreatePost({
     avatar,
     username,
@@ -12,14 +11,15 @@ export default function CreatePost({
     username: string;
 }) {
     const [post, setPost] = usePosts();
+    const [user, setUser] = useUser();
 
     const [postValue, setValue] = useState('');
 
     const createPost = () => {
-        if (session && session.user && postValue !== '') {
+        if (user && postValue !== '') {
             const newPost = {
                 id: post.length + 1,
-                author: session!.user,
+                author: user,
                 content: postValue,
                 liked: false,
                 likes: 0,

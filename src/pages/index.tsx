@@ -1,6 +1,14 @@
-import Link from 'next/link';
+import { useUser } from '@/utils/atom';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+    const [user, setUser] = useUser();
+
+    const { push } = useRouter();
+    if (!!user) {
+        push('/home');
+    }
+
     return (
         <div className="h-screen container mx-auto flex flex-col justify-center items-center ">
             <div className="relative rounded-full  p-4">
@@ -17,12 +25,19 @@ export default function Home() {
                 <p className="mb-6 text-sm font-semibold text-white/80">
                     Social network app, click the button below to view demo.
                 </p>
-                <Link
+                <button
+                    onClick={() =>
+                        setUser({
+                            username: 'guest',
+                            name: 'guest',
+                            bio: 'Amazing bio!',
+                            avatar: null,
+                        })
+                    }
                     className="text-white/80 font-semibold bg-purple-800 py-2 px-6 rounded transition-all hover:bg-purple-700"
-                    href="/home"
                 >
                     Continue
-                </Link>
+                </button>
             </div>
         </div>
     );

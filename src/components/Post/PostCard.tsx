@@ -12,8 +12,8 @@ import { useState } from 'react';
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { User } from '@/types';
-import { session } from '@/mock/session';
 import { useRouter } from 'next/router';
+import { useUser } from '@/utils/atom';
 
 export default function PostCard({
     user,
@@ -37,24 +37,25 @@ export default function PostCard({
     count: { likes: number; comments: number };
 }) {
     const [liked, setLike] = useState(isLiked);
+    const [loggedUser, setUser] = useUser();
 
     const { push } = useRouter();
 
     return (
         <div
             onClick={() => {
-                router === true && push(`/${user.username}/posts/${id}`);
+                router === true && push(`/${user!.username}/posts/${id}`);
             }}
             className="flex w-full gap-4"
         >
             <div>
-                {!!user.avatar ? (
+                {!!user!.avatar ? (
                     <Image
                         width={32}
                         height={32}
                         className="rounded-full mb-2"
-                        src={user.avatar}
-                        alt={`${user.username} profile avatar`}
+                        src={user!.avatar}
+                        alt={`${user!.username} profile avatar`}
                     ></Image>
                 ) : (
                     <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
@@ -68,9 +69,9 @@ export default function PostCard({
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 mb-2">
                         <p className="text-lg text-white/80 font-semibold">
-                            {user.username}
+                            {user!.username}
                         </p>
-                        <p className="text-sm text-white/60">@{user.name}</p>
+                        <p className="text-sm text-white/60">@{user!.name}</p>
                     </div>
                     <DropdownMenu.Root>
                         <DropdownMenu.Trigger
@@ -86,8 +87,7 @@ export default function PostCard({
                                 className="w-max bg-zinc-800 rounded py-2 text-white/80"
                             >
                                 <DropdownMenu.Item className="hover:outline-none">
-                                    {session?.user?.username ===
-                                    user.username ? (
+                                    {loggedUser?.username === user?.username ? (
                                         <button
                                             onClick={() => postDelete()}
                                             className="text-sm font-semibold transition-all hover:bg-red-500/10 flex items-center gap-2 px-2 py-1 w-full"

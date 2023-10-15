@@ -3,7 +3,7 @@ export type User = {
     name: string;
     bio?: string;
     avatar: string | null;
-};
+} | null;
 
 export type Post = {
     id: number;

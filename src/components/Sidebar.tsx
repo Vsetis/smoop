@@ -1,3 +1,7 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
+
 import { notification } from '@/mock/notification';
 import {
     IconBell,
@@ -6,15 +10,12 @@ import {
     IconUser,
     IconLogout2,
 } from '@tabler/icons-react';
-import Link from 'next/link';
-
-import Image from 'next/image';
-import { session } from '@/mock/session';
-import { useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
 
 import { User } from '@/types';
+
+import * as Dialog from '@radix-ui/react-dialog';
 import CreatePost from './Post/CreatePost';
+import { useUser } from '@/utils/atom';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
@@ -30,22 +31,22 @@ function ProfileCard({ user }: { user: User }) {
         <>
             <div className="flex items-center justify-between px-4">
                 <div className="flex gap-4">
-                    {!!user.avatar ? (
+                    {!!user!.avatar ? (
                         <Image
                             width={32}
                             height={32}
                             className="rounded-full mb-2"
-                            src={user.avatar}
-                            alt={`${user.username} profile avatar`}
+                            src={user!.avatar}
+                            alt={`${user!.username} profile avatar`}
                         ></Image>
                     ) : (
                         <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                     )}
                     <div>
                         <p className="text-white/80 font-semibold">
-                            {user.username}
+                            {user!.username}
                         </p>
-                        <p className="text-sm text-white/60">@{user.name}</p>
+                        <p className="text-sm text-white/60">@{user!.name}</p>
                     </div>
                 </div>
 
@@ -71,11 +72,11 @@ function ProfileCard({ user }: { user: User }) {
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
-
+    const [loggedUser, setUser] = useUser();
     return (
-        <div className="h-screen border-r border-white/20 top-0 left-0 min-w-[270px] py-4 flex flex-col justify-between sticky z-50 bg-black">
+        <div className="h-screen border-r border-white/20 top-0 left-0 min-w-[270px] pb-4 flex flex-col justify-between sticky z-50 bg-black">
             <div>
-                <div className="border-b border-white/20 pb-4 px-4">
+                <div className="border-b border-white/20 pb-4 px-4 h-[60px] pt-4">
                     <img
                         className="w-6 h-6"
                         src="/logo.svg"
@@ -89,7 +90,7 @@ export default function Sidebar() {
                             className="flex font-semibold text-white/80 items-center px-4 gap-6 w-full transition-all hover:bg-white/5 py-3"
                             href={link.target.replace(
                                 '[username]',
-                                `/${session?.user?.username}`
+                                `/${loggedUser?.username}`
                             )}
                         >
                             <div className="relative rounded p-1.5 bg-purple-800/20">
@@ -113,10 +114,10 @@ export default function Sidebar() {
                         <Dialog.Portal>
                             <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
                             <Dialog.Content className="bg-black min-w-[650px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
-                                {session.user && (
+                                {loggedUser && (
                                     <CreatePost
-                                        avatar={session?.user?.avatar || null}
-                                        username={session?.user?.username}
+                                        avatar={loggedUser.avatar || null}
+                                        username={loggedUser.username}
                                     />
                                 )}
                             </Dialog.Content>
@@ -124,16 +125,7 @@ export default function Sidebar() {
                     </Dialog.Root>
                 </div>
                 <div className="border-t pt-8 border-white/20">
-                    {session.user && (
-                        <ProfileCard
-                            user={{
-                                username: session!.user!.username,
-                                name: session!.user!.name,
-                                bio: session!.user?.bio,
-                                avatar: session!.user?.avatar || null,
-                            }}
-                        />
-                    )}
+                    {loggedUser && <ProfileCard user={loggedUser} />}
                 </div>
             </div>
         </div>
