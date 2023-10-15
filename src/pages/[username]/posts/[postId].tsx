@@ -3,12 +3,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import { users } from '@/mock/user';
-
 import { usePosts, useUser } from '@/utils/atom';
+import { Post } from '@/types';
 
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
-import CommentCard from '@/components/Post/CommentCard';
 
 export default function PostPage() {
     const { query, push } = useRouter();
@@ -28,27 +27,6 @@ export default function PostPage() {
 
     const [value, setValue] = useState('');
     const [isReplying, setRyplying] = useState(false);
-
-    const addComment = (postId: number) => {
-        const updatedPosts = post.map((post) => {
-            if (post.id === postId && !!user) {
-                const newComment = {
-                    id: post.comments?.filter(
-                        (p) => p.id === post.comments?.length
-                    )
-                        ? post.comments?.length + 1
-                        : 1,
-                    author: user,
-                    content: value,
-                };
-                const comments = post.comments || [];
-                return { ...post, comments: [...comments, newComment] };
-            }
-            return post;
-        });
-        setPost(updatedPosts);
-        setValue('');
-    };
 
     const addLike = (id: number) => {
         const updatePosts = post.map((post) => {
@@ -80,6 +58,50 @@ export default function PostPage() {
         }
     };
 
+    const createPostAndReply = (postFound: Post) => {
+        if (user && value !== '') {
+            const newReply = {
+                id: post.length + 1,
+                author: user,
+                content: value,
+                liked: false,
+                likes: 0,
+            };
+
+            const newPost = {
+                id: post.length + 1,
+                content: value,
+                author: user,
+                liked: false,
+                likes: 0,
+                replyPost: { ...postFound, replyPost: undefined },
+            };
+
+            const updatedReplies = postFound.replies
+                ? [...postFound.replies]
+                : [];
+
+            updatedReplies.push(newReply);
+
+            const updatedPost = {
+                ...postFound,
+                replies: updatedReplies,
+            };
+
+            const updatedPosts = post.map((p) => {
+                if (p.id === updatedPost.id) {
+                    return updatedPost;
+                }
+                return p;
+            });
+
+            setPost([...updatedPosts, newPost]);
+
+            setValue('');
+            setRyplying(false);
+        }
+    };
+
     return user ? (
         <UserProfile
             user={{
@@ -106,7 +128,7 @@ export default function PostPage() {
                             isLiked={postFound.liked}
                             count={{
                                 likes: postFound.likes,
-                                comments: postFound.comments?.length || 0,
+                                comments: postFound.replies?.length || 0,
                             }}
                             click={() =>
                                 postFound.liked
@@ -119,7 +141,6 @@ export default function PostPage() {
                                     postFound.author!.username
                                 )
                             }
-                            router={false}
                         >
                             <div
                                 className={`${
@@ -150,12 +171,7 @@ export default function PostPage() {
                                                     alt={`${user.username} profile avatar`}
                                                 ></Image>
                                             ) : (
-                                                <>
-                                                    <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
-                                                    {postFound.comments && (
-                                                        <div className="translate-x-4 w-[1px] bg-white/20 h-[40px] top-0"></div>
-                                                    )}
-                                                </>
+                                                <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                                             )}
                                         </div>
 
@@ -181,13 +197,10 @@ export default function PostPage() {
                                         </button>
                                     </div>
                                     <div className="flex justify-between">
-                                        {postFound.comments && (
-                                            <div className="translate-x-4 w-[1px] bg-white/20 min-h-[50px] top-0"></div>
-                                        )}
                                         <button
-                                            onClick={() =>
-                                                addComment(postFound.id)
-                                            }
+                                            onClick={() => {
+                                                createPostAndReply(postFound);
+                                            }}
                                             disabled={value === ''}
                                             className={`${
                                                 isReplying ? '' : 'hidden'
@@ -200,34 +213,25 @@ export default function PostPage() {
                                             Reply
                                         </button>
                                     </div>
-                                    {!!postFound.comments ? (
-                                        postFound.comments
-                                            .map((comment) => (
-                                                <CommentCard
-                                                    key={comment.id}
-                                                    id={comment.id}
-                                                    avatar={
-                                                        comment?.author
-                                                            ?.avatar || null
-                                                    }
-                                                    username={
-                                                        comment!.author!
-                                                            .username
-                                                    }
-                                                    name={comment!.author!.name}
-                                                    last={
-                                                        postFound.comments?.[0]
-                                                            .id === comment.id
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    content={comment.content}
-                                                />
-                                            ))
-                                            .reverse()
-                                    ) : (
-                                        <></>
-                                    )}
+                                    <div>
+                                        {postFound.replies?.map((r) => (
+                                            <PostCard
+                                                key={r.id}
+                                                postRouter={true}
+                                                id={r.id}
+                                                user={r.author}
+                                                content={r.content}
+                                                isLiked={r.liked}
+                                                click={() => {}}
+                                                postDelete={() => {}}
+                                                count={{
+                                                    likes: r.likes,
+                                                    comments:
+                                                        r.replies?.length || 0,
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </PostCard>

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 
 import { users } from '@/mock/user';
-
 import { usePosts, useUser } from '@/utils/atom';
 
 import PostCard from '@/components/Post/PostCard';
@@ -65,6 +64,7 @@ export default function UserPage() {
                         postQuery
                             .map((p) => (
                                 <PostCard
+                                    reply={p.replyPost?.author!.username}
                                     key={p.id}
                                     id={p.id}
                                     user={{
@@ -75,7 +75,7 @@ export default function UserPage() {
                                     content={p.content}
                                     count={{
                                         likes: p.likes,
-                                        comments: p.comments?.length || 0,
+                                        comments: p.replies?.length || 0,
                                     }}
                                     isLiked={p.liked}
                                     click={() =>
@@ -86,7 +86,7 @@ export default function UserPage() {
                                     postDelete={() =>
                                         deletePost(p.id, p.author!.username)
                                     }
-                                    router={true}
+                                    postRouter={true}
                                 />
                             ))
                             .reverse()

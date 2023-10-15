@@ -11,5 +11,25 @@ export type Post = {
     author: User;
     liked: boolean;
     likes: number;
-    comments?: { id: number; content: string; author: User }[];
+    replies?: {
+        id: number;
+        author: User;
+        content: string;
+        liked: boolean;
+        likes: number;
+        replies?: {
+            id: number;
+            author: User;
+            content: string;
+            liked: boolean;
+            likes: number;
+        }[];
+    }[];
+    replyPost?: {
+        id: number;
+        author: User;
+        content: string;
+        liked: boolean;
+        likes: number;
+    };
 };
