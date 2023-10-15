@@ -1,10 +1,10 @@
-import { useUser } from '@/utils/atom';
 import { useRouter } from 'next/router';
+import { useUser } from '@/utils/atom';
 
 export default function Home() {
     const [user, setUser] = useUser();
-
     const { push } = useRouter();
+
     if (!!user) {
         push('/home');
     }

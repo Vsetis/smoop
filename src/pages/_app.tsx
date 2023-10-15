@@ -1,13 +1,10 @@
 import { NextComponentType } from 'next';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-
 import { useEffect } from 'react';
 
 import { posts } from '@/mock/posts';
-
-import { usePosts, useUser } from '@/utils/atom';
+import { usePosts } from '@/utils/atom';
 
 import '@/styles/globals.css';
 
@@ -27,11 +24,7 @@ export default function App({
 }: AppPropsWithComponentLayout) {
     const Layout = layouts[Component.layout || 'default'];
 
-    const { push } = useRouter();
-
-    const [user, setUser] = useUser();
     const [post, setPost] = usePosts();
-
     const initialPosts = posts;
 
     useEffect(() => {

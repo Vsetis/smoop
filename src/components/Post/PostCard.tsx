@@ -1,4 +1,9 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { User } from '@/types';
+import { useUser } from '@/utils/atom';
 
 import {
     IconDots,
@@ -8,12 +13,8 @@ import {
     IconShare,
     IconTrash,
 } from '@tabler/icons-react';
-import { useState } from 'react';
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { User } from '@/types';
-import { useRouter } from 'next/router';
-import { useUser } from '@/utils/atom';
 
 export default function PostCard({
     user,
@@ -23,8 +24,9 @@ export default function PostCard({
     click,
     postDelete,
     children,
-    router,
+    postRouter,
     count,
+    reply,
 }: {
     id: number;
     user: User;
@@ -33,7 +35,8 @@ export default function PostCard({
     click: () => void;
     postDelete: () => void;
     children?: React.ReactNode;
-    router?: boolean;
+    postRouter?: boolean;
+    reply?: string;
     count: { likes: number; comments: number };
 }) {
     const [liked, setLike] = useState(isLiked);
@@ -43,9 +46,9 @@ export default function PostCard({
 
     return (
         <div
-            onClick={() => {
-                router === true && push(`/${user!.username}/posts/${id}`);
-            }}
+            onClick={() =>
+                postRouter === true && push(`/${user!.username}/posts/${id}`)
+            }
             className="flex w-full gap-4"
         >
             <div>
@@ -63,9 +66,17 @@ export default function PostCard({
             </div>
             <div
                 className={`${
-                    router === true && 'hover:bg-white/5 cursor-pointer'
+                    postRouter === true && 'hover:bg-white/5 cursor-pointer'
                 } rounded mx-2 w-full border p-4 border-white/20  transition-all `}
             >
+                {reply && (
+                    <p className="text-sm text-white/60">
+                        Replying to{' '}
+                        <span className="text-purple-600 font-semibold">
+                            @{reply}
+                        </span>
+                    </p>
+                )}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 mb-2">
                         <p className="text-lg text-white/80 font-semibold">

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { notification } from '@/mock/notification';
 import {
     IconBell,
     IconHome2,
@@ -12,10 +11,11 @@ import {
 } from '@tabler/icons-react';
 
 import { User } from '@/types';
+import { notification } from '@/mock/notification';
+import { useUser } from '@/utils/atom';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import CreatePost from './Post/CreatePost';
-import { useUser } from '@/utils/atom';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
