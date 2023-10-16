@@ -8,11 +8,15 @@ import {
     IconSettings,
     IconUser,
     IconLogout2,
+    IconPencilPlus,
 } from '@tabler/icons-react';
 
 import { User } from '@/types';
 import { notification } from '@/mock/notification';
 import { useUser } from '@/utils/atom';
+
+import * as Dialog from '@radix-ui/react-dialog';
+import CreatePost from './Post/CreatePost';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
@@ -132,6 +136,30 @@ export default function Sidebar() {
                             }
                         ></SidebarLink>
                     ))}
+                </div>
+            </div>
+            <div>
+                <div className="px-4">
+                    <Dialog.Root open={open} onOpenChange={setOpen}>
+                        <Dialog.Trigger className="p-1 2xl:w-full bg-purple-700 rounded 2xl:py-1 font-semibold mb-8 transition-all hover:bg-purple-600">
+                            <span className="hidden 2xl:block">New Post</span>
+                            <IconPencilPlus className="2xl:hidden" />
+                        </Dialog.Trigger>
+                        <Dialog.Portal>
+                            <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
+                            <Dialog.Content className="bg-black min-w-[650px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
+                                {loggedUser && (
+                                    <CreatePost
+                                        avatar={loggedUser.avatar || null}
+                                        username={loggedUser.username}
+                                    />
+                                )}
+                            </Dialog.Content>
+                        </Dialog.Portal>
+                    </Dialog.Root>
+                </div>
+                <div className="border-t pt-8 border-white/20">
+                    {loggedUser && <SidebarUserCard user={loggedUser} />}
                 </div>
             </div>
         </div>
