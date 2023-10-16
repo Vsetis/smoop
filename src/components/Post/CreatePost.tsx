@@ -30,6 +30,17 @@ export default function CreatePost({
 
     return (
         <div>
+            <button
+                disabled={postValue === ''}
+                onClick={() => createPost()}
+                className={`${
+                    postValue === ''
+                        ? 'bg-purple-900 text-white/50'
+                        : 'hover:bg-purple-600'
+                } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex absolute right-4 top-4 sm:hidden`}
+            >
+                Post
+            </button>
             <div className="flex gap-8 ">
                 <div>
                     {!!avatar ? (
@@ -52,7 +63,7 @@ export default function CreatePost({
                     maxLength={280}
                 ></textarea>
             </div>
-            <div className="border-t border-white/20 pt-4">
+            <div className="border-t border-white/20 pt-4 hidden sm:flex">
                 <button
                     disabled={postValue === ''}
                     onClick={() => createPost()}

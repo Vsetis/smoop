@@ -19,7 +19,7 @@ export default function UserLayout({
     }
 
     return (
-        <div className="md:flex">
+        <div className="sm:flex">
             <Sidebar />
             <MobileSidebar />
             <div className="w-full ">

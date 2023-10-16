@@ -46,7 +46,7 @@ export default function MobileSidebar() {
             <div
                 className={`${
                     visible ? 'translate-y-[0]' : 'translate-y-[-100%]'
-                } sticky top-0 left-0 w-full bg-black z-[50] p-2 transition-all md:hidden ${
+                } sticky top-0 left-0 w-full bg-black z-[50] p-2 transition-all sm:hidden ${
                     open ? 'opacity-0' : ''
                 }`}
             >
@@ -122,6 +122,7 @@ export default function MobileSidebar() {
                     <div className="flex flex-col gap-8">
                         {links.map((link) => (
                             <Link
+                                onClick={() => setOpen(false)}
                                 key={link.target}
                                 className="flex items-center gap-4 text-xl font-semibold"
                                 href={link.target.replace(
