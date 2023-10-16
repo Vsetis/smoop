@@ -111,14 +111,15 @@ export default function PostPage() {
                 avatar: userFound!.avatar || null,
             }}
         >
-            <div className="rounded border border-white/20 md:min-w-[600px]">
-                <div className="p-4 border-b border-white/20 mb-4">
+            <div className="rounded md:border border-white/20 w-full">
+                <div className="p-2 md:p-4 border-b border-white/20 mb-4">
                     <h2 className="font-semibold text-white/80">Post</h2>
                 </div>
-                <div className=" flex flex-col p-4 gap-4">
+                <div className=" flex flex-col p-2 md:p-4 gap-4">
                     {postFound ? (
                         <PostCard
                             id={postFound.id}
+                            reply={postFound.replyPost?.author?.username}
                             user={{
                                 username: postFound!.author!.username,
                                 name: postFound!.author!.name,
@@ -150,11 +151,11 @@ export default function PostPage() {
                                 <p
                                     className={
                                         isReplying
-                                            ? 'mb-2 text-white/50 text-sm'
+                                            ? 'mb-2 text-white/50 text-[12px] md:text-sm'
                                             : 'hidden'
                                     }
                                 >
-                                    Replying to{' '}
+                                    Replying to {''}
                                     <span className="text-purple-600">
                                         @{postFound.author!.username}
                                     </span>
@@ -164,14 +165,14 @@ export default function PostPage() {
                                         <div>
                                             {!!user.avatar ? (
                                                 <Image
-                                                    width={36}
-                                                    height={36}
-                                                    className="rounded-full"
+                                                    width={28}
+                                                    height={28}
+                                                    className="rounded-full md:w-9 md:h-9"
                                                     src={user.avatar}
                                                     alt={`${user.username} profile avatar`}
                                                 ></Image>
                                             ) : (
-                                                <div className=" rounded-full w-9 h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
+                                                <div className=" rounded-full w-7 h-7 md:w-9 md:h-9 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                                             )}
                                         </div>
 
@@ -181,7 +182,7 @@ export default function PostPage() {
                                                 setValue(e.target.value)
                                             }
                                             value={value}
-                                            className="w-full flex bg-transparent min-h-[75px] overflow-auto resize-none focus:outline-none"
+                                            className="text-sm md:text-base w-full flex bg-transparent min-h-[75px] overflow-auto resize-none focus:outline-none"
                                             placeholder="Reply"
                                             maxLength={280}
                                         ></textarea>
@@ -190,7 +191,7 @@ export default function PostPage() {
                                             className={
                                                 isReplying
                                                     ? 'hidden'
-                                                    : 'bg-purple-900 text-white/50 font-semibold text-sm px-4 py-2  h-max w-max rounded'
+                                                    : 'bg-purple-900 text-white/50 font-semibold text-sm px-2 py-1 md:px-4 md:py-2  h-max w-max rounded'
                                             }
                                         >
                                             Reply
@@ -208,12 +209,12 @@ export default function PostPage() {
                                                 value === ''
                                                     ? 'bg-purple-900 text-white/50'
                                                     : 'hover:bg-purple-600'
-                                            } w-max bg-purple-700 font-semibold text-sm px-4 py-2 transition-all  h-max rounded ml-auto`}
+                                            } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto mb-4`}
                                         >
                                             Reply
                                         </button>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col gap-4">
                                         {postFound.replies?.map((r) => (
                                             <PostCard
                                                 key={r.id}

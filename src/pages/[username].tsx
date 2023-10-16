@@ -55,11 +55,11 @@ export default function UserPage() {
                 avatar: userFound!.avatar || null,
             }}
         >
-            <div className="rounded border border-white/20 md:min-w-[600px] min-h-[210px]">
-                <div className="p-4 border-b border-white/20 mb-4">
+            <div className="rounded md:border border-white/20 w-full min-h-[210px]">
+                <div className="p-2 md:p-4 border-b border-white/20 mb-4">
                     <h2 className="font-semibold text-white/80">Posts</h2>
                 </div>
-                <div className=" flex flex-col p-4 gap-4">
+                <div className=" flex flex-col p-2 md:p-4 gap-2 md:gap-4">
                     {postQuery?.length > 0 ? (
                         postQuery
                             .map((p) => (

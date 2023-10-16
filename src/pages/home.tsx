@@ -6,7 +6,7 @@ export default function Home() {
 
     return (
         <UserProfile user={user}>
-            <div className="rounded border border-white/20 md:min-w-[600px]">
+            <div className="rounded border border-white/20 w-full">
                 <div className="p-4 border-b border-white/20 mb-4">
                     <h2 className="font-semibold text-white/80">Home</h2>
                 </div>

@@ -22,7 +22,7 @@ export default function Home() {
                 <h1 className="mb-2 font-semibold text-3xl text-transparent bg-gradient-to-r from-white/80 to-white/60 bg-clip-text leading-snug">
                     Welcome to smoop
                 </h1>
-                <p className="mb-6 text-sm font-semibold text-white/80">
+                <p className="mb-6 text-center text-sm font-semibold text-white/80">
                     Social network app, click the button below to view demo.
                 </p>
                 <button

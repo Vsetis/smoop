@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ProfileCard({ user }: { user: User }) {
     return (
-        <div className="min-w-[400px] w-max flex flex-col items-center h-max p-4 border border-white/20 rounded">
+        <div className="w-full flex flex-col items-center h-max p-4 border border-white/20 rounded">
             {!!user?.avatar ? (
                 <Image
                     width={32}

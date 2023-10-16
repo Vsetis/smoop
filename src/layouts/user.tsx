@@ -1,3 +1,5 @@
+import MobileNav from '@/components/Mobile/MobileNav';
+import MobileSidebar from '@/components/Mobile/MobileSidebar';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import { useUser } from '@/utils/atom';
@@ -17,17 +19,18 @@ export default function UserLayout({
     }
 
     return (
-        <div className="flex">
+        <div className="md:flex">
             <Sidebar />
-
-            <div className="w-full">
+            <MobileSidebar />
+            <div className="w-full ">
                 <Navbar />
                 <div className="relative h-64">
                     <div className="absolute w-full h-full bg-gradient-to-r from-emerald-500/40 via-purple-900 to-cyan-700 top-0 left-0" />
                 </div>
-                <div className="container mx-auto flex flex-col xl:flex-row gap-8 mt-16 px-8 2xl:px-0">
+                <div className="container mx-auto px-2 md:px-4 mt-8">
                     {children}
                 </div>
+                <MobileNav />
             </div>
         </div>
     );

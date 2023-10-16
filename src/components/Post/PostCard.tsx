@@ -49,7 +49,7 @@ export default function PostCard({
             onClick={() =>
                 postRouter === true && push(`/${user!.username}/posts/${id}`)
             }
-            className="flex w-full gap-4"
+            className="flex w-full gap-2 md:gap-4"
         >
             <div>
                 {!!user!.avatar ? (
@@ -61,35 +61,39 @@ export default function PostCard({
                         alt={`${user!.username} profile avatar`}
                     ></Image>
                 ) : (
-                    <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
+                    <div className="mb-2 rounded-full w-8 h-8 md:w-10 md:h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                 )}
             </div>
             <div
                 className={`${
                     postRouter === true && 'hover:bg-white/5 cursor-pointer'
-                } rounded mx-2 w-full border p-4 border-white/20  transition-all `}
+                } rounded mx-2 w-full border-b md:border p-2 md:p-4 border-white/20  transition-all `}
             >
-                {reply && (
-                    <p className="text-sm text-white/60">
-                        Replying to{' '}
-                        <span className="text-purple-600 font-semibold">
-                            @{reply}
-                        </span>
-                    </p>
-                )}
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 mb-2">
-                        <p className="text-lg text-white/80 font-semibold">
-                            {user!.username}
-                        </p>
-                        <p className="text-sm text-white/60">@{user!.name}</p>
+                <div className="flex items-start justify-between ">
+                    <div className="flex flex-col">
+                        {reply && (
+                            <p className="text-[12px] md:text-sm text-white/60">
+                                Replying to{' '}
+                                <span className="text-purple-600 font-semibold">
+                                    @{reply}
+                                </span>
+                            </p>
+                        )}
+                        <div className="flex items-center gap-2 mb-2">
+                            <p className=" text-white/80 font-semibold text-sm md:text-lg">
+                                {user!.username}
+                            </p>
+                            <p className="text-sm text-white/60">
+                                @{user!.name}
+                            </p>
+                        </div>
                     </div>
                     <DropdownMenu.Root>
                         <DropdownMenu.Trigger
                             onClick={(e) => e.stopPropagation()}
                             asChild
                         >
-                            <IconDots className="transition-all hover:text-white/80" />
+                            <IconDots className="transition-all text-white/80 hover:text-white" />
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Portal>
@@ -136,35 +140,41 @@ export default function PostCard({
                     </DropdownMenu.Root>
                 </div>
                 <div className="mb-6">
-                    <p className="text-white/90 ">{content}</p>
+                    <p className="text-white/90 text-sm md:text-base">
+                        {content}
+                    </p>
                 </div>
-                <div className="flex gap-8">
+                <div className="flex gap-4">
                     <button
                         onClick={(e) => {
                             click();
                             setLike(!liked);
                             e.stopPropagation();
                         }}
-                        className="flex gap-2"
+                        className="flex gap-2 items-center"
                     >
                         <IconHeart
-                            className={
+                            className={`${
                                 liked
                                     ? 'fill-red-500 stroke-transparent'
                                     : 'stroke-white'
-                            }
+                            } w-4 h-4 md:w-6 md:h-6`}
                         />
-                        <span className="font-semibold">{count.likes}</span>
+                        <span className="font-semibold text-[12px] md:text-base">
+                            {count.likes}
+                        </span>
                     </button>
                     <button
                         onClick={(e) => e.stopPropagation()}
-                        className="flex gap-2"
+                        className="flex items-center gap-2"
                     >
-                        <IconMessage />
-                        <span className="font-semibold">{count.comments}</span>
+                        <IconMessage className="w-4 h-4 md:h-6 md:w-6" />
+                        <span className="font-semibold text-[12px] md:text-base">
+                            {count.comments}
+                        </span>
                     </button>
                     <button onClick={(e) => e.stopPropagation()}>
-                        <IconShare />
+                        <IconShare className="w-4 h-4 md:h-6 md:w-6" />
                     </button>
                 </div>
                 {children}
