@@ -10,8 +10,8 @@ export default function UserProfile({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex flex-col md:flex-row gap-4 flex-grow flex-wrap w-full">
-            <div className="w-full md:w-max grow xl:grow-0">
+        <div className="flex flex-col md:flex-row gap-4 flex-grow flex-wrap w-full px-0 2xl:px-20">
+            <div className="w-full md:w-1/2 xl:w-max grow md:grow-0">
                 {!!user && (
                     <ProfileCard
                         user={{
@@ -23,11 +23,11 @@ export default function UserProfile({
                     />
                 )}
             </div>
-            <div className="order-2 xl:order-3 grow xl:grow-0 hidden md:flex h-max">
-                <Sugestion />
-            </div>
-            <div className="w-full xl:w-max order-3 xl:order-2 grow">
+            <div className="w-full xl:w-max grow order-3 xl:order-2">
                 {children}
+            </div>
+            <div className="hidden md:flex order-2  xl:order-3 md:grow xl:grow-0 2xl:h-max xl:w-[27%]">
+                <Sugestion />
             </div>
         </div>
     );

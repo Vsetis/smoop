@@ -44,7 +44,7 @@ function SettingsProfileCard({
                         </p>
                     </div>
                 </div>
-                <button className="px-3 py-2 xl:px-4 bg-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600 text-sm xl:text-base">
+                <button className="px-3 py-1 xl:px-4 bg-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600 text-sm xl:text-base">
                     Edit profile
                 </button>
             </div>
@@ -99,11 +99,14 @@ export default function SettingsPage() {
 
     return (
         <>
-            <Tabs.Root defaultValue={tab} className="flex w-full min-h-[600px]">
+            <Tabs.Root
+                defaultValue={tab}
+                className="flex w-full min-h-[600px] gap-12"
+            >
                 <Tabs.List
                     className={`${
                         tab === '' ? '' : 'hidden sm:flex flex-col'
-                    } sticky w-full top-0 left-0 min-h-[calc(100vh-60px)] border-r  border-white/20 md:w-[50%] xl:w-[30%]`}
+                    } sticky w-full top-0 left-0 min-h-screen border-r  border-white/20 sm:w-1/2 xl:w-[30%]`}
                     aria-label="Manage your account"
                 >
                     <Tabs.Trigger
@@ -125,7 +128,7 @@ export default function SettingsPage() {
                 <div
                     className={`${
                         tab === '' ? 'hidden sm:flex' : ''
-                    } my-8 w-full px-4 xl:px-16 h-full `}
+                    } my-8  w-full px-4 md:px-8 xl:max-w-[700px]`}
                 >
                     <Tabs.Content
                         className="w-full flex flex-col gap-8 "
@@ -219,7 +222,7 @@ export default function SettingsPage() {
                         <div
                             className={`${
                                 tagging ? '' : 'hidden'
-                            } px-4 xl:w-1/3`}
+                            } px-4  xl:w-1/2`}
                         >
                             <form>
                                 <div className="flex items-center justify-between">

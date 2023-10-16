@@ -22,16 +22,16 @@ export default function ProfileCard({ user }: { user: User }) {
                 @{user?.name}
             </p>
             {user?.bio && <p className="mb-8 text-white/80">{user?.bio}</p>}
-            <div className="flex flex-row justify-center w-full">
-                <div className="flex flex-col items-center justify-center px-4 w-32">
+            <div className="grid grid-cols-3 min-w-[280px]">
+                <div className="flex flex-col items-center justify-center ">
                     <p className="text-white/60">Posts</p>
                     <p className="font-semibold text-lg">2</p>
                 </div>
-                <div className="flex flex-col items-center justify-center w-32 border-x border-white/20">
+                <div className="flex flex-col items-center justify-center border-x px-4 border-white/20">
                     <p className="text-white/60">Followers</p>
                     <p className="font-semibold text-lg">40k</p>
                 </div>
-                <div className="flex flex-col items-center justify-center px-4 w-32">
+                <div className="flex flex-col items-center justify-center ">
                     <p className="text-white/60">Following</p>
                     <p className="font-semibold text-lg">0</p>
                 </div>

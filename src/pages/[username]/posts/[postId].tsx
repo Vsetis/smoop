@@ -8,9 +8,10 @@ import { Post } from '@/types';
 
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
+import { IconArrowBack } from '@tabler/icons-react';
 
 export default function PostPage() {
-    const { query, push } = useRouter();
+    const { query, push, back } = useRouter();
 
     const username = query.username;
     const postId = query.postId as string;
@@ -112,7 +113,10 @@ export default function PostPage() {
             }}
         >
             <div className="rounded md:border border-white/20 w-full">
-                <div className="p-2 md:p-4 border-b border-white/20 mb-4">
+                <div className="p-2 md:p-4 border-b border-white/20 mb-4 flex items-center gap-8">
+                    <button onClick={() => back()}>
+                        <IconArrowBack className="text-white/80 transition-all hover:text-white" />
+                    </button>
                     <h2 className="font-semibold text-white/80">Post</h2>
                 </div>
                 <div className=" flex flex-col p-2 md:p-4 gap-4">
@@ -182,7 +186,7 @@ export default function PostPage() {
                                                 setValue(e.target.value)
                                             }
                                             value={value}
-                                            className="text-sm md:text-base w-full flex bg-transparent min-h-[75px] overflow-auto resize-none focus:outline-none"
+                                            className="text-sm md:text-base w-full flex bg-transparent min-h-[50px] overflow-hidden resize-none focus:outline-none"
                                             placeholder="Reply"
                                             maxLength={280}
                                         ></textarea>
@@ -197,7 +201,7 @@ export default function PostPage() {
                                             Reply
                                         </button>
                                     </div>
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-between border-b mb-8 border-white/20">
                                         <button
                                             onClick={() => {
                                                 createPostAndReply(postFound);

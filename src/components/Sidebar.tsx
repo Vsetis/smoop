@@ -115,7 +115,7 @@ export default function Sidebar() {
     const [loggedUser, setUser] = useUser();
 
     return (
-        <div className="h-screen border-r border-white/20 top-0 left-0 2xl:min-w-[270px] pb-4 hidden sm:flex flex-col justify-between sticky z-50 bg-black">
+        <div className="h-screen border-r border-white/20 top-0 left-0 2xl:min-w-[300px] pb-4 hidden sm:flex flex-col justify-between sticky z-50 bg-black">
             <div>
                 <div className="border-b border-white/20 pb-4 px-4 h-[60px] pt-4">
                     <img
@@ -147,7 +147,7 @@ export default function Sidebar() {
                         </Dialog.Trigger>
                         <Dialog.Portal>
                             <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
-                            <Dialog.Content className="bg-black min-w-[650px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
+                            <Dialog.Content className="bg-black min-w-[550px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
                                 {loggedUser && (
                                     <CreatePost
                                         avatar={loggedUser.avatar || null}

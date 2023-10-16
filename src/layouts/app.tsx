@@ -20,7 +20,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <Sidebar />
             <MobileSidebar />
             <div className="w-full">
-                <Navbar />
                 <div>{children}</div>
             </div>
             <MobileNav />

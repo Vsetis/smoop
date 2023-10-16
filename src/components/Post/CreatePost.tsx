@@ -52,11 +52,11 @@ export default function CreatePost({
                             alt={`${username} profile avatar`}
                         ></Image>
                     ) : (
-                        <div className="mb-2 rounded-full w-14 h-14 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
+                        <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                     )}
                 </div>
                 <textarea
-                    className="w-full flex bg-transparent min-h-[200px] overflow-auto resize-none text-2xl focus:outline-none"
+                    className="w-full flex bg-transparent min-h-[100px] max-h-[auto] overflow-y-hidden resize-none text-2xl focus:outline-none p-4 mb-8"
                     onChange={(e) => setValue(e.currentTarget.value)}
                     value={postValue}
                     placeholder="What's on your mind?"

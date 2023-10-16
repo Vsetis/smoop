@@ -49,7 +49,7 @@ export default function PostCard({
             onClick={() =>
                 postRouter === true && push(`/${user!.username}/posts/${id}`)
             }
-            className="flex w-full gap-2 md:gap-4"
+            className="flex w-full md:gap-2 border-b border-white/20 pb-4"
         >
             <div>
                 {!!user!.avatar ? (
@@ -67,12 +67,12 @@ export default function PostCard({
             <div
                 className={`${
                     postRouter === true && 'hover:bg-white/5 cursor-pointer'
-                } rounded mx-2 w-full border-b md:border p-2 md:p-4 border-white/20  transition-all `}
+                } rounded mx-2 w-full transition-all `}
             >
                 <div className="flex items-start justify-between ">
                     <div className="flex flex-col">
                         {reply && (
-                            <p className="text-[12px] md:text-sm text-white/60">
+                            <p className="!text-[12px] md:text-sm text-white/60">
                                 Replying to{' '}
                                 <span className="text-purple-600 font-semibold">
                                     @{reply}
@@ -80,10 +80,10 @@ export default function PostCard({
                             </p>
                         )}
                         <div className="flex items-center gap-2 mb-2">
-                            <p className=" text-white/80 font-semibold text-sm md:text-lg">
+                            <p className=" text-white/80 font-semibold text-sm md:text-base">
                                 {user!.username}
                             </p>
-                            <p className="text-sm text-white/60">
+                            <p className="!text-[12px] text-white/60">
                                 @{user!.name}
                             </p>
                         </div>
@@ -140,9 +140,7 @@ export default function PostCard({
                     </DropdownMenu.Root>
                 </div>
                 <div className="mb-6">
-                    <p className="text-white/90 text-sm md:text-base">
-                        {content}
-                    </p>
+                    <p className="text-white/90 text-sm">{content}</p>
                 </div>
                 <div className="flex gap-4">
                     <button
@@ -158,9 +156,9 @@ export default function PostCard({
                                 liked
                                     ? 'fill-red-500 stroke-transparent'
                                     : 'stroke-white'
-                            } w-4 h-4 md:w-6 md:h-6`}
+                            } w-4 h-4 md:w-5 md:h-5`}
                         />
-                        <span className="font-semibold text-[12px] md:text-base">
+                        <span className="font-semibold text-[12px] md:text-sm">
                             {count.likes}
                         </span>
                     </button>
@@ -168,13 +166,13 @@ export default function PostCard({
                         onClick={(e) => e.stopPropagation()}
                         className="flex items-center gap-2"
                     >
-                        <IconMessage className="w-4 h-4 md:h-6 md:w-6" />
-                        <span className="font-semibold text-[12px] md:text-base">
+                        <IconMessage className="w-4 h-4 md:w-5 md:h-5" />
+                        <span className="font-semibold text-[12px] md:text-sm">
                             {count.comments}
                         </span>
                     </button>
                     <button onClick={(e) => e.stopPropagation()}>
-                        <IconShare className="w-4 h-4 md:h-6 md:w-6" />
+                        <IconShare className="w-4 h-4 md:w-5 md:h-5" />
                     </button>
                 </div>
                 {children}

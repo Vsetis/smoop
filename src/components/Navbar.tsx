@@ -72,10 +72,10 @@ export default function Navbar() {
     return (
         <>
             <div className="bg-black/80 backdrop-blur-sm  w-full sticky top-0 left-0 z-20 h-[60px]  border-b border-white/20 hidden md:flex flex-col">
-                <div className="container mx-auto flex justify-end h-full  py-2">
+                <div className="container mx-auto flex justify-end h-full  py-2 px-4 2xl:px-20">
                     <div
                         ref={searchingArea}
-                        className="w-1/2 xl:w-1/3 2xl:w-[20%] "
+                        className="w-1/2 xl:w-1/3 2xl:w-[25%] "
                     >
                         <input
                             onFocus={() => setSearching(true)}
