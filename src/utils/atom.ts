@@ -3,6 +3,7 @@ import { atom, useAtom } from 'jotai';
 type Post = {
     id: number;
     userId: number;
+    replying?: number;
     content: string;
     liked: boolean;
     likes: number;
@@ -10,7 +11,8 @@ type Post = {
         id: number;
         userId: number;
         content: string;
-        replies?: { id: number; userId: number; content: string }[];
+        liked: boolean;
+        likes: number;
     }[];
 };
 

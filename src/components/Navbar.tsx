@@ -1,9 +1,16 @@
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useSearch } from '@/hooks/useSearch';
 import { users } from '@/mock/user';
 import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
+
+interface User {
+    username: string;
+    name: string;
+    avatar: string | null;
+}
 
 function SearchCard({
     avatar,
@@ -53,47 +60,45 @@ function SearchCard({
 
 export default function Navbar() {
     const { push } = useRouter();
-    const { setItem, getItem, removeItem, removeAll } =
-        useLocalStorage('value');
+    const { getItems, setItems, removeItem } = useLocalStorage('value', []);
 
-    const searchHistory = getItem();
+    const updatedHistory = users.filter((u) => getItems().includes(u.username));
 
     const searchingArea = useRef<HTMLDivElement>(null);
     const [isSearching, setSearching] = useState(false);
-    const [history, setHistory] = useState(
-        users.filter((u) =>
-            searchHistory.some((name: string) => u.username === name)
-        )
-    );
     const [value, setValue] = useState('');
+    const [history, setHistory] = useState<User[]>(updatedHistory);
 
-    useEffect(() => {
-        function Search(e: MouseEvent) {
-            const target = e.target as Node;
-
-            if (!searchingArea.current?.contains(target)) {
-                setSearching(false);
-            }
-        }
-
-        document.addEventListener('mousedown', Search);
-
-        return () => document.removeEventListener('mousedown', Search);
-    }, []);
+    useSearch(searchingArea, setSearching);
 
     const searchQuery = users
         .filter((u) => (u.username || u.name).includes(value))
         .slice(0, 5);
 
-    const removeHistoryItem = (username: string) => {
-        const updatedHistory = history.filter(
-            (user) => user.username !== username
-        );
-        setHistory(updatedHistory);
+    const handleRemove = (username: string) => {
+        (e: React.MouseEvent) => {
+            e.stopPropagation();
+        };
         removeItem(username);
+        setHistory([...updatedHistory.filter((h) => h.username !== username)]);
     };
 
-    console.log(getItem());
+    const handleSearch = (u: {
+        username: string;
+        avatar: string | null;
+        name: string;
+    }) => {
+        push(`/${u.username}`);
+        setItems([...getItems(), u.username]);
+        setHistory([
+            ...updatedHistory,
+            {
+                username: u.username,
+                name: u.name,
+                avatar: u.avatar,
+            },
+        ]);
+    };
 
     return (
         <>
@@ -124,42 +129,49 @@ export default function Navbar() {
                                         avatar={u.avatar}
                                         username={u.username}
                                         name={u.name}
-                                        onClick={() => {
-                                            setItem(u.username);
-                                            push(`/${u.username}`);
-                                        }}
+                                        onClick={() => handleSearch(u)}
                                     />
                                 ))
                             ) : (
                                 <div className="flex flex-col">
-                                    {history.map((u) => (
-                                        <div
-                                            key={u.id}
-                                            className="flex items-center justify-between"
-                                        >
-                                            <SearchCard
-                                                avatar={u.avatar}
-                                                username={u.username}
-                                                name={u.name}
-                                                onClick={() => {
-                                                    setItem(u.username);
-                                                    push(`/${u.username}`);
-                                                    console.log('clicked me');
-                                                }}
-                                            >
-                                                <button
-                                                    onClick={(e) => {
-                                                        removeHistoryItem(
-                                                            u.username
-                                                        );
-                                                        e.stopPropagation();
-                                                    }}
+                                    {history.length > 0 ? (
+                                        history.map((u) => (
+                                            <>
+                                                <p className="p-2 text-white/70 font-semibold text-sm">
+                                                    Recently searched
+                                                </p>
+                                                <div
+                                                    key={u.username}
+                                                    className="flex items-center justify-between"
                                                 >
-                                                    <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
-                                                </button>
-                                            </SearchCard>
-                                        </div>
-                                    ))}
+                                                    <SearchCard
+                                                        avatar={u.avatar}
+                                                        username={u.username}
+                                                        name={u.name}
+                                                        onClick={() => {
+                                                            push(
+                                                                `/${u.username}`
+                                                            );
+                                                        }}
+                                                    >
+                                                        <button
+                                                            onClick={() =>
+                                                                handleRemove(
+                                                                    u.username
+                                                                )
+                                                            }
+                                                        >
+                                                            <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
+                                                        </button>
+                                                    </SearchCard>
+                                                </div>
+                                            </>
+                                        ))
+                                    ) : (
+                                        <p className="p-2 text-white/70 font-semibold text-sm">
+                                            Try searching for people.
+                                        </p>
+                                    )}
                                 </div>
                             )}
                         </div>

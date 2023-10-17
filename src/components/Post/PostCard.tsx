@@ -51,7 +51,6 @@ export default function PostCard({
     const handleLike = (e: React.MouseEvent) => {
         e.stopPropagation();
         liked ? removeLike(id) : addLike(id);
-
         setLike(!liked);
     };
     return (

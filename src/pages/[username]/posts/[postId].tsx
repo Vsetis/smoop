@@ -22,6 +22,18 @@ export default function PostPage() {
         (p) => p.id.toString() === postId && userFound!.id === p!.userId
     );
 
+    const findUser = (userId: number) => {
+        const result = users.find((u) => u.id === userId);
+
+        return result;
+    };
+
+    const postFind = (postId: number) => {
+        const result = post!.find((p) => p.id === postId);
+
+        return result;
+    };
+
     return user ? (
         <UserProfile
             user={{
@@ -35,6 +47,7 @@ export default function PostPage() {
                 <div className=" flex flex-col gap-4">
                     {postFound ? (
                         <PostCard
+                            key={postFound.id}
                             id={postFound.id}
                             user={{
                                 username: userFound!.username,
@@ -48,10 +61,40 @@ export default function PostPage() {
                                 comments: postFound.comments?.length || 0,
                             }}
                         >
-                            <PostCommentCard
-                                avatar={userFound!.avatar}
-                                username={userFound!.username}
-                            />
+                            <>
+                                <PostCommentCard
+                                    id={postFound.id}
+                                    avatar={userFound!.avatar}
+                                    username={userFound!.username}
+                                />
+                                {postFound.comments
+                                    ?.map((comment) => (
+                                        <PostCard
+                                            reply={userFound!.username}
+                                            key={comment.id}
+                                            id={comment.id}
+                                            user={{
+                                                username: findUser(
+                                                    comment.userId
+                                                )!.username,
+                                                name: findUser(comment.userId)!
+                                                    .name,
+                                                avatar: findUser(
+                                                    comment.userId
+                                                )!.avatar,
+                                            }}
+                                            content={comment.content}
+                                            isLiked={comment.liked}
+                                            count={{
+                                                likes: comment.likes,
+                                                comments:
+                                                    postFind(comment.id)
+                                                        ?.comments?.length || 0,
+                                            }}
+                                        />
+                                    ))
+                                    .reverse()}
+                            </>
                         </PostCard>
                     ) : (
                         <>No Post!</>
