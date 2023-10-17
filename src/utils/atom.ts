@@ -1,5 +1,27 @@
-import { Post, User } from '@/types';
 import { atom, useAtom } from 'jotai';
+
+type Post = {
+    id: number;
+    userId: number;
+    content: string;
+    liked: boolean;
+    likes: number;
+    comments?: {
+        id: number;
+        userId: number;
+        content: string;
+        replies?: { id: number; userId: number; content: string }[];
+    }[];
+};
+
+type User = {
+    id: number;
+    username: string;
+    name: string;
+    email?: string;
+    avatar: string | null;
+    bio?: string;
+} | null;
 
 const postAtom = atom<Post[]>([]);
 const userAtom = atom<User>(null);

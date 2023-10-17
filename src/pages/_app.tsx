@@ -3,10 +3,10 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
-import { posts } from '@/mock/posts';
 import { usePosts } from '@/utils/atom';
 
 import '@/styles/globals.css';
+import { posts } from '@/mock/posts';
 
 interface AppPropsWithComponentLayout extends AppProps {
     Component: NextComponentType & { layout: keyof typeof layouts };

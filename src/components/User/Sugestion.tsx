@@ -43,7 +43,25 @@ function SugestionUserCard({
 
 export default function Sugestion() {
     const [user, setUser] = useUser();
-    const userQuery = users.filter((u) => u.username !== user?.username);
+
+    const suggestionQuery = users.filter((u) => u.username !== user!.username);
+
+    const shuffledArray = (
+        array: {
+            id: number;
+            username: string;
+            name: string;
+            bio?: string;
+            email: string;
+            avatar: string | null;
+        }[],
+        numberOfItems: number
+    ) => {
+        const randomArr = array.slice().sort(() => 0.5 - Math.random());
+        return randomArr.slice(0, numberOfItems);
+    };
+
+    const suggestion = shuffledArray(suggestionQuery, 5);
 
     return (
         <div className="border border-white/20 rounded p-4 w-full">
@@ -51,11 +69,11 @@ export default function Sugestion() {
                 Who to follow
             </p>
             <div className="flex flex-col gap-4">
-                {userQuery.map((user) => (
+                {suggestion.map((user) => (
                     <SugestionUserCard
-                        key={user.username}
+                        key={user.id}
                         username={user.username}
-                        avatar={user!.avatar || null}
+                        avatar={user.avatar}
                         name={user.name}
                     />
                 ))}

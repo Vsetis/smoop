@@ -28,6 +28,7 @@ export default function Home() {
                 <button
                     onClick={() =>
                         setUser({
+                            id: 1,
                             username: 'guest',
                             name: 'guest',
                             bio: 'Amazing bio!',

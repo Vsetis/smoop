@@ -11,12 +11,11 @@ import {
     IconPencilPlus,
 } from '@tabler/icons-react';
 
-import { User } from '@/types';
 import { notification } from '@/mock/notification';
 import { useUser } from '@/utils/atom';
 
-import * as Dialog from '@radix-ui/react-dialog';
 import CreatePost from './Post/CreatePost';
+import Modal from './RadixUI/Modal';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
@@ -25,29 +24,37 @@ const links = [
     { label: 'Settings', target: '/settings', icon: IconSettings },
 ];
 
-function SidebarUserCard({ user }: { user: User }) {
+function SidebarUserCard({
+    avatar,
+    username,
+    name,
+}: {
+    avatar: string | null;
+    username: string;
+    name: string;
+}) {
     const [hover, setHover] = useState(false);
     const [loggedUser, setUser] = useUser();
     return (
         <>
             <div className="flex items-center justify-between px-4">
                 <div className="flex gap-4">
-                    {!!user!.avatar ? (
+                    {!!avatar ? (
                         <Image
                             width={32}
                             height={32}
                             className="rounded-full mb-2"
-                            src={user!.avatar}
-                            alt={`${user!.username} profile avatar`}
+                            src={avatar}
+                            alt={`${username} profile avatar`}
                         ></Image>
                     ) : (
                         <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
                     )}
                     <div className="hidden 2xl:flex flex-col">
                         <p className="text-white/80 font-semibold ">
-                            {user!.username}
+                            {username}
                         </p>
-                        <p className="text-sm text-white/60">@{user!.name}</p>
+                        <p className="text-sm text-white/60">@{name}</p>
                     </div>
                 </div>
                 <button
@@ -132,7 +139,7 @@ export default function Sidebar() {
                             target={link.target}
                             username={loggedUser!.username}
                             icon={
-                                <link.icon className="w-5 h-5 text-purple-500" />
+                                <link.icon className="w-8 h-8 text-purple-500" />
                             }
                         ></SidebarLink>
                     ))}
@@ -140,26 +147,31 @@ export default function Sidebar() {
             </div>
             <div>
                 <div className="px-4">
-                    <Dialog.Root open={open} onOpenChange={setOpen}>
-                        <Dialog.Trigger className="p-1 2xl:w-full bg-purple-700 rounded 2xl:py-1 font-semibold mb-8 transition-all hover:bg-purple-600">
-                            <span className="hidden 2xl:block">New Post</span>
-                            <IconPencilPlus className="2xl:hidden" />
-                        </Dialog.Trigger>
-                        <Dialog.Portal>
-                            <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50]" />
-                            <Dialog.Content className="bg-black min-w-[550px] rounded fixed top-[20%] left-1/2 z-[55] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[50px] max-h-[85vh] p-6">
-                                {loggedUser && (
-                                    <CreatePost
-                                        avatar={loggedUser.avatar || null}
-                                        username={loggedUser.username}
-                                    />
-                                )}
-                            </Dialog.Content>
-                        </Dialog.Portal>
-                    </Dialog.Root>
+                    <Modal
+                        open={open}
+                        setOpen={setOpen}
+                        triggerButton={
+                            <>
+                                <button className="h-max bg-purple-800 text-white/80 hover:text-white font-semibold  w-full rounded mx-auto transition-all hover:bg-purple-700 p-2 2xl:py-2">
+                                    <span className="hidden 2xl:flex justify-center">
+                                        New Post
+                                    </span>
+                                    <IconPencilPlus className="2xl:hidden w-8 h-8" />
+                                </button>
+                            </>
+                        }
+                    >
+                        <CreatePost avatar={null} username={'vsetik'} />
+                    </Modal>
                 </div>
-                <div className="border-t pt-8 border-white/20">
-                    {loggedUser && <SidebarUserCard user={loggedUser} />}
+                <div className="border-t pt-8 border-white/20 mt-8">
+                    {loggedUser && (
+                        <SidebarUserCard
+                            avatar={loggedUser.avatar}
+                            username={loggedUser.username}
+                            name={loggedUser.name}
+                        />
+                    )}
                 </div>
             </div>
         </div>

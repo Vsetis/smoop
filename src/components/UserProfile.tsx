@@ -1,4 +1,3 @@
-import { User } from '@/types';
 import ProfileCard from './User/ProfileCard';
 import Sugestion from './User/Sugestion';
 
@@ -6,20 +5,23 @@ export default function UserProfile({
     user,
     children,
 }: {
-    user: User;
+    user: {
+        username: string;
+        avatar: string | null;
+        name: string;
+        bio?: string;
+    };
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex flex-col md:flex-row gap-4 flex-grow flex-wrap w-full px-0 md:px-32 2xl:px-20">
+        <div className="flex flex-col md:flex-row gap-4 flex-grow flex-wrap w-full px-0 md:px-10 2xl:px-20">
             <div className="w-full md:w-1/2 2xl:w-max grow md:grow-0">
                 {!!user && (
                     <ProfileCard
-                        user={{
-                            username: user!.username,
-                            name: user!.name,
-                            bio: user?.bio,
-                            avatar: user?.avatar || null,
-                        }}
+                        username={user!.username}
+                        name={user!.name}
+                        bio={user?.bio}
+                        avatar={user?.avatar || null}
                     />
                 )}
             </div>

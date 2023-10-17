@@ -19,7 +19,7 @@ export default function CreatePost({
         if (user && postValue !== '') {
             const newPost = {
                 id: post.length + 1,
-                author: user,
+                userId: user.id,
                 content: postValue,
                 liked: false,
                 likes: 0,
