@@ -11,8 +11,7 @@ import {
     IconPencilPlus,
 } from '@tabler/icons-react';
 
-import { notification } from '@/mock/notification';
-import { useUser } from '@/utils/atom';
+import { useNotification, useUser } from '@/utils/atom';
 
 import CreatePost from './Post/CreatePost';
 import Modal from './RadixUI/Modal';
@@ -89,6 +88,7 @@ function SidebarLink({
     icon: React.ReactNode;
 }) {
     const [hover, setHover] = useState(false);
+    const [notification, setNotification] = useNotification();
     return (
         <>
             <Link
@@ -99,9 +99,10 @@ function SidebarLink({
                 href={target.replace('[username]', `/${username}`)}
             >
                 <div className="relative rounded p-1.5 bg-purple-800/20">
-                    {label === 'Notifications' && !!notification && (
-                        <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
-                    )}
+                    {label === 'Notifications' &&
+                        notification.some((n) => !n.seen) && (
+                            <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
+                        )}
                     {icon}
                     <span
                         className={`${

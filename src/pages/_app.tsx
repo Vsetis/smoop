@@ -3,10 +3,11 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
-import { usePosts } from '@/utils/atom';
+import { useNotification, usePosts } from '@/utils/atom';
 
 import '@/styles/globals.css';
 import { posts } from '@/mock/posts';
+import { notifications } from '@/mock/notifications';
 
 interface AppPropsWithComponentLayout extends AppProps {
     Component: NextComponentType & { layout: keyof typeof layouts };
@@ -25,10 +26,14 @@ export default function App({
     const Layout = layouts[Component.layout || 'default'];
 
     const [post, setPost] = usePosts();
+    const [notification, setNotification] = useNotification();
+
     const initialPosts = posts;
+    const initialNotifications = notifications;
 
     useEffect(() => {
         setPost(initialPosts);
+        setNotification(initialNotifications);
     }, []);
 
     return (

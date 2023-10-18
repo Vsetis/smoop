@@ -25,8 +25,20 @@ type User = {
     bio?: string;
 } | null;
 
+type Notification = {
+    id: number;
+    forUserId: number;
+    userId: number;
+    like?: boolean;
+    follow?: boolean;
+    postId?: number;
+    seen: boolean;
+}[];
+
 const postAtom = atom<Post[]>([]);
 const userAtom = atom<User>(null);
+const notificationAtom = atom<Notification>([]);
 
 export const useUser = () => useAtom(userAtom);
 export const usePosts = () => useAtom(postAtom);
+export const useNotification = () => useAtom(notificationAtom);
