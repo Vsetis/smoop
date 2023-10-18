@@ -107,7 +107,7 @@ function SettingsProfile({
                 </button>
             </div>
             <div>
-                <p className="text-sm font-semibold text-white/80 mb-2">
+                <p className="text-xl font-semibold text-white/80 mb-2">
                     Remove Account
                 </p>
                 <p className="mb-4 text-white/80 text-sm">
