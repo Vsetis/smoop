@@ -4,12 +4,12 @@ import { users } from '@/mock/user';
 import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { use, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface User {
     username: string;
     name: string;
-    avatar: string | null;
+    avatar?: string | null;
 }
 
 function SearchCard({
@@ -85,7 +85,7 @@ export default function Navbar() {
 
     const handleSearch = (s: {
         username: string;
-        avatar: string | null;
+        avatar?: string | null;
         name: string;
     }) => {
         push(`/${s.username}`);
@@ -126,7 +126,7 @@ export default function Navbar() {
                                 searchQuery.map((s) => (
                                     <SearchCard
                                         key={s.id}
-                                        avatar={s.avatar}
+                                        avatar={s.avatar || null}
                                         username={s.username}
                                         name={s.name}
                                         onClick={() => handleSearch(s)}
@@ -145,7 +145,9 @@ export default function Navbar() {
                                                     className="flex items-center justify-between"
                                                 >
                                                     <SearchCard
-                                                        avatar={u.avatar}
+                                                        avatar={
+                                                            u.avatar || null
+                                                        }
                                                         username={u.username}
                                                         name={u.name}
                                                         onClick={() => {

@@ -67,7 +67,7 @@ export default function PostCard({
             >
                 <Avatar
                     size="md"
-                    avatar={user!.avatar}
+                    avatar={user!.avatar || null}
                     username={user!.username}
                 />
                 <div className="rounded mx-2 w-full ">

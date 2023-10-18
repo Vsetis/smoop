@@ -7,7 +7,7 @@ export default function UserProfile({
 }: {
     user: {
         username: string;
-        avatar: string | null;
+        avatar?: string | null;
         name: string;
         bio?: string;
     };

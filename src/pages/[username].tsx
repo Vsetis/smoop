@@ -20,30 +20,28 @@ export default function UserPage() {
     return !!userFind ? (
         <UserProfile user={userFind!}>
             <MainSection title="Posts">
-                <div className=" flex flex-col gap-2 md:gap-4">
-                    {postQuery?.length > 0 ? (
-                        postQuery
-                            .map((p) => (
-                                <PostCard
-                                    key={p.id}
-                                    id={p.id}
-                                    userId={userFind!.id}
-                                    content={p.content}
-                                    count={{
-                                        likes: p.likes,
-                                        comments: p.comments?.length || 0,
-                                    }}
-                                    isLiked={p.liked}
-                                    postRouter={true}
-                                />
-                            ))
-                            .reverse()
-                    ) : (
-                        <>
-                            <p className="p-5">This user has not post yet</p>
-                        </>
-                    )}
-                </div>
+                {postQuery?.length > 0 ? (
+                    postQuery
+                        .map((p) => (
+                            <PostCard
+                                key={p.id}
+                                id={p.id}
+                                userId={userFind!.id}
+                                content={p.content}
+                                count={{
+                                    likes: p.likes,
+                                    comments: p.comments?.length || 0,
+                                }}
+                                isLiked={p.liked}
+                                postRouter={true}
+                            />
+                        ))
+                        .reverse()
+                ) : (
+                    <>
+                        <p className="p-5">This user has not post yet</p>
+                    </>
+                )}
             </MainSection>
         </UserProfile>
     ) : (

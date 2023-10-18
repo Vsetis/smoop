@@ -53,7 +53,7 @@ export default function Sugestion() {
             name: string;
             bio?: string;
             email: string;
-            avatar: string | null;
+            avatar?: string | null;
         }[],
         numberOfItems: number
     ) => {
@@ -73,7 +73,7 @@ export default function Sugestion() {
                     <SugestionUserCard
                         key={user.id}
                         username={user.username}
-                        avatar={user.avatar}
+                        avatar={user.avatar || null}
                         name={user.name}
                     />
                 ))}
