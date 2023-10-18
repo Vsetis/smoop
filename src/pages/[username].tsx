@@ -18,14 +18,7 @@ export default function UserPage() {
     const postQuery = post.filter((post) => post.userId === userFind!.id);
 
     return !!userFind ? (
-        <UserProfile
-            user={{
-                username: userFind!.username,
-                name: userFind!.username,
-                bio: userFind?.bio,
-                avatar: userFind!.avatar || null,
-            }}
-        >
+        <UserProfile user={userFind!}>
             <MainSection title="Posts">
                 <div className=" flex flex-col gap-2 md:gap-4">
                     {postQuery?.length > 0 ? (

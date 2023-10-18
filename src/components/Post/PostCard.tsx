@@ -46,9 +46,7 @@ export default function PostCard({
 
     const user = users.find((u) => u.id === userId);
 
-    const { addLike, deletePost, removeLike, addLikeComment } = usePostAction(
-        user!.username
-    );
+    const { addLike, deletePost, removeLike } = usePostAction(user!.username);
 
     const handleLike = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -99,25 +97,31 @@ export default function PostCard({
                                 </button>
                             }
                         >
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    deletePost(id, userId);
-                                }}
-                                className="flex gap-2 items-center cursor-pointer transition-all hover:bg-red-500/20 px-2 py-1"
-                            >
-                                {sessionUser ? (
-                                    <>
-                                        <IconTrash className="text-red-500" />
-                                        <p className="text-sm">Delete</p>
-                                    </>
-                                ) : (
-                                    <>
+                            {sessionUser!.id === userId ? (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        deletePost(id, userId);
+                                    }}
+                                    className="flex gap-2 items-center cursor-pointer transition-all hover:bg-red-500/20 px-2 py-1"
+                                >
+                                    <IconTrash className="text-red-500" />
+                                    <p className="text-sm">Delete</p>
+                                </button>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            console.log('Succesfuly reported!');
+                                        }}
+                                        className="flex gap-2 items-center cursor-pointer transition-all hover:bg-red-500/20 px-2 py-1"
+                                    >
                                         <IconReport className="text-red-500" />
                                         <p className="text-sm">Report</p>
-                                    </>
-                                )}
-                            </button>
+                                    </button>
+                                </>
+                            )}
                         </Dropdown>
                     </div>
                     <div className="mb-6">
@@ -143,12 +147,12 @@ export default function PostCard({
                             open={open}
                             setOpen={setOpen}
                             triggerButton={
-                                <button className="flex items-center gap-2">
+                                <div className="flex items-center gap-2">
                                     <IconMessage className="w-4 h-4 md:w-5 md:h-5" />
                                     <span className="font-semibold text-[12px] md:text-sm">
                                         {count.comments}
                                     </span>
-                                </button>
+                                </div>
                             }
                         >
                             <CreateComment

@@ -11,6 +11,7 @@ export const usePostAction = (username: string) => {
             }
             return post;
         });
+
         setPosts(updatePosts);
     };
 
@@ -21,6 +22,7 @@ export const usePostAction = (username: string) => {
             }
             return post;
         });
+
         setPosts(updatePosts);
     };
 
@@ -45,6 +47,7 @@ export const usePostAction = (username: string) => {
             }
             return post;
         });
+
         setPosts(updatedPosts);
     };
 
@@ -69,6 +72,7 @@ export const usePostAction = (username: string) => {
             }
             return post;
         });
+
         setPosts(updatedPosts);
     };
 
@@ -103,13 +107,8 @@ export const usePostAction = (username: string) => {
             return post;
         });
 
-        if (user!.id === userId || postAuthorId === user!.id) {
+        (user!.id === userId || postAuthorId === user!.id) &&
             setPosts(updatedPosts);
-        } else {
-            console.log(
-                'Error, comment was not found or you have not permission to delete!'
-            );
-        }
     };
 
     return {

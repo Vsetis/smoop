@@ -83,19 +83,19 @@ export default function Navbar() {
         setHistory([...updatedHistory.filter((h) => h.username !== username)]);
     };
 
-    const handleSearch = (u: {
+    const handleSearch = (s: {
         username: string;
         avatar: string | null;
         name: string;
     }) => {
-        push(`/${u.username}`);
-        setItems([...getItems(), u.username]);
+        push(`/${s.username}`);
+        setItems([...getItems(), s.username]);
         setHistory([
             ...updatedHistory,
             {
-                username: u.username,
-                name: u.name,
-                avatar: u.avatar,
+                username: s.username,
+                name: s.name,
+                avatar: s.avatar,
             },
         ]);
     };
@@ -123,13 +123,13 @@ export default function Navbar() {
                             } bg-black rounded border border-white/20 mt-2`}
                         >
                             {value !== '' ? (
-                                searchQuery.map((u) => (
+                                searchQuery.map((s) => (
                                     <SearchCard
-                                        key={u.id}
-                                        avatar={u.avatar}
-                                        username={u.username}
-                                        name={u.name}
-                                        onClick={() => handleSearch(u)}
+                                        key={s.id}
+                                        avatar={s.avatar}
+                                        username={s.username}
+                                        name={s.name}
+                                        onClick={() => handleSearch(s)}
                                     />
                                 ))
                             ) : (
@@ -140,35 +140,31 @@ export default function Navbar() {
                                                 Recently searched
                                             </p>
                                             {history.map((u) => (
-                                                <>
-                                                    <div
-                                                        key={u.username}
-                                                        className="flex items-center justify-between"
+                                                <div
+                                                    key={u.username}
+                                                    className="flex items-center justify-between"
+                                                >
+                                                    <SearchCard
+                                                        avatar={u.avatar}
+                                                        username={u.username}
+                                                        name={u.name}
+                                                        onClick={() => {
+                                                            push(
+                                                                `/${u.username}`
+                                                            );
+                                                        }}
                                                     >
-                                                        <SearchCard
-                                                            avatar={u.avatar}
-                                                            username={
-                                                                u.username
+                                                        <button
+                                                            onClick={() =>
+                                                                handleRemove(
+                                                                    u.username
+                                                                )
                                                             }
-                                                            name={u.name}
-                                                            onClick={() => {
-                                                                push(
-                                                                    `/${u.username}`
-                                                                );
-                                                            }}
                                                         >
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleRemove(
-                                                                        u.username
-                                                                    )
-                                                                }
-                                                            >
-                                                                <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
-                                                            </button>
-                                                        </SearchCard>
-                                                    </div>
-                                                </>
+                                                            <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
+                                                        </button>
+                                                    </SearchCard>
+                                                </div>
                                             ))}
                                         </>
                                     ) : (
