@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Avatar from '../UI/Avatar';
 
 export default function ProfileCard({
     avatar,
@@ -13,17 +14,7 @@ export default function ProfileCard({
 }) {
     return (
         <div className="w-full flex flex-col items-center h-max p-4 border border-white/20 rounded">
-            {!!avatar ? (
-                <Image
-                    width={32}
-                    height={32}
-                    className="rounded-full mb-2"
-                    src={avatar}
-                    alt={`${username} profile avatar`}
-                ></Image>
-            ) : (
-                <div className="mb-2 rounded-full w-16 h-16 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
-            )}
+            <Avatar size="xl" avatar={avatar} username={username} />
             <h3 className="mb-1 text-xl font-semibold text-white/80">
                 {username}
             </h3>
