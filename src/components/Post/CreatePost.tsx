@@ -30,7 +30,7 @@ export default function CreatePost({
     };
 
     return (
-        <div>
+        <div className="p-4">
             <button
                 disabled={postValue === ''}
                 onClick={() => createPost()}
