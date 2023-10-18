@@ -14,16 +14,16 @@ export default function UserPage() {
 
     const username = query.username;
 
-    const userQuery = users.find((user) => user.username === username);
-    const postQuery = post.filter((post) => post.userId === userQuery!.id);
+    const userFind = users.find((user) => user.username === username);
+    const postQuery = post.filter((post) => post.userId === userFind!.id);
 
-    return !!userQuery ? (
+    return !!userFind ? (
         <UserProfile
             user={{
-                username: userQuery!.username,
-                name: userQuery!.username,
-                bio: userQuery?.bio,
-                avatar: userQuery!.avatar || null,
+                username: userFind!.username,
+                name: userFind!.username,
+                bio: userFind?.bio,
+                avatar: userFind!.avatar || null,
             }}
         >
             <MainSection title="Posts">
@@ -34,11 +34,7 @@ export default function UserPage() {
                                 <PostCard
                                     key={p.id}
                                     id={p.id}
-                                    user={{
-                                        username: userQuery.username,
-                                        name: userQuery.name,
-                                        avatar: userQuery.avatar,
-                                    }}
+                                    userId={userFind!.id}
                                     content={p.content}
                                     count={{
                                         likes: p.likes,

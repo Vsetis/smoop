@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import UserAvatar from '../User/UserAvatar';
+
 import { usePosts, useUser } from '@/utils/atom';
+import Avatar from '../UI/Avatar';
 
 export default function PostCommentCard({
-    avatar,
     username,
     id,
 }: {
-    avatar: string | null;
     username: string;
     id: number;
 }) {
@@ -18,8 +17,10 @@ export default function PostCommentCard({
     const [user, setUser] = useUser();
 
     const createComment = (postId: number) => {
+        const helper = post.find((p) => p.id === postId);
+
         const newComment = {
-            id: post.length + 1 || 1,
+            id: helper?.comments ? helper?.comments.length + 1 : 1,
             userId: user!.id,
             content: value,
             liked: false,
@@ -31,26 +32,14 @@ export default function PostCommentCard({
         if (postFound) {
             postFound.comments = postFound.comments || [];
             postFound.comments.push(newComment);
-
-            const newPost = {
-                ...newComment,
-
-                userId: user!.id,
-            };
-
-            const updatedPosts = post.map((p) =>
-                p.id === postFound.id ? postFound : p
-            );
-            setPost([...updatedPosts, newPost]);
-
+            setPost([...post]);
+            console.log(post);
             setValue('');
         }
     };
 
     return (
-        <div
-            className={`${isReplying ? 'pt-2' : 'pt-4'} border-white/20   px-4`}
-        >
+        <div className=" border-white/20   p-4">
             <p
                 className={
                     isReplying
@@ -63,7 +52,11 @@ export default function PostCommentCard({
             </p>
             <div className="relative flex flex-col">
                 <div className="flex gap-4 ">
-                    <UserAvatar avatar={avatar} username={username} />
+                    <Avatar
+                        size="md"
+                        avatar={user!.avatar}
+                        username={user!.username}
+                    />
 
                     <textarea
                         onClick={() => setRyplying(true)}
@@ -92,7 +85,7 @@ export default function PostCommentCard({
                             value === ''
                                 ? 'bg-purple-900 text-white/50'
                                 : 'hover:bg-purple-600'
-                        } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto mb-4`}
+                        } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto`}
                     >
                         Reply
                     </button>

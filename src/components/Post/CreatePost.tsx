@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { usePosts, useUser } from '@/utils/atom';
+import Avatar from '../UI/Avatar';
 
 export default function CreatePost({
     avatar,
@@ -42,19 +43,11 @@ export default function CreatePost({
                 Post
             </button>
             <div className="flex gap-8 ">
-                <div>
-                    {!!avatar ? (
-                        <Image
-                            width={40}
-                            height={40}
-                            className="rounded-full mb-2"
-                            src={avatar}
-                            alt={`${username} profile avatar`}
-                        ></Image>
-                    ) : (
-                        <div className="mb-2 rounded-full w-10 h-10 bg-gradient-to-b from-purple-700 via-blue-500 to-emerald-800" />
-                    )}
-                </div>
+                <Avatar
+                    size="md"
+                    avatar={user!.avatar}
+                    username={user!.username}
+                />
                 <textarea
                     className="w-full flex bg-transparent min-h-[100px] max-h-[auto] overflow-y-hidden resize-none text-2xl focus:outline-none p-4 mb-8"
                     onChange={(e) => setValue(e.currentTarget.value)}

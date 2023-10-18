@@ -31,7 +31,7 @@ export default function Home() {
                             id: 1,
                             username: 'guest',
                             name: 'guest',
-                            bio: 'Amazing bio!',
+                            bio: 'amazing bio',
                             avatar: null,
                         })
                     }

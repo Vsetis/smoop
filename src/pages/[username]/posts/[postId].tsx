@@ -7,6 +7,7 @@ import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
 import MainSection from '@/components/User/MainSection';
 import PostCommentCard from '@/components/Post/PostCommentCard';
+import CommentCard from '@/components/Post/CommentCard';
 
 export default function PostPage() {
     const { query } = useRouter();
@@ -19,20 +20,8 @@ export default function PostPage() {
 
     const userFound = users.find((user) => user.username === username);
     const postFound = post.find(
-        (p) => p.id.toString() === postId && userFound!.id === p!.userId
+        (p) => p!.id.toString() === postId && userFound!.id === p!.userId
     );
-
-    const findUser = (userId: number) => {
-        const result = users.find((u) => u.id === userId);
-
-        return result;
-    };
-
-    const postFind = (postId: number) => {
-        const result = post!.find((p) => p.id === postId);
-
-        return result;
-    };
 
     return user ? (
         <UserProfile
@@ -49,11 +38,7 @@ export default function PostPage() {
                         <PostCard
                             key={postFound.id}
                             id={postFound.id}
-                            user={{
-                                username: userFound!.username,
-                                name: userFound!.name,
-                                avatar: userFound!.avatar,
-                            }}
+                            userId={postFound.userId}
                             content={postFound.content}
                             isLiked={postFound.liked}
                             count={{
@@ -64,36 +49,20 @@ export default function PostPage() {
                             <>
                                 <PostCommentCard
                                     id={postFound.id}
-                                    avatar={userFound!.avatar}
                                     username={userFound!.username}
                                 />
-                                {postFound.comments
-                                    ?.map((comment) => (
-                                        <PostCard
-                                            reply={userFound!.username}
-                                            key={comment.id}
-                                            id={comment.id}
-                                            user={{
-                                                username: findUser(
-                                                    comment.userId
-                                                )!.username,
-                                                name: findUser(comment.userId)!
-                                                    .name,
-                                                avatar: findUser(
-                                                    comment.userId
-                                                )!.avatar,
-                                            }}
-                                            content={comment.content}
-                                            isLiked={comment.liked}
-                                            count={{
-                                                likes: comment.likes,
-                                                comments:
-                                                    postFind(comment.id)
-                                                        ?.comments?.length || 0,
-                                            }}
-                                        />
-                                    ))
-                                    .reverse()}
+                                {postFound?.comments?.map((comment) => (
+                                    <CommentCard
+                                        key={comment.id}
+                                        authorId={comment.userId}
+                                        postId={postFound.id}
+                                        postAuthorId={postFound.userId}
+                                        id={comment.id}
+                                        content={comment.content}
+                                        isLiked={comment.liked}
+                                        likes={comment.likes}
+                                    />
+                                ))}
                             </>
                         </PostCard>
                     ) : (

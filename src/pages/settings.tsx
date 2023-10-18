@@ -7,7 +7,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import * as Switch from '@radix-ui/react-switch';
 
 import { IconArrowBack } from '@tabler/icons-react';
-import UserAvatar from '@/components/User/UserAvatar';
+import Avatar from '@/components/UI/Avatar';
 
 function SettingsProfileCard({
     username,
@@ -24,7 +24,7 @@ function SettingsProfileCard({
             <div className="flex justify-between items-center gap-4 px-4">
                 <div className="flex items-center gap-4">
                     <div className="bg-black p-[4px] translate-y-[-32px] rounded-full">
-                        <UserAvatar avatar={avatar} username={username} />
+                        <Avatar size="xl" avatar={avatar} username={username} />
                     </div>
                     <div className="flex flex-col">
                         <p className="text-lg xl:text-xl font-semibold">
