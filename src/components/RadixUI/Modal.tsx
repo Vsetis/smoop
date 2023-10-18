@@ -15,7 +15,7 @@ export default function Modal({
         <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger
                 onClick={(e) => e.stopPropagation()}
-                className="w-auto"
+                className="w-max"
             >
                 {triggerButton}
             </Dialog.Trigger>

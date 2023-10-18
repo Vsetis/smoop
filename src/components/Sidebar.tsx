@@ -152,7 +152,7 @@ export default function Sidebar() {
                         setOpen={setOpen}
                         triggerButton={
                             <>
-                                <button className="h-max bg-purple-800 text-white/80 hover:text-white font-semibold  w-full rounded mx-auto transition-all hover:bg-purple-700 p-2 2xl:py-2">
+                                <button className="h-max bg-purple-800 2xl:w-64 text-white/80 hover:text-white font-semibold rounded mx-auto transition-all hover:bg-purple-700 p-2 2xl:py-2">
                                     <span className="hidden 2xl:flex justify-center">
                                         New Post
                                     </span>

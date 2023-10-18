@@ -135,38 +135,42 @@ export default function Navbar() {
                             ) : (
                                 <div className="flex flex-col">
                                     {history.length > 0 ? (
-                                        history.map((u) => (
-                                            <>
-                                                <p className="p-2 text-white/70 font-semibold text-sm">
-                                                    Recently searched
-                                                </p>
-                                                <div
-                                                    key={u.username}
-                                                    className="flex items-center justify-between"
-                                                >
-                                                    <SearchCard
-                                                        avatar={u.avatar}
-                                                        username={u.username}
-                                                        name={u.name}
-                                                        onClick={() => {
-                                                            push(
-                                                                `/${u.username}`
-                                                            );
-                                                        }}
+                                        <>
+                                            <p className="p-2 text-white/70 font-semibold text-sm">
+                                                Recently searched
+                                            </p>
+                                            {history.map((u) => (
+                                                <>
+                                                    <div
+                                                        key={u.username}
+                                                        className="flex items-center justify-between"
                                                     >
-                                                        <button
-                                                            onClick={() =>
-                                                                handleRemove(
-                                                                    u.username
-                                                                )
+                                                        <SearchCard
+                                                            avatar={u.avatar}
+                                                            username={
+                                                                u.username
                                                             }
+                                                            name={u.name}
+                                                            onClick={() => {
+                                                                push(
+                                                                    `/${u.username}`
+                                                                );
+                                                            }}
                                                         >
-                                                            <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
-                                                        </button>
-                                                    </SearchCard>
-                                                </div>
-                                            </>
-                                        ))
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleRemove(
+                                                                        u.username
+                                                                    )
+                                                                }
+                                                            >
+                                                                <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
+                                                            </button>
+                                                        </SearchCard>
+                                                    </div>
+                                                </>
+                                            ))}
+                                        </>
                                     ) : (
                                         <p className="p-2 text-white/70 font-semibold text-sm">
                                             Try searching for people.
