@@ -51,7 +51,7 @@ export default function Home() {
 
     return (
         <UserProfile user={user!}>
-            <div className="border border-white/20 rounded p-4 mb-4">
+            <div className="border border-white/20 rounded mb-4">
                 <CreatePost avatar={user!.avatar} username={user!.username} />
             </div>
             <MainSection title="Home">

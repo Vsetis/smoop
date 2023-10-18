@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { usePosts, useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 
-export default function PostCommentCard({
+export default function CreateCommentCard({
     username,
     id,
 }: {

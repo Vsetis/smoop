@@ -6,8 +6,9 @@ import { usePosts, useUser } from '@/utils/atom';
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
 import MainSection from '@/components/User/MainSection';
-import PostCommentCard from '@/components/Post/PostCommentCard';
+
 import CommentCard from '@/components/Post/CommentCard';
+import CreateCommentCard from '@/components/Post/CreateCommentCard';
 
 export default function PostPage() {
     const { query } = useRouter();
@@ -47,7 +48,7 @@ export default function PostPage() {
                             }}
                         >
                             <>
-                                <PostCommentCard
+                                <CreateCommentCard
                                     id={postFound.id}
                                     username={userFound!.username}
                                 />
