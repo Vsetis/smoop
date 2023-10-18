@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { usePosts, useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 
-export default function createComment({
+export default function CreateComment({
     replyingTo,
     post,
 }: {
@@ -14,7 +14,7 @@ export default function createComment({
 
     const [value, setValue] = useState('');
 
-    const createComment = (postId: number) => {
+    const commentCreate = (postId: number) => {
         const helper = posts.find((p) => p.id === postId);
 
         const newComment = {
@@ -30,10 +30,10 @@ export default function createComment({
         if (postFound) {
             postFound.comments = postFound.comments || [];
             postFound.comments.push(newComment);
-            setPosts([...posts]);
-            console.log(post);
-            setValue('');
         }
+
+        setPosts([...posts]);
+        setValue('');
     };
 
     return (
@@ -81,7 +81,7 @@ export default function createComment({
 
             <button
                 disabled={value === ''}
-                onClick={() => createComment(post.id)}
+                onClick={() => commentCreate(post.id)}
                 className={`${
                     value === ''
                         ? 'bg-purple-900 text-white/50'

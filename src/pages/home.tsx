@@ -19,6 +19,7 @@ export default function Home() {
                 <div className="flex flex-col">
                     {postQuery.map((post) => (
                         <PostCard
+                            key={post.id}
                             id={post.id}
                             userId={post.userId}
                             content={post.content}

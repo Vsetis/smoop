@@ -150,19 +150,18 @@ export default function PostCard({
                                     </span>
                                 </button>
                             }
-                            children={
-                                <CreateComment
-                                    replyingTo={{
-                                        username: user!.username,
-                                        name: user!.name,
-                                    }}
-                                    post={{
-                                        id: id,
-                                        content: content,
-                                    }}
-                                />
-                            }
-                        ></Modal>
+                        >
+                            <CreateComment
+                                replyingTo={{
+                                    username: user!.username,
+                                    name: user!.name,
+                                }}
+                                post={{
+                                    id: id,
+                                    content: content,
+                                }}
+                            />
+                        </Modal>
 
                         <button onClick={(e) => e.stopPropagation()}>
                             <IconShare className="w-4 h-4 md:w-5 md:h-5" />
