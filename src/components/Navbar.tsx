@@ -79,8 +79,9 @@ export default function Navbar() {
         (e: React.MouseEvent) => {
             e.stopPropagation();
         };
+
         removeItem(username);
-        setHistory([...updatedHistory.filter((h) => h.username !== username)]);
+        setHistory([...history.filter((h) => h.username !== username)]);
     };
 
     const handleSearch = (s: {
@@ -89,15 +90,14 @@ export default function Navbar() {
         name: string;
     }) => {
         push(`/${s.username}`);
-        setItems([...getItems(), s.username]);
-        setHistory([
-            ...updatedHistory,
-            {
-                username: s.username,
-                name: s.name,
-                avatar: s.avatar,
-            },
-        ]);
+        const items = getItems();
+
+        if (!items.includes(s.username)) {
+            items.push(s.username);
+            setItems(items);
+
+            setHistory([...history, s]);
+        }
     };
 
     return (

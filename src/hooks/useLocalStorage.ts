@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-
-export const useLocalStorage = (key: string, initialValue: unknown) => {
+export const useLocalStorage = (key: string, initialValue: unknown[]) => {
     const getItems = () => {
         const storedValue = window.localStorage.getItem(key);
         if (storedValue !== null) {
@@ -10,13 +8,12 @@ export const useLocalStorage = (key: string, initialValue: unknown) => {
         }
     };
 
-    const setItems = (array: unknown) => {
+    const setItems = (array: unknown[]) => {
         window.localStorage.setItem(key, JSON.stringify(array));
     };
 
     const removeItem = (value: unknown) => {
         const array = getItems();
-
         const index = array.indexOf(value);
         if (index !== -1) {
             array.splice(index, 1);

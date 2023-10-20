@@ -1,5 +1,6 @@
 import { useUser, useUsers } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
+import Link from 'next/link';
 
 export default function FollowCard({
     userId,
@@ -27,7 +28,6 @@ export default function FollowCard({
                 };
                 setUser(updatedUser);
 
-                // Create a new array of users with the updated user
                 const updatedUsers = users.map((u) => {
                     if (u.id === user.id) {
                         return updatedUser;
@@ -47,7 +47,6 @@ export default function FollowCard({
                 const updatedUser = { ...user, following: updatedFollowing };
                 setUser(updatedUser);
 
-                // Create a new array of users with the updated user
                 const updatedUsers = users.map((u) => {
                     if (u.id === user.id) {
                         return updatedUser;
@@ -68,9 +67,12 @@ export default function FollowCard({
                 <div className="flex items-center gap-4">
                     <Avatar size="md" avatar={avatar} username={username} />
                     <div>
-                        <p className="font-semibold text-white/80">
+                        <Link
+                            href={`/${username}`}
+                            className="font-semibold text-white/80 hover:underline"
+                        >
                             {username}
-                        </p>
+                        </Link>
                         <p className="text-[12px] text-white/60">@{name}</p>
                     </div>
                 </div>

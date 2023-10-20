@@ -7,7 +7,7 @@ export default function MainSection({
 }) {
     return (
         <div>
-            <div className="rounded md:border border-white/20 w-full h-full">
+            <div className="rounded md:border border-white/20 w-full h-full min-h-[250px]">
                 <div className="p-2 md:p-4 border-white/20">
                     <h2 className="font-semibold text-white/80">{title}</h2>
                 </div>
