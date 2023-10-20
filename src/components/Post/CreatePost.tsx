@@ -30,7 +30,8 @@ export default function CreatePost({
     };
 
     return (
-        <div className="p-4">
+        <>
+            {' '}
             <button
                 disabled={postValue === ''}
                 onClick={() => createPost()}
@@ -69,6 +70,6 @@ export default function CreatePost({
                     Post
                 </button>
             </div>
-        </div>
+        </>
     );
 }

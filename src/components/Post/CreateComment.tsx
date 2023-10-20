@@ -37,7 +37,8 @@ export default function CreateComment({
     };
 
     return (
-        <div className="p-4">
+        <>
+            {' '}
             <div className="flex gap-4">
                 <div className="flex flex-col w-max items-center">
                     <Avatar size="md" avatar={null} username="guest"></Avatar>
@@ -63,7 +64,6 @@ export default function CreateComment({
                     </p>
                 </div>
             </div>
-
             <div className="flex gap-4">
                 <Avatar
                     size="md"
@@ -78,7 +78,6 @@ export default function CreateComment({
                     maxLength={280}
                 ></textarea>
             </div>
-
             <button
                 disabled={value === ''}
                 onClick={() => commentCreate(post.id)}
@@ -90,6 +89,6 @@ export default function CreateComment({
             >
                 Comment
             </button>
-        </div>
+        </>
     );
 }
