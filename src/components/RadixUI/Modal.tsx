@@ -24,7 +24,10 @@ export default function Modal({
             </Dialog.Trigger>
 
             <Dialog.Portal>
-                <Dialog.Overlay className="bg-gray-700/50 fixed inset-0 z-[50] flex justify-center pt-16">
+                <Dialog.Overlay
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-gray-700/50 fixed inset-0 z-[50] flex justify-center pt-16"
+                >
                     <Dialog.Content className="bg-black inset-0 min-w-[600px] max-h-[50vh] h-max overflow-auto p-4">
                         <div className="flex items-center justify-between">
                             <h3 className="mb-4 text-white/80 text-lg">

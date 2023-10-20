@@ -38,7 +38,6 @@ export default function CreateComment({
 
     return (
         <>
-            {' '}
             <div className="flex gap-4">
                 <div className="flex flex-col w-max items-center">
                     <Avatar size="md" avatar={null} username="guest"></Avatar>
