@@ -27,6 +27,18 @@ type User = {
     following?: { userId: number }[];
 } | null;
 
+type Users =
+    | {
+          id: number;
+          username: string;
+          name: string;
+          email?: string;
+          avatar?: string | null;
+          bio?: string;
+          followed?: { userId: number }[];
+          following?: { userId: number }[];
+      }[];
+
 type Notification = {
     id: number;
     forUserId: number;
@@ -39,8 +51,10 @@ type Notification = {
 
 const postAtom = atom<Post[]>([]);
 const userAtom = atom<User>(null);
+const usersAtom = atom<Users>([]);
 const notificationAtom = atom<Notification>([]);
 
 export const useUser = () => useAtom(userAtom);
+export const useUsers = () => useAtom(usersAtom);
 export const usePosts = () => useAtom(postAtom);
 export const useNotification = () => useAtom(notificationAtom);

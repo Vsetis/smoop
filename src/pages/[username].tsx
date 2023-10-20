@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { users } from '@/mock/user';
-import { usePosts } from '@/utils/atom';
+import { usePosts, useUsers } from '@/utils/atom';
 
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
@@ -11,6 +10,7 @@ export default function UserPage() {
     const { query } = useRouter();
 
     const [post, setPost] = usePosts();
+    const [users, setUsers] = useUsers();
 
     const username = query.username;
 

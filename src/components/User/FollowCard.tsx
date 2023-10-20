@@ -1,4 +1,4 @@
-import { useUser } from '@/utils/atom';
+import { useUser, useUsers } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 
 export default function FollowCard({
@@ -15,29 +15,47 @@ export default function FollowCard({
     following: boolean;
 }) {
     const [user, setUser] = useUser();
+    const [users, setUsers] = useUsers();
 
     const handleFollow = (userId: number) => {
         const follow = () => {
-            if (user) {
-                const follow = { userId };
-                const updateUser = {
+            if (user && users) {
+                const followData = { userId };
+                const updatedUser = {
                     ...user,
-                    following: [...(user.following ?? []), follow],
+                    following: [...(user.following ?? []), followData],
                 };
+                setUser(updatedUser);
 
-                setUser(updateUser);
+                // Create a new array of users with the updated user
+                const updatedUsers = users.map((u) => {
+                    if (u.id === user.id) {
+                        return updatedUser;
+                    }
+                    return u;
+                });
+
+                setUsers(updatedUsers);
             }
         };
 
         const unfollow = () => {
             if (user) {
-                const updatedUser = user!.following?.filter(
+                const updatedFollowing = user.following?.filter(
                     (f) => f.userId !== userId
                 );
+                const updatedUser = { ...user, following: updatedFollowing };
+                setUser(updatedUser);
 
-                const newUser = { ...user, following: updatedUser };
+                // Create a new array of users with the updated user
+                const updatedUsers = users.map((u) => {
+                    if (u.id === user.id) {
+                        return updatedUser;
+                    }
+                    return u;
+                });
 
-                setUser(newUser);
+                setUsers(updatedUsers);
             }
         };
 

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { users } from '@/mock/user';
-import { usePosts, useUser } from '@/utils/atom';
+import { usePosts, useUser, useUsers } from '@/utils/atom';
 
 import PostCard from '@/components/Post/PostCard';
 import UserProfile from '@/components/UserProfile';
@@ -17,6 +16,7 @@ export default function PostPage() {
     const postId = query.postId as string;
 
     const [user, setUser] = useUser();
+    const [users, setUsers] = useUsers();
     const [post, setPost] = usePosts();
 
     const userFound = users.find((user) => user.username === username);
@@ -26,15 +26,7 @@ export default function PostPage() {
     const postLength = post.filter((p) => p.userId === userFound!.id);
 
     return user ? (
-        <UserProfile
-            user={{
-                username: userFound!.username,
-                name: userFound!.username,
-                bio: userFound?.bio,
-                avatar: userFound!.avatar || null,
-            }}
-            posts={postLength.length || 0}
-        >
+        <UserProfile user={userFound!} posts={postLength.length || 0}>
             <MainSection title="Post">
                 <div className=" flex flex-col gap-4">
                     {postFound ? (

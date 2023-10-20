@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import Avatar from '../UI/Avatar';
 import Modal from '../RadixUI/Modal';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import FollowCard from './FollowCard';
-import { users } from '@/mock/user';
+import { useUser, useUsers } from '@/utils/atom';
+import { IconEdit } from '@tabler/icons-react';
 
 export default function ProfileCard({
     avatar,
@@ -22,6 +22,8 @@ export default function ProfileCard({
     followed?: { userId: number }[];
     posts: number;
 }) {
+    const [user, setUser] = useUser();
+    const [users, setUsers] = useUsers();
     const [followingOpen, setFollowingOpen] = useState(false);
     const [followedOpen, setFollowedOpen] = useState(false);
 
@@ -35,14 +37,30 @@ export default function ProfileCard({
         (u) => followedQuery && followedQuery.includes(u.id)
     );
 
+    const myFollowingList = user?.following?.map((u) => u.userId);
+
+    const showNames = users.filter((u) => myFollowingList?.includes(u.id));
+
+    console.log(showNames.map((u) => u.username));
     return (
-        <div className="w-full flex flex-col items-center h-max p-4 border border-white/20 rounded">
-            <Avatar size="xl" avatar={avatar} username={username} />
-            <h3 className="mb-1 text-xl font-semibold text-white/80">
-                {username}
-            </h3>
-            <p className="mb-4 font-semibold text-sm text-white/60">@{name}</p>
-            {bio && <p className="mb-8 text-white/80">{bio}</p>}
+        <div className="w-full flex flex-col items-center justify-between h-max p-4 border border-white/20 rounded min-h-[250px]">
+            {user!.username === username && (
+                <button className="flex ml-auto text-purple-600">
+                    <IconEdit />
+                </button>
+            )}
+            <div className="flex flex-col items-center">
+                <div className="mb-1">
+                    <Avatar size="xl" avatar={avatar} username={username} />
+                </div>
+                <p className="mb-1 text-xl font-semibold text-white/80">
+                    {username}
+                </p>
+                <p className="mb-4 font-semibold text-sm text-white/60">
+                    @{name}
+                </p>
+                {bio && <p className="mb-8 text-white/80">{bio}</p>}
+            </div>
             <div className="grid grid-cols-3 min-w-[280px]">
                 <div className="flex flex-col items-center justify-center ">
                     <p className="text-white/60">Posts</p>
@@ -51,7 +69,7 @@ export default function ProfileCard({
                 <div className="flex flex-col items-center justify-center border-x px-4 border-white/20">
                     <p className="text-white/60">Followers</p>
                     <Modal
-                        title="Follow you"
+                        title="Followers"
                         open={followedOpen}
                         setOpen={setFollowedOpen}
                         triggerButton={
@@ -61,28 +79,34 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4 ">
-                            {followedUsers.map((u) => {
-                                const isFollowing = followingUsers.some(
-                                    (f) => f.id === u.id
-                                );
-                                return (
-                                    <FollowCard
-                                        key={u.id}
-                                        userId={u.id}
-                                        following={isFollowing}
-                                        username={u.username}
-                                        avatar={u.avatar || null}
-                                        name={u.name}
-                                    />
-                                );
-                            })}
+                            {followedUsers.length ? (
+                                followedUsers.map((u) => {
+                                    const isFollowing = showNames.some(
+                                        (f) => f.id === u.id
+                                    );
+                                    return (
+                                        <FollowCard
+                                            key={u.id}
+                                            userId={u.id}
+                                            following={isFollowing}
+                                            username={u.username}
+                                            avatar={u.avatar || null}
+                                            name={u.name}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <p className="pt-2 text-lg text-white/80">
+                                    0 Followers
+                                </p>
+                            )}
                         </div>
                     </Modal>
                 </div>
                 <div className="flex flex-col items-center justify-center ">
                     <p className="text-white/60">Following</p>
                     <Modal
-                        title="You following"
+                        title="Following"
                         open={followingOpen}
                         setOpen={setFollowingOpen}
                         triggerButton={
@@ -92,16 +116,27 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4">
-                            {followingUsers.map((u) => (
-                                <FollowCard
-                                    key={u.id}
-                                    userId={u.id}
-                                    following={!!u}
-                                    username={u.username}
-                                    avatar={u.avatar || null}
-                                    name={u.name}
-                                />
-                            ))}
+                            {followingUsers.length ? (
+                                followingUsers.map((u) => {
+                                    const isFollowing = showNames.some(
+                                        (f) => f.id === u.id
+                                    );
+                                    return (
+                                        <FollowCard
+                                            key={u.id}
+                                            userId={u.id}
+                                            following={isFollowing}
+                                            username={u.username}
+                                            avatar={u.avatar || null}
+                                            name={u.name}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <p className="pt-2 text-lg text-white/80">
+                                    0 Followers
+                                </p>
+                            )}
                         </div>
                     </Modal>
                 </div>
