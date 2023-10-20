@@ -241,7 +241,7 @@ export default function SettingsPage() {
                         <SettingsProfile
                             username={user!.username}
                             name={user!.name}
-                            avatar={user!.avatar}
+                            avatar={user!.avatar || null}
                         />
                     </Tabs.Content>
                     <Tabs.Content

@@ -54,7 +54,7 @@ export default function CreateCommentCard({
                 <div className="flex gap-4 ">
                     <Avatar
                         size="md"
-                        avatar={user!.avatar}
+                        avatar={user?.avatar || null}
                         username={user!.username}
                     />
 

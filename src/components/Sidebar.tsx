@@ -166,7 +166,7 @@ export default function Sidebar() {
                 <div className="border-t pt-8 border-white/20 mt-8">
                     {loggedUser && (
                         <SidebarUserCard
-                            avatar={loggedUser.avatar}
+                            avatar={loggedUser.avatar || null}
                             username={loggedUser.username}
                             name={loggedUser.name}
                         />
