@@ -21,6 +21,7 @@ type User = {
     username: string;
     name: string;
     email?: string;
+    phone?: string;
     avatar?: string | null;
     bio?: string;
     followed?: { userId: number }[];
@@ -33,6 +34,7 @@ type Users =
           username: string;
           name: string;
           email?: string;
+          phone?: string;
           avatar?: string | null;
           bio?: string;
           followed?: { userId: number }[];

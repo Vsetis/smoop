@@ -1,81 +1,157 @@
-import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useUser } from '@/utils/atom';
 
 import * as Tabs from '@radix-ui/react-tabs';
 import * as Switch from '@radix-ui/react-switch';
 
-import { IconArrowBack } from '@tabler/icons-react';
 import Avatar from '@/components/UI/Avatar';
+
+function InputButton({
+    title,
+    value,
+    type,
+}: {
+    title: string;
+    value: string;
+    type: 'username' | 'name' | 'email' | 'phone';
+}) {
+    const [disabled, setDisabled] = useState(true);
+    const [inputValue, setValue] = useState(value);
+    const [user, setUser] = useUser();
+
+    const Ref = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        !disabled && Ref.current?.focus();
+    }, [disabled]);
+
+    const handleClick = () => {
+        setDisabled(false);
+
+        if (disabled === false) {
+            console.log('saved');
+
+            if (user) {
+                const updatedUser = { ...user };
+                switch (type) {
+                    case 'username':
+                        updatedUser.username = inputValue;
+                        break;
+                    case 'name':
+                        updatedUser.name = inputValue.replace('@', '');
+                        break;
+                    case 'email':
+                        updatedUser.email = inputValue;
+                        break;
+                    case 'phone':
+                        break;
+                    default:
+                        break;
+                }
+
+                if (inputValue.length > 3) {
+                    setUser(updatedUser);
+                    setDisabled(true);
+                } else {
+                    alert(`${type} must have atleast 3 characters!`);
+                }
+            }
+        }
+    };
+
+    useEffect(() => {
+        const handleKeyPress = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' && !disabled) {
+                handleClick();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        return () => document.removeEventListener('keydown', handleKeyPress);
+    }, [disabled, handleClick]);
+
+    return (
+        <div className="flex justify-between items-center mb-6">
+            <div>
+                <p className="font-semibold text-sm">{title}</p>
+                <input
+                    ref={Ref}
+                    className="bg-transparent text-white focus:outline-none"
+                    value={inputValue}
+                    onChange={(e) => setValue(e.target.value)}
+                    disabled={disabled}
+                    type="text"
+                />
+            </div>
+            <button
+                onClick={handleClick}
+                className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white"
+            >
+                {disabled ? 'Edit' : 'Save'}
+            </button>
+        </div>
+    );
+}
 
 function SettingsProfileCard({
     username,
     name,
     avatar,
+    email,
+    phone,
 }: {
     username: string;
     name: string;
     avatar: string | null;
+    email?: string;
+    phone?: string;
 }) {
     return (
         <div className="rounded w-full bg-black border border-white/20 h-max">
             <div className="bg-gradient-to-r from-purple-700 via-blue-500 to-emerald-800 h-[100px] rounded-t"></div>
-            <div className="flex justify-between items-center gap-4 px-4">
-                <div className="flex items-center gap-4">
-                    <div className="bg-black p-[4px] translate-y-[-32px] rounded-full">
-                        <Avatar size="xl" avatar={avatar} username={username} />
+            <div className="px-4">
+                <div className="flex justify-between items-center gap-4 px-4">
+                    <div className="flex items-center gap-4">
+                        <div className="bg-black p-[4px] translate-y-[-32px] rounded-full">
+                            <Avatar
+                                size="xl"
+                                avatar={avatar}
+                                username={username}
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="text-lg xl:text-xl font-semibold">
+                                {username}
+                            </p>
+                            <p className="text-white/70 text-sm xl:text-base">
+                                @{name}
+                            </p>
+                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <p className="text-lg xl:text-xl font-semibold">
-                            {username}
-                        </p>
-                        <p className="text-white/70 text-sm xl:text-base">
-                            @{name}
-                        </p>
-                    </div>
+                    <button className="px-3 py-1 xl:px-4 bg-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600 text-sm xl:text-base">
+                        Edit profile
+                    </button>
                 </div>
-                <button className="px-3 py-1 xl:px-4 bg-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600 text-sm xl:text-base">
-                    Edit profile
-                </button>
             </div>
             <div className="border border-white/10 m-4 rounded p-4">
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <p className="font-semibold text-sm">username</p>
-                        <p>{username}</p>
-                    </div>
-                    <button className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white">
-                        Edit
-                    </button>
-                </div>
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <p className="font-semibold text-sm">name</p>
-                        <p>{name}</p>
-                    </div>
-                    <button className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white">
-                        Edit
-                    </button>
-                </div>
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <p className="font-semibold text-sm">email</p>
-                        <p>unset</p>
-                    </div>
-                    <button className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white">
-                        Edit
-                    </button>
-                </div>
-                <div className="flex justify-between items-center">
-                    <div>
-                        <p className="font-semibold text-sm">phone</p>
-                        <p>unset</p>
-                    </div>
-                    <button className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white">
-                        Edit
-                    </button>
-                </div>
+                <InputButton
+                    type="username"
+                    title="username"
+                    value={username}
+                />
+                <InputButton type="name" title="name" value={`@${name}`} />
+                <InputButton
+                    type="email"
+                    title="email"
+                    value={email || 'unset'}
+                />
+                <InputButton
+                    type="phone"
+                    title="phone"
+                    value={phone || 'unset'}
+                />
             </div>
         </div>
     );
@@ -85,10 +161,14 @@ function SettingsProfile({
     username,
     name,
     avatar,
+    email,
+    phone,
 }: {
     username: string;
     name: string;
     avatar: string | null;
+    email?: string;
+    phone?: string;
 }) {
     return (
         <>
@@ -97,12 +177,19 @@ function SettingsProfile({
                 username={username}
                 name={name}
                 avatar={avatar || null}
+                email={email}
+                phone={phone}
             />
             <div className="border-y border-white/20  py-8">
                 <h2 className="text-xl mb-4 font-semibold text-white/80">
                     Password
                 </h2>
-                <button className="px-6 py-2 text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white">
+                <button
+                    onClick={() =>
+                        alert('You can not change password as Guest!')
+                    }
+                    className="px-6 py-2 text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white"
+                >
                     Edit Password
                 </button>
             </div>
@@ -113,7 +200,12 @@ function SettingsProfile({
                 <p className="mb-4 text-white/80 text-sm">
                     You can not delete your account as Guest!
                 </p>
-                <button className="px-6 py-2 text-white/80 border border-red-600 rounded h-max font-semibold transition-all hover:bg-red-600/20 hover:text-white">
+                <button
+                    onClick={() =>
+                        alert('You can not remove an account as Guest!')
+                    }
+                    className="px-6 py-2 text-white/80 border border-red-600 rounded h-max font-semibold transition-all hover:bg-red-600/20 hover:text-white"
+                >
                     Remove Account
                 </button>
             </div>
@@ -242,6 +334,8 @@ export default function SettingsPage() {
                             username={user!.username}
                             name={user!.name}
                             avatar={user!.avatar || null}
+                            email={user!.email}
+                            phone={user!.phone}
                         />
                     </Tabs.Content>
                     <Tabs.Content
