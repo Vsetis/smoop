@@ -53,7 +53,10 @@ export default function Home() {
     return (
         <UserProfile user={user!} posts={postCount.length || 0}>
             <div className="border border-white/20 rounded mb-4 p-4">
-                <CreatePost avatar={user!.avatar} username={user!.username} />
+                <CreatePost
+                    avatar={user?.avatar || null}
+                    username={user!.username}
+                />
             </div>
             <MainSection title="Home">
                 <div>

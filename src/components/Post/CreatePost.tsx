@@ -26,12 +26,12 @@ export default function CreatePost({
                 likes: 0,
             };
             setPost([...post, newPost]);
+            setValue('');
         }
     };
 
     return (
         <>
-            {' '}
             <button
                 disabled={postValue === ''}
                 onClick={() => createPost()}
@@ -46,7 +46,7 @@ export default function CreatePost({
             <div className="flex gap-8 ">
                 <Avatar
                     size="md"
-                    avatar={user!.avatar}
+                    avatar={user?.avatar || null}
                     username={user!.username}
                 />
                 <textarea

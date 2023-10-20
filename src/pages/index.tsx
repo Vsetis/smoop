@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useUser } from '@/utils/atom';
+import { users } from '@/mock/user';
 
 export default function Home() {
     const [user, setUser] = useUser();
@@ -8,6 +9,8 @@ export default function Home() {
     if (!!user) {
         push('/home');
     }
+
+    const guest = users.find((u) => u.username === 'guest');
 
     return (
         <div className="h-screen container mx-auto flex flex-col justify-center items-center ">
@@ -26,18 +29,7 @@ export default function Home() {
                     Social network app, click the button below to view demo.
                 </p>
                 <button
-                    onClick={() =>
-                        setUser({
-                            id: 1,
-                            username: 'guest',
-                            name: 'guest',
-                            bio: 'amazing bio',
-                            email: 'guest@email.cz',
-                            avatar: null,
-                            followed: [{ userId: 5 }, { userId: 3 }],
-                            following: [{ userId: 2 }],
-                        })
-                    }
+                    onClick={() => (guest ? setUser(guest) : setUser(null))}
                     className="text-white/80 font-semibold bg-purple-800 py-2 px-6 rounded transition-all hover:bg-purple-700"
                 >
                     Continue

@@ -21,7 +21,7 @@ type User = {
     username: string;
     name: string;
     email?: string;
-    avatar: string | null;
+    avatar?: string | null;
     bio?: string;
     followed?: { userId: number }[];
     following?: { userId: number }[];
