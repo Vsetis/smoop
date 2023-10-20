@@ -2,10 +2,11 @@ import CreatePost from '@/components/Post/CreatePost';
 import PostCard from '@/components/Post/PostCard';
 import MainSection from '@/components/User/MainSection';
 import UserProfile from '@/components/UserProfile';
+import { posts } from '@/mock/posts';
 
 import { usePosts, useUser } from '@/utils/atom';
 
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
 type State = {
     postPerPage: number;
@@ -43,33 +44,35 @@ export default function Home() {
         error: null,
     });
 
-    const postQuery = post.filter((p) => p.userId !== user!.id);
+    const postCount = post.filter((p) => p.userId === user?.id);
 
-    const sortedPost = [...postQuery]
-        .sort((a, b) => b.likes - a.likes)
+    const postQuery = post
+        .filter((p) => p.userId !== user!.id)
         .slice(0, state.postPerPage);
 
     return (
-        <UserProfile user={user!}>
-            <div className="border border-white/20 rounded mb-4">
+        <UserProfile user={user!} posts={postCount.length || 0}>
+            <div className="border border-white/20 rounded mb-4 p-4">
                 <CreatePost avatar={user!.avatar} username={user!.username} />
             </div>
             <MainSection title="Home">
                 <div>
-                    {sortedPost.map((post) => (
-                        <PostCard
-                            key={post.id}
-                            id={post.id}
-                            userId={post.userId}
-                            content={post.content}
-                            isLiked={post.liked}
-                            postRouter={true}
-                            count={{
-                                likes: post.likes,
-                                comments: post.comments?.length || 0,
-                            }}
-                        />
-                    ))}
+                    {postQuery
+                        .map((post) => (
+                            <PostCard
+                                key={post.id}
+                                id={post.id}
+                                userId={post.userId}
+                                content={post.content}
+                                isLiked={post.liked}
+                                postRouter={true}
+                                count={{
+                                    likes: post.likes,
+                                    comments: post.comments?.length || 0,
+                                }}
+                            />
+                        ))
+                        .reverse()}
                     {state.error ? (
                         <p>There is nothing new!</p>
                     ) : (

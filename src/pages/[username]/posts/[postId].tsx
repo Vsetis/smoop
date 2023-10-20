@@ -23,6 +23,7 @@ export default function PostPage() {
     const postFound = post.find(
         (p) => p!.id.toString() === postId && userFound!.id === p!.userId
     );
+    const postLength = post.filter((p) => p.userId === userFound!.id);
 
     return user ? (
         <UserProfile
@@ -32,6 +33,7 @@ export default function PostPage() {
                 bio: userFound?.bio,
                 avatar: userFound!.avatar || null,
             }}
+            posts={postLength.length || 0}
         >
             <MainSection title="Post">
                 <div className=" flex flex-col gap-4">

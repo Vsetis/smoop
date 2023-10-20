@@ -32,7 +32,10 @@ export default function Home() {
                             username: 'guest',
                             name: 'guest',
                             bio: 'amazing bio',
+                            email: 'guest@email.cz',
                             avatar: null,
+                            followed: [{ userId: 5 }, { userId: 3 }],
+                            following: [{ userId: 2 }],
                         })
                     }
                     className="text-white/80 font-semibold bg-purple-800 py-2 px-6 rounded transition-all hover:bg-purple-700"

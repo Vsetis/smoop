@@ -4,13 +4,17 @@ import Sugestion from './User/Sugestion';
 export default function UserProfile({
     user,
     children,
+    posts,
 }: {
     user: {
         username: string;
         avatar?: string | null;
         name: string;
         bio?: string;
+        following?: { userId: number }[];
+        followed?: { userId: number }[];
     };
+    posts: number;
     children: React.ReactNode;
 }) {
     return (
@@ -22,6 +26,9 @@ export default function UserProfile({
                         name={user!.name}
                         bio={user?.bio}
                         avatar={user?.avatar || null}
+                        posts={posts}
+                        followed={user.followed}
+                        following={user.following}
                     />
                 )}
             </div>

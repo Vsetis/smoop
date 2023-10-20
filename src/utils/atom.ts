@@ -23,6 +23,8 @@ type User = {
     email?: string;
     avatar: string | null;
     bio?: string;
+    followed?: { userId: number }[];
+    following?: { userId: number }[];
 } | null;
 
 type Notification = {
