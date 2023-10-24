@@ -1,5 +1,6 @@
 import CreatePost from '@/components/Post/CreatePost';
 import PostCard from '@/components/Post/PostCard';
+import Button from '@/components/UI/Button';
 import MainSection from '@/components/User/MainSection';
 import UserProfile from '@/components/UserProfile';
 
@@ -47,6 +48,7 @@ export default function Home() {
 
     const postQuery = post
         .filter((p) => p.userId !== user!.id)
+        .reverse()
         .slice(0, state.postPerPage);
 
     return (
@@ -56,31 +58,32 @@ export default function Home() {
             </div>
             <MainSection title="Home">
                 <div>
-                    {postQuery
-                        .map((post) => (
-                            <PostCard
-                                key={post.id}
-                                id={post.id}
-                                userId={post.userId}
-                                content={post.content}
-                                isLiked={post.liked}
-                                postRouter={true}
-                                count={{
-                                    likes: post.likes,
-                                    comments: post.comments?.length || 0,
-                                }}
-                            />
-                        ))
-                        .reverse()}
+                    {postQuery.map((post) => (
+                        <PostCard
+                            key={post.id}
+                            id={post.id}
+                            userId={post.userId}
+                            content={post.content}
+                            isLiked={post.liked}
+                            postRouter={true}
+                            count={{
+                                likes: post.likes,
+                                comments: post.comments?.length || 0,
+                            }}
+                        />
+                    ))}
                     {state.error ? (
                         <p>There is nothing new!</p>
                     ) : (
-                        <button
-                            className="w-full font-semibold py-2 transition-all hover:bg-white/5"
-                            onClick={() => dispatch({ type: 'load' })}
-                        >
-                            More...
-                        </button>
+                        <>
+                            <Button
+                                transparent
+                                className="!w-full hover:!bg-white/5"
+                                onClick={() => dispatch({ type: 'load' })}
+                            >
+                                More...
+                            </Button>
+                        </>
                     )}
                 </div>
             </MainSection>
