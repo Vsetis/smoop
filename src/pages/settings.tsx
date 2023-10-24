@@ -6,6 +6,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import * as Switch from '@radix-ui/react-switch';
 
 import Avatar from '@/components/UI/Avatar';
+import Button from '@/components/UI/Button';
 
 function InputButton({
     title,
@@ -24,6 +25,7 @@ function InputButton({
 
     useEffect(() => {
         !disabled && Ref.current?.focus();
+        console.log(Ref.current);
     }, [disabled]);
 
     const handleClick = () => {
@@ -77,6 +79,7 @@ function InputButton({
             <div>
                 <p className="font-semibold text-sm">{title}</p>
                 <input
+                    id={type}
                     ref={Ref}
                     className="bg-transparent text-white focus:outline-none"
                     value={inputValue}
@@ -85,12 +88,9 @@ function InputButton({
                     type="text"
                 />
             </div>
-            <button
-                onClick={handleClick}
-                className="px-4 py-1 md:px-6 text-sm text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white"
-            >
+            <Button size="xs" outline onClick={handleClick}>
                 {disabled ? 'Edit' : 'Save'}
-            </button>
+            </Button>
         </div>
     );
 }
@@ -130,9 +130,7 @@ function SettingsProfileCard({
                             </p>
                         </div>
                     </div>
-                    <button className="px-3 py-1 xl:px-4 bg-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600 text-sm xl:text-base">
-                        Edit profile
-                    </button>
+                    <Button size="sm">Edit profile</Button>
                 </div>
             </div>
             <div className="border border-white/10 m-4 rounded p-4">

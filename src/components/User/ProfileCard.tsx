@@ -72,9 +72,9 @@ export default function ProfileCard({
                         open={followedOpen}
                         setOpen={setFollowedOpen}
                         triggerButton={
-                            <p className="font-semibold text-lg">
+                            <button className="font-semibold text-lg">
                                 {followed?.length || 0}
-                            </p>
+                            </button>
                         }
                     >
                         <div className="flex flex-col gap-4 ">
@@ -109,9 +109,9 @@ export default function ProfileCard({
                         open={followingOpen}
                         setOpen={setFollowingOpen}
                         triggerButton={
-                            <p className="font-semibold text-lg">
+                            <button className="font-semibold text-lg">
                                 {following?.length || 0}
-                            </p>
+                            </button>
                         }
                     >
                         <div className="flex flex-col gap-4">

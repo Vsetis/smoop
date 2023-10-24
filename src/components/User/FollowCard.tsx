@@ -1,6 +1,7 @@
 import { useUser, useUsers } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 import Link from 'next/link';
+import Button from '../UI/Button';
 
 export default function FollowCard({
     userId,
@@ -77,12 +78,15 @@ export default function FollowCard({
                     </div>
                 </div>
                 {user!.username !== username && (
-                    <button
-                        onClick={() => handleFollow(userId)}
-                        className="px-4 py-1 border border-purple-700 text-sm font-semibold rounded transition-all hover:bg-purple-700/20 text-white/80 hover:text-white"
-                    >
-                        {following ? 'Unfollow' : 'Follow'}
-                    </button>
+                    <>
+                        <Button
+                            outline
+                            onClick={() => handleFollow(userId)}
+                            size="xs"
+                        >
+                            {following ? 'Unfollow' : 'Follow'}
+                        </Button>
+                    </>
                 )}
             </div>
         </>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { usePosts, useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
+import Button from '../UI/Button';
 
 export default function CreateCommentCard({
     username,
@@ -52,7 +53,7 @@ export default function CreateCommentCard({
             </p>
             <form>
                 <div className="relative flex flex-col">
-                    <div className="flex gap-4 ">
+                    <div className="flex gap-4 items-center">
                         <Avatar
                             size="md"
                             avatar={user?.avatar || null}
@@ -67,29 +68,31 @@ export default function CreateCommentCard({
                             placeholder="Reply"
                             maxLength={280}
                         ></textarea>
-                        <button
+                        <Button
                             disabled
+                            size="sm"
                             className={
                                 isReplying
                                     ? 'hidden'
-                                    : 'bg-purple-900 text-white/50 font-semibold text-sm px-2 py-1 md:px-4 md:py-2  h-max w-max rounded'
+                                    : '!bg-purple-900 !text-white/50'
                             }
                         >
                             Reply
-                        </button>
+                        </Button>
                     </div>
-                    <div className="flex justify-between">
-                        <button
+                    <div className="flex justify-end">
+                        <Button
+                            size="sm"
                             onClick={() => createComment(id)}
                             disabled={value === ''}
-                            className={`${isReplying ? '' : 'hidden'} ${
+                            className={`${
                                 value === ''
-                                    ? 'bg-purple-900 text-white/50'
-                                    : 'hover:bg-purple-600'
-                            } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto`}
+                                    ? '!bg-purple-900 !text-white/50'
+                                    : ''
+                            } ${isReplying ? '' : 'hidden'}`}
                         >
                             Reply
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </form>

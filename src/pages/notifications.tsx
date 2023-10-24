@@ -1,4 +1,5 @@
 import Avatar from '@/components/UI/Avatar';
+import Button from '@/components/UI/Button';
 import { users } from '@/mock/user';
 import { useNotification } from '@/utils/atom';
 import { useRouter } from 'next/router';
@@ -45,9 +46,9 @@ function NotificationCard({
                 </p>
             </div>
             {follow && (
-                <button className="px-4 py-1 border border-purple-800 rounded text-white/80 font-semibold transition-all hover:bg-purple-700/20 hover:text-white">
+                <Button size="sm" outline>
                     Follow
-                </button>
+                </Button>
             )}
         </div>
     );

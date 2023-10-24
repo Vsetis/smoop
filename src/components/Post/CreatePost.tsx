@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 import { usePostAction } from '@/hooks/usePostAction';
+import Button from '../UI/Button';
 
 export default function CreatePost() {
     const [user, setUser] = useUser();
@@ -11,17 +12,16 @@ export default function CreatePost() {
 
     return (
         <form>
-            <button
-                disabled={postValue === ''}
+            <Button
                 onClick={() => createPost(postValue, setValue)}
+                disabled={postValue === ''}
+                size="sm"
                 className={`${
-                    postValue === ''
-                        ? 'bg-purple-900 text-white/50'
-                        : 'hover:bg-purple-600'
-                } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex absolute right-4 top-4 sm:hidden`}
+                    postValue === '' && '!bg-purple-900 !text-white/50 '
+                } ml-auto absolute top-4 right-4 sm:hidden`}
             >
                 Post
-            </button>
+            </Button>
             <div className="flex gap-8 ">
                 <Avatar
                     size="md"
@@ -37,17 +37,16 @@ export default function CreatePost() {
                 ></textarea>
             </div>
             <div className="border-t border-white/20 pt-4 hidden sm:flex">
-                <button
-                    disabled={postValue === ''}
+                <Button
                     onClick={() => createPost(postValue, setValue)}
+                    disabled={postValue === ''}
+                    size="sm"
                     className={`${
-                        postValue === ''
-                            ? 'bg-purple-900 text-white/50'
-                            : 'hover:bg-purple-600'
-                    } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex`}
+                        postValue === '' && '!bg-purple-900 !text-white/50 '
+                    } ml-auto`}
                 >
                     Post
-                </button>
+                </Button>
             </div>
         </form>
     );
