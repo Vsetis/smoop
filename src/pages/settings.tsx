@@ -7,80 +7,79 @@ import * as Switch from '@radix-ui/react-switch';
 
 import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
+import { useKey } from '@/hooks/useKey';
 
 function InputButton({
     title,
     value,
     type,
+    current,
+    onClick,
 }: {
     title: string;
     value: string;
+    current: string;
     type: 'username' | 'name' | 'email' | 'phone';
+    onClick: () => void;
 }) {
-    const [disabled, setDisabled] = useState(true);
     const [inputValue, setValue] = useState(value);
     const [user, setUser] = useUser();
-
-    const Ref = useRef<HTMLInputElement>(null);
+    const [disabled, setDisabled] = useState(true);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [isCurrent, setCurrent] = useState('');
 
     useEffect(() => {
-        !disabled && Ref.current?.focus();
-        console.log(Ref.current);
-    }, [disabled]);
+        setCurrent(current);
+        !disabled && inputRef.current?.focus();
+    }, [current, disabled]);
+
+    useEffect(() => {
+        if (type === isCurrent) {
+            setDisabled(false);
+        } else {
+            setDisabled(true);
+            setValue(value);
+        }
+    }, [isCurrent]);
 
     const handleClick = () => {
-        setDisabled(false);
+        onClick();
 
-        if (disabled === false) {
-            console.log('saved');
+        if (user) {
+            const updatedUser = { ...user };
+            switch (type) {
+                case 'username':
+                    updatedUser.username = inputValue;
+                    break;
+                case 'name':
+                    updatedUser.name = inputValue.replace('@', '');
+                    break;
+                case 'email':
+                    updatedUser.email = inputValue;
+                    break;
+                case 'phone':
+                    break;
+                default:
+                    break;
+            }
 
-            if (user) {
-                const updatedUser = { ...user };
-                switch (type) {
-                    case 'username':
-                        updatedUser.username = inputValue;
-                        break;
-                    case 'name':
-                        updatedUser.name = inputValue.replace('@', '');
-                        break;
-                    case 'email':
-                        updatedUser.email = inputValue;
-                        break;
-                    case 'phone':
-                        break;
-                    default:
-                        break;
-                }
-
-                if (inputValue.length > 3) {
-                    setUser(updatedUser);
-                    setDisabled(true);
-                } else {
-                    alert(`${type} must have atleast 3 characters!`);
-                }
+            if (inputValue.length > 3) {
+                setUser(updatedUser);
+                setDisabled(true);
+            } else {
+                alert(`${type} must have atleast 3 characters!`);
             }
         }
     };
 
-    useEffect(() => {
-        const handleKeyPress = (e: KeyboardEvent) => {
-            if (e.key === 'Enter' && !disabled) {
-                handleClick();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyPress);
-
-        return () => document.removeEventListener('keydown', handleKeyPress);
-    }, [disabled, handleClick]);
+    useKey('Enter', handleClick, !disabled);
 
     return (
         <div className="flex justify-between items-center mb-6">
             <div>
                 <p className="font-semibold text-sm">{title}</p>
                 <input
-                    id={type}
-                    ref={Ref}
+                    ref={inputRef}
                     className="bg-transparent text-white focus:outline-none"
                     value={inputValue}
                     onChange={(e) => setValue(e.target.value)}
@@ -108,6 +107,7 @@ function SettingsProfileCard({
     email?: string;
     phone?: string;
 }) {
+    const [current, setCurrent] = useState('');
     return (
         <div className="rounded w-full bg-black border border-white/20 h-max">
             <div className="bg-gradient-to-r from-purple-700 via-blue-500 to-emerald-800 h-[100px] rounded-t"></div>
@@ -135,20 +135,46 @@ function SettingsProfileCard({
             </div>
             <div className="border border-white/10 m-4 rounded p-4">
                 <InputButton
+                    onClick={() =>
+                        current !== 'username'
+                            ? setCurrent('username')
+                            : setCurrent('')
+                    }
                     type="username"
                     title="username"
                     value={username}
+                    current={current}
                 />
-                <InputButton type="name" title="name" value={`@${name}`} />
                 <InputButton
+                    onClick={() =>
+                        current !== 'name' ? setCurrent('name') : setCurrent('')
+                    }
+                    type="name"
+                    title="name"
+                    value={`@${name}`}
+                    current={current}
+                />
+                <InputButton
+                    onClick={() =>
+                        current !== 'email'
+                            ? setCurrent('email')
+                            : setCurrent('')
+                    }
                     type="email"
                     title="email"
                     value={email || 'unset'}
+                    current={current}
                 />
                 <InputButton
+                    onClick={() =>
+                        current !== 'phone'
+                            ? setCurrent('phone')
+                            : setCurrent('')
+                    }
                     type="phone"
                     title="phone"
                     value={phone || 'unset'}
+                    current={current}
                 />
             </div>
         </div>
