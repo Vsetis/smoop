@@ -17,6 +17,7 @@ export default function Modal({
     return (
         <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger
+                asChild
                 onClick={(e) => e.stopPropagation()}
                 className="w-max"
             >

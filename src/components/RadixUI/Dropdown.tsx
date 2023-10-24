@@ -9,8 +9,11 @@ export default function Dropdown({
 }) {
     return (
         <>
-            <DropdownMenu.Root>
-                <DropdownMenu.Trigger asChild>
+            <DropdownMenu.Root modal={false}>
+                <DropdownMenu.Trigger
+                    onClick={(e) => e.stopPropagation()}
+                    asChild
+                >
                     {triggerButton}
                 </DropdownMenu.Trigger>
 
