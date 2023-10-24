@@ -208,14 +208,15 @@ function SettingsProfile({
                 <h2 className="text-xl mb-4 font-semibold text-white/80">
                     Password
                 </h2>
-                <button
+                <Button
+                    size="md"
+                    outline
                     onClick={() =>
                         alert('You can not change password as Guest!')
                     }
-                    className="px-6 py-2 text-white/80 border border-purple-700 rounded h-max font-semibold transition-all hover:bg-purple-600/20 hover:text-white"
                 >
                     Edit Password
-                </button>
+                </Button>
             </div>
             <div>
                 <p className="text-xl font-semibold text-white/80 mb-2">
@@ -224,14 +225,16 @@ function SettingsProfile({
                 <p className="mb-4 text-white/80 text-sm">
                     You can not delete your account as Guest!
                 </p>
-                <button
+                <Button
                     onClick={() =>
                         alert('You can not remove an account as Guest!')
                     }
-                    className="px-6 py-2 text-white/80 border border-red-600 rounded h-max font-semibold transition-all hover:bg-red-600/20 hover:text-white"
+                    size="md"
+                    outline
+                    className="!border-red-600 hover:!bg-red-600/20"
                 >
                     Remove Account
-                </button>
+                </Button>
             </div>
         </>
     );
