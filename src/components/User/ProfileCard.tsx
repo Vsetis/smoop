@@ -41,7 +41,6 @@ export default function ProfileCard({
 
     const showNames = users.filter((u) => myFollowingList?.includes(u.id));
 
-    console.log(showNames.map((u) => u.username));
     return (
         <div className="w-full flex flex-col items-center justify-between h-max p-4 border border-white/20 rounded min-h-[250px]">
             {user!.username === username && (
