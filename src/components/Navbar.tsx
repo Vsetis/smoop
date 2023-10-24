@@ -5,6 +5,7 @@ import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
+import Button from './UI/Button';
 
 interface User {
     username: string;
@@ -156,7 +157,8 @@ export default function Navbar() {
                                                             );
                                                         }}
                                                     >
-                                                        <button
+                                                        <Button
+                                                            transparent
                                                             onClick={() =>
                                                                 handleRemove(
                                                                     u.username
@@ -164,7 +166,7 @@ export default function Navbar() {
                                                             }
                                                         >
                                                             <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
-                                                        </button>
+                                                        </Button>
                                                     </SearchCard>
                                                 </div>
                                             ))}
