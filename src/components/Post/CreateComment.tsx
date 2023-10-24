@@ -63,31 +63,33 @@ export default function CreateComment({
                     </p>
                 </div>
             </div>
-            <div className="flex gap-4">
-                <Avatar
-                    size="md"
-                    avatar={user?.avatar || null}
-                    username={user!.username}
-                />
-                <textarea
-                    className="w-full flex bg-transparent min-h-[80px] overflow-y-hidden resize-none text-lg  focus:outline-none  mb-8"
-                    onChange={(e) => setValue(e.currentTarget.value)}
-                    value={value}
-                    placeholder="Post your reply"
-                    maxLength={280}
-                ></textarea>
-            </div>
-            <button
-                disabled={value === ''}
-                onClick={() => commentCreate(post.id)}
-                className={`${
-                    value === ''
-                        ? 'bg-purple-900 text-white/50'
-                        : 'hover:bg-purple-600'
-                } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex`}
-            >
-                Comment
-            </button>
+            <form>
+                <div className="flex gap-4">
+                    <Avatar
+                        size="md"
+                        avatar={user?.avatar || null}
+                        username={user!.username}
+                    />
+                    <textarea
+                        className="w-full flex bg-transparent min-h-[80px] overflow-y-hidden resize-none text-lg  focus:outline-none  mb-8"
+                        onChange={(e) => setValue(e.currentTarget.value)}
+                        value={value}
+                        placeholder="Post your reply"
+                        maxLength={280}
+                    ></textarea>
+                </div>
+                <button
+                    disabled={value === ''}
+                    onClick={() => commentCreate(post.id)}
+                    className={`${
+                        value === ''
+                            ? 'bg-purple-900 text-white/50'
+                            : 'hover:bg-purple-600'
+                    } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex`}
+                >
+                    Comment
+                </button>
+            </form>
         </>
     );
 }

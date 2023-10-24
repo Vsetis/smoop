@@ -23,7 +23,7 @@ export default function CreatePost() {
     };
 
     return (
-        <>
+        <form>
             <button
                 disabled={postValue === ''}
                 onClick={() => createPost()}
@@ -62,6 +62,6 @@ export default function CreatePost() {
                     Post
                 </button>
             </div>
-        </>
+        </form>
     );
 }

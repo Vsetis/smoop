@@ -50,47 +50,49 @@ export default function CreateCommentCard({
                 Replying to {''}
                 <span className="text-purple-600">@{username}</span>
             </p>
-            <div className="relative flex flex-col">
-                <div className="flex gap-4 ">
-                    <Avatar
-                        size="md"
-                        avatar={user?.avatar || null}
-                        username={user!.username}
-                    />
+            <form>
+                <div className="relative flex flex-col">
+                    <div className="flex gap-4 ">
+                        <Avatar
+                            size="md"
+                            avatar={user?.avatar || null}
+                            username={user!.username}
+                        />
 
-                    <textarea
-                        onClick={() => setRyplying(true)}
-                        onChange={(e) => setValue(e.target.value)}
-                        value={value}
-                        className="text-sm md:text-base w-full flex bg-transparent min-h-[50px] overflow-hidden resize-none focus:outline-none"
-                        placeholder="Reply"
-                        maxLength={280}
-                    ></textarea>
-                    <button
-                        disabled
-                        className={
-                            isReplying
-                                ? 'hidden'
-                                : 'bg-purple-900 text-white/50 font-semibold text-sm px-2 py-1 md:px-4 md:py-2  h-max w-max rounded'
-                        }
-                    >
-                        Reply
-                    </button>
+                        <textarea
+                            onClick={() => setRyplying(true)}
+                            onChange={(e) => setValue(e.target.value)}
+                            value={value}
+                            className="text-sm md:text-base w-full flex bg-transparent min-h-[50px] overflow-hidden resize-none focus:outline-none"
+                            placeholder="Reply"
+                            maxLength={280}
+                        ></textarea>
+                        <button
+                            disabled
+                            className={
+                                isReplying
+                                    ? 'hidden'
+                                    : 'bg-purple-900 text-white/50 font-semibold text-sm px-2 py-1 md:px-4 md:py-2  h-max w-max rounded'
+                            }
+                        >
+                            Reply
+                        </button>
+                    </div>
+                    <div className="flex justify-between">
+                        <button
+                            onClick={() => createComment(id)}
+                            disabled={value === ''}
+                            className={`${isReplying ? '' : 'hidden'} ${
+                                value === ''
+                                    ? 'bg-purple-900 text-white/50'
+                                    : 'hover:bg-purple-600'
+                            } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto`}
+                        >
+                            Reply
+                        </button>
+                    </div>
                 </div>
-                <div className="flex justify-between">
-                    <button
-                        onClick={() => createComment(id)}
-                        disabled={value === ''}
-                        className={`${isReplying ? '' : 'hidden'} ${
-                            value === ''
-                                ? 'bg-purple-900 text-white/50'
-                                : 'hover:bg-purple-600'
-                        } w-max bg-purple-700 font-semibold text-sm px-2 py-1 md:px-4 md:py-2 transition-all  h-max rounded ml-auto`}
-                    >
-                        Reply
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
     );
 }
