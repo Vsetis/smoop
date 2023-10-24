@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-
 import { usePosts, useUser, useUsers } from '@/utils/atom';
 
 import PostCard from '@/components/Post/PostCard';
@@ -46,18 +45,20 @@ export default function PostPage() {
                                     id={postFound.id}
                                     username={userFound!.username}
                                 />
-                                {postFound?.comments?.map((comment) => (
-                                    <CommentCard
-                                        key={comment.id}
-                                        authorId={comment.userId}
-                                        postId={postFound.id}
-                                        postAuthorId={postFound.userId}
-                                        id={comment.id}
-                                        content={comment.content}
-                                        isLiked={comment.liked}
-                                        likes={comment.likes}
-                                    />
-                                ))}
+                                {postFound?.comments
+                                    ?.map((comment) => (
+                                        <CommentCard
+                                            key={comment.id}
+                                            authorId={comment.userId}
+                                            postId={postFound.id}
+                                            postAuthorId={postFound.userId}
+                                            id={comment.id}
+                                            content={comment.content}
+                                            isLiked={comment.liked}
+                                            likes={comment.likes}
+                                        />
+                                    ))
+                                    .reverse()}
                             </>
                         </PostCard>
                     ) : (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { usePosts, useUser } from '@/utils/atom';
+import { useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
+import { usePostAction } from '@/hooks/usePostAction';
 
 export default function CreateComment({
     replyingTo,
@@ -9,32 +10,10 @@ export default function CreateComment({
     replyingTo: { username: string; name: string };
     post: { id: number; content: string };
 }) {
-    const [posts, setPosts] = usePosts();
     const [user, setUser] = useUser();
 
     const [value, setValue] = useState('');
-
-    const commentCreate = (postId: number) => {
-        const helper = posts.find((p) => p.id === postId);
-
-        const newComment = {
-            id: helper?.comments ? helper?.comments.length + 1 : 1,
-            userId: user!.id,
-            content: value,
-            liked: false,
-            likes: 0,
-        };
-
-        const postFound = posts.find((post) => post.id === postId);
-
-        if (postFound) {
-            postFound.comments = postFound.comments || [];
-            postFound.comments.push(newComment);
-        }
-
-        setPosts([...posts]);
-        setValue('');
-    };
+    const { createComment } = usePostAction();
 
     return (
         <>
@@ -80,7 +59,7 @@ export default function CreateComment({
                 </div>
                 <button
                     disabled={value === ''}
-                    onClick={() => commentCreate(post.id)}
+                    onClick={() => createComment(post.id, value, setValue)}
                     className={`${
                         value === ''
                             ? 'bg-purple-900 text-white/50'

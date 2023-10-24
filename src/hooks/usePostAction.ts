@@ -4,6 +4,50 @@ export const usePostAction = () => {
     const [posts, setPosts] = usePosts();
     const [user, setUser] = useUser();
 
+    const createPost = (
+        postValue: string,
+        setValue: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        if (user && postValue !== '') {
+            const newPost = {
+                id: posts.length + 1,
+                userId: user.id,
+                content: postValue,
+                liked: false,
+                likes: 0,
+            };
+
+            setPosts([...posts, newPost]);
+            setValue('');
+        }
+    };
+
+    const createComment = (
+        postId: number,
+        value: string,
+        setValue: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        const helper = posts.find((p) => p.id === postId);
+
+        const newComment = {
+            id: helper?.comments ? helper?.comments.length + 1 : 1,
+            userId: user!.id,
+            content: value,
+            liked: false,
+            likes: 0,
+        };
+
+        const postFound = posts.find((post) => post.id === postId);
+
+        if (postFound) {
+            postFound.comments = postFound.comments || [];
+            postFound.comments.push(newComment);
+            setPosts([...posts]);
+
+            setValue('');
+        }
+    };
+
     const likePost = (
         liked: boolean,
         setLiked: React.Dispatch<React.SetStateAction<boolean>>,
@@ -136,6 +180,8 @@ export const usePostAction = () => {
     };
 
     return {
+        createPost,
+        createComment,
         likePost,
         likeComment,
         deletePost,

@@ -1,32 +1,19 @@
 import { useState } from 'react';
-import { usePosts, useUser } from '@/utils/atom';
+import { useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
+import { usePostAction } from '@/hooks/usePostAction';
 
 export default function CreatePost() {
-    const [post, setPost] = usePosts();
     const [user, setUser] = useUser();
 
     const [postValue, setValue] = useState('');
-
-    const createPost = () => {
-        if (user && postValue !== '') {
-            const newPost = {
-                id: post.length + 1,
-                userId: user.id,
-                content: postValue,
-                liked: false,
-                likes: 0,
-            };
-            setPost([...post, newPost]);
-            setValue('');
-        }
-    };
+    const { createPost } = usePostAction();
 
     return (
         <form>
             <button
                 disabled={postValue === ''}
-                onClick={() => createPost()}
+                onClick={() => createPost(postValue, setValue)}
                 className={`${
                     postValue === ''
                         ? 'bg-purple-900 text-white/50'
@@ -52,7 +39,7 @@ export default function CreatePost() {
             <div className="border-t border-white/20 pt-4 hidden sm:flex">
                 <button
                     disabled={postValue === ''}
-                    onClick={() => createPost()}
+                    onClick={() => createPost(postValue, setValue)}
                     className={`${
                         postValue === ''
                             ? 'bg-purple-900 text-white/50'
