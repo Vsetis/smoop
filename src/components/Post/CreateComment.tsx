@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 import { usePostAction } from '@/hooks/usePostAction';
+import Button from '../UI/Button';
 
 export default function CreateComment({
     replyingTo,
@@ -57,17 +58,18 @@ export default function CreateComment({
                         maxLength={280}
                     ></textarea>
                 </div>
-                <button
-                    disabled={value === ''}
-                    onClick={() => createComment(post.id, value, setValue)}
+                <Button
+                    size="sm"
                     className={`${
                         value === ''
-                            ? 'bg-purple-900 text-white/50'
-                            : 'hover:bg-purple-600'
-                    } bg-purple-700 px-4 py-1 font-semibold rounded transition-all  ml-auto flex`}
+                            ? 'bg-purple-900 hover:!bg-purple-900 !text-white/50'
+                            : ''
+                    } flex ml-auto`}
+                    disabled={value === ''}
+                    onClick={() => createComment(post.id, value, setValue)}
                 >
                     Comment
-                </button>
+                </Button>
             </form>
         </>
     );

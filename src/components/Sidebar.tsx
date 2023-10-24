@@ -15,6 +15,8 @@ import { useNotification, useUser } from '@/utils/atom';
 
 import CreatePost from './Post/CreatePost';
 import Modal from './RadixUI/Modal';
+import Button from './UI/Button';
+import Tag from './UI/Tag';
 
 const links = [
     { label: 'Home', target: '/home', icon: IconHome2 },
@@ -56,21 +58,16 @@ function SidebarUserCard({
                         <p className="text-sm text-white/60">@{name}</p>
                     </div>
                 </div>
-                <button
-                    className="relative py-1 hidden 2xl:flex"
+                <Button
                     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}
                     onClick={() => setUser(null)}
+                    transparent
+                    className="relative hidden 2xl:flex"
                 >
                     <IconLogout2 className="text-red-500/70" />
-                    <p
-                        className={`${
-                            hover ? 'flex' : 'hidden'
-                        } absolute left-0 top-[2px] px-2 py-1 bg-zinc-800  rounded font-semibold text-sm translate-x-[32px]`}
-                    >
-                        Logout
-                    </p>
-                </button>
+                    <Tag hover={hover}>Logout</Tag>
+                </Button>
             </div>
         </>
     );
@@ -120,7 +117,7 @@ function SidebarLink({
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
-    const [loggedUser, setUser] = useUser();
+    const [user, setUser] = useUser();
 
     return (
         <div className="h-screen border-r border-white/20 top-0 left-0 2xl:min-w-[300px] pb-4 hidden sm:flex flex-col justify-between sticky z-50 bg-black">
@@ -138,7 +135,7 @@ export default function Sidebar() {
                             key={link.label}
                             label={link.label}
                             target={link.target}
-                            username={loggedUser!.username}
+                            username={user!.username}
                             icon={
                                 <link.icon className="w-8 h-8 text-purple-500" />
                             }
@@ -152,23 +149,23 @@ export default function Sidebar() {
                         open={open}
                         setOpen={setOpen}
                         triggerButton={
-                            <div className="h-max bg-purple-800 2xl:w-64 text-white/80 hover:text-white font-semibold rounded mx-auto transition-all hover:bg-purple-700 p-2 2xl:py-2">
+                            <button className="h-max bg-purple-800 2xl:w-64 text-white/80 hover:text-white font-semibold rounded mx-auto transition-all hover:bg-purple-700 p-2 2xl:py-2">
                                 <span className="hidden 2xl:flex justify-center">
                                     New Post
                                 </span>
                                 <IconPencilPlus className="2xl:hidden w-8 h-8" />
-                            </div>
+                            </button>
                         }
                     >
                         <CreatePost />
                     </Modal>
                 </div>
                 <div className="border-t pt-8 border-white/20 mt-8">
-                    {loggedUser && (
+                    {user && (
                         <SidebarUserCard
-                            avatar={loggedUser.avatar || null}
-                            username={loggedUser.username}
-                            name={loggedUser.name}
+                            avatar={user.avatar || null}
+                            username={user.username}
+                            name={user.name}
                         />
                     )}
                 </div>

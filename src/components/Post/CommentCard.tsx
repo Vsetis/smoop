@@ -12,6 +12,7 @@ import { useUser, useUsers } from '@/utils/atom';
 
 import { usePostAction } from '@/hooks/usePostAction';
 import Avatar from '../UI/Avatar';
+import Button from '../UI/Button';
 
 export default function CommentCard({
     id,
@@ -74,37 +75,41 @@ export default function CommentCard({
                                 </button>
                             }
                         >
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteComment(
-                                        id,
-                                        postId,
-                                        authorId,
-                                        postAuthorId
-                                    );
-                                }}
-                                className="flex gap-2 items-center cursor-pointer transition-all hover:bg-red-500/20 px-2 py-1"
-                            >
-                                {user ? (
-                                    <>
+                            <>
+                                {user!.id === postAuthorId ? (
+                                    <Button
+                                        onClick={() =>
+                                            deleteComment(
+                                                id,
+                                                postId,
+                                                authorId,
+                                                postAuthorId
+                                            )
+                                        }
+                                        transparent
+                                        className="flex items-center gap-2 transition-all hover:!bg-red-500/20 px-2 py-1 !rounded-none"
+                                    >
                                         <IconTrash className="text-red-500" />
                                         <p className="text-sm">Delete</p>
-                                    </>
+                                    </Button>
                                 ) : (
-                                    <>
+                                    <Button
+                                        transparent
+                                        className="flex items-center gap-2 transition-all hover:!bg-red-500/20 px-2 py-1 !rounded-none"
+                                    >
                                         <IconReport className="text-red-500" />
                                         <p className="text-sm">Report</p>
-                                    </>
+                                    </Button>
                                 )}
-                            </button>
+                            </>
                         </Dropdown>
                     </div>
                     <div className="mb-6">
                         <p className="text-white/90 text-sm">{content}</p>
                     </div>
                     <div className="flex gap-4">
-                        <button
+                        <Button
+                            transparent
                             onClick={() =>
                                 likeComment(liked, setLike, id, postId)
                             }
@@ -117,10 +122,10 @@ export default function CommentCard({
                                         : 'stroke-white'
                                 } w-4 h-4 md:w-5 md:h-5`}
                             />
-                            <span className="font-semibold text-[12px] md:text-sm">
+                            <span className="font-semibold !text-white/80 text-[12px] md:text-sm">
                                 {likes}
                             </span>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

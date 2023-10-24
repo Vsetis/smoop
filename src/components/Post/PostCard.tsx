@@ -17,6 +17,7 @@ import Avatar from '../UI/Avatar';
 import Modal from '../RadixUI/Modal';
 import CreateComment from './CreateComment';
 import Dropdown from '../RadixUI/Dropdown';
+import Button from '../UI/Button';
 
 export default function PostCard({
     userId,
@@ -125,7 +126,8 @@ export default function PostCard({
                         <p className="text-white/90 text-sm">{content}</p>
                     </div>
                     <div className="flex gap-4">
-                        <button
+                        <Button
+                            transparent
                             onClick={(e) => likePost(liked, setLike, id, e)}
                             className="flex gap-2 items-center"
                         >
@@ -136,20 +138,20 @@ export default function PostCard({
                                         : 'stroke-white'
                                 } w-4 h-4 md:w-5 md:h-5`}
                             />
-                            <span className="font-semibold text-[12px] md:text-sm">
+                            <span className="font-semibold !text-white/80 text-[12px] md:text-sm">
                                 {count.likes}
                             </span>
-                        </button>
+                        </Button>
                         <Modal
                             open={open}
                             setOpen={setOpen}
                             triggerButton={
-                                <div className="flex items-center gap-2">
+                                <button className="flex items-center gap-2">
                                     <IconMessage className="w-4 h-4 md:w-5 md:h-5" />
                                     <span className="font-semibold text-[12px] md:text-sm">
                                         {count.comments}
                                     </span>
-                                </div>
+                                </button>
                             }
                         >
                             <CreateComment
@@ -163,10 +165,20 @@ export default function PostCard({
                                 }}
                             />
                         </Modal>
-
-                        <button onClick={(e) => e.stopPropagation()}>
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(
+                                    `http://localhost:3000/${
+                                        userFound!.username
+                                    }/posts/${id}`
+                                );
+                            }}
+                            transparent
+                            className="flex gap-2 items-center"
+                        >
                             <IconShare className="w-4 h-4 md:w-5 md:h-5" />
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

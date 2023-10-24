@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useUser } from '@/utils/atom';
 import { users } from '@/mock/user';
+import Button from '@/components/UI/Button';
 
 export default function Home() {
     const [user, setUser] = useUser();
@@ -28,12 +29,12 @@ export default function Home() {
                 <p className="mb-6 text-center text-sm font-semibold text-white/80">
                     Social network app, click the button below to view demo.
                 </p>
-                <button
+                <Button
+                    size="md"
                     onClick={() => (guest ? setUser(guest) : setUser(null))}
-                    className="text-white/80 font-semibold bg-purple-800 py-2 px-6 rounded transition-all hover:bg-purple-700"
                 >
                     Continue
-                </button>
+                </Button>
             </div>
         </div>
     );
