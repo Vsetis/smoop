@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
     IconArrowBack,
@@ -14,37 +14,21 @@ import * as Dialog from '@radix-ui/react-dialog';
 import CreatePost from '../Post/CreatePost';
 
 import { useUser } from '@/utils/atom';
+import { useScroll } from '@/hooks/useScroll';
+
+const links = [
+    { target: '/home', icon: IconHome2 },
+    { target: '/search', icon: IconSearch },
+    { target: '/notifications', icon: IconBell },
+    { target: '/messages', icon: IconMessage },
+];
 
 export default function MobileNav() {
-    const links = [
-        { target: '/home', icon: IconHome2 },
-        { target: '/search', icon: IconSearch },
-        { target: '/notifications', icon: IconBell },
-        { target: '/messages', icon: IconMessage },
-    ];
-
-    const [prevScroll, setScroll] = useState(0);
     const [visible, setVisible] = useState(true);
     const [user, setUser] = useUser();
     const [open, setOpen] = useState(false);
 
-    const handleScroll = () => {
-        const currentScrollPos = window.scrollY;
-        setTimeout(() => {
-            setVisible(true);
-
-            if (currentScrollPos > prevScroll) {
-                setVisible(false);
-            } else {
-            }
-            setScroll(currentScrollPos);
-        }, 1000);
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [prevScroll]);
+    useScroll({ setVisible: setVisible });
 
     return (
         <>

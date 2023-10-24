@@ -1,3 +1,4 @@
+import { useScroll } from '@/hooks/useScroll';
 import { useUser } from '@/utils/atom';
 import {
     IconLogout,
@@ -8,7 +9,7 @@ import {
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const links = [
     { label: 'Profile', target: '/[username]', icon: IconUser },
@@ -19,27 +20,10 @@ const links = [
 
 export default function MobileSidebar() {
     const [user, setUser] = useUser();
-    const [prevScroll, setScroll] = useState(0);
     const [visible, setVisible] = useState(true);
     const [open, setOpen] = useState(false);
 
-    const handleScroll = () => {
-        const currentScrollPos = window.scrollY;
-        setTimeout(() => {
-            setVisible(true);
-
-            if (currentScrollPos > prevScroll) {
-                setVisible(false);
-            } else {
-            }
-            setScroll(currentScrollPos);
-        }, 1000);
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [prevScroll]);
+    useScroll({ setVisible: setVisible });
 
     return (
         <>
