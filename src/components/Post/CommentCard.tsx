@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import {
@@ -33,7 +32,7 @@ export default function CommentCard({
     likes: number;
 }) {
     const [liked, setLike] = useState(isLiked);
-    const [sessionUser, setUser] = useUser();
+    const [user, setUser] = useUser();
 
     const userFound = users.find((u) => u.id === authorId);
 
@@ -90,7 +89,7 @@ export default function CommentCard({
                                 }}
                                 className="flex gap-2 items-center cursor-pointer transition-all hover:bg-red-500/20 px-2 py-1"
                             >
-                                {sessionUser ? (
+                                {user ? (
                                     <>
                                         <IconTrash className="text-red-500" />
                                         <p className="text-sm">Delete</p>

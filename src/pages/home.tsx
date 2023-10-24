@@ -2,11 +2,10 @@ import CreatePost from '@/components/Post/CreatePost';
 import PostCard from '@/components/Post/PostCard';
 import MainSection from '@/components/User/MainSection';
 import UserProfile from '@/components/UserProfile';
-import { posts } from '@/mock/posts';
 
 import { usePosts, useUser } from '@/utils/atom';
 
-import { useEffect, useReducer } from 'react';
+import { useReducer } from 'react';
 
 type State = {
     postPerPage: number;
@@ -53,10 +52,7 @@ export default function Home() {
     return (
         <UserProfile user={user!} posts={postCount.length || 0}>
             <div className="border border-white/20 rounded mb-4 p-4">
-                <CreatePost
-                    avatar={user?.avatar || null}
-                    username={user!.username}
-                />
+                <CreatePost />
             </div>
             <MainSection title="Home">
                 <div>

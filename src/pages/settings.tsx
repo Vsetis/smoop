@@ -290,7 +290,6 @@ function Privacy() {
 
 export default function SettingsPage() {
     const [user, setUser] = useUser();
-
     const [tab, setTab] = useState('tab1');
 
     return (

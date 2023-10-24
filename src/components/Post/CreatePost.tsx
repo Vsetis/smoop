@@ -1,16 +1,8 @@
-import Image from 'next/image';
 import { useState } from 'react';
-
 import { usePosts, useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 
-export default function CreatePost({
-    avatar,
-    username,
-}: {
-    avatar: string | null;
-    username: string;
-}) {
+export default function CreatePost() {
     const [post, setPost] = usePosts();
     const [user, setUser] = useUser();
 

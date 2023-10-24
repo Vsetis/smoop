@@ -33,7 +33,7 @@ function SidebarUserCard({
     name: string;
 }) {
     const [hover, setHover] = useState(false);
-    const [loggedUser, setUser] = useUser();
+    const [user, setUser] = useUser();
     return (
         <>
             <div className="flex items-center justify-between px-4">
@@ -160,7 +160,7 @@ export default function Sidebar() {
                             </div>
                         }
                     >
-                        <CreatePost avatar={null} username={'vsetik'} />
+                        <CreatePost />
                     </Modal>
                 </div>
                 <div className="border-t pt-8 border-white/20 mt-8">

@@ -63,14 +63,7 @@ export default function MobileNav() {
                         >
                             <IconArrowBack />
                         </button>
-                        <div className="mt-16">
-                            {user && (
-                                <CreatePost
-                                    avatar={user.avatar || null}
-                                    username={user.username}
-                                />
-                            )}
-                        </div>
+                        <div className="mt-16">{user && <CreatePost />}</div>
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>

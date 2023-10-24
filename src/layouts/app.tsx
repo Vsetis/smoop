@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import Sidebar from '@/components/Sidebar';
 import MobileSidebar from '@/components/Mobile/MobileSidebar';
 import MobileNav from '@/components/Mobile/MobileNav';
-import Navbar from '@/components/Navbar';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useUser();
