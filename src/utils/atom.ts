@@ -1,3 +1,6 @@
+import { notifications } from '@/mock/notifications';
+import { posts } from '@/mock/posts';
+import { users } from '@/mock/user';
 import { atom, useAtom } from 'jotai';
 
 type Post = {
@@ -51,10 +54,10 @@ type Notification = {
     seen: boolean;
 }[];
 
-const postAtom = atom<Post[]>([]);
+const postAtom = atom<Post[]>(posts);
 const userAtom = atom<User>(null);
-const usersAtom = atom<Users>([]);
-const notificationAtom = atom<Notification>([]);
+const usersAtom = atom<Users>(users);
+const notificationAtom = atom<Notification>(notifications);
 
 export const useUser = () => useAtom(userAtom);
 export const useUsers = () => useAtom(usersAtom);
