@@ -1,79 +1,103 @@
 import { usePosts, useUser } from '@/utils/atom';
 
-export const usePostAction = (username: string) => {
+export const usePostAction = () => {
     const [posts, setPosts] = usePosts();
     const [user, setUser] = useUser();
 
-    const addLike = (id: number) => {
-        const updatePosts = posts.map((post) => {
-            if (post.id === id) {
-                return { ...post, liked: true, likes: post.likes + 1 };
-            }
-            return post;
-        });
+    const likePost = (
+        liked: boolean,
+        setLiked: React.Dispatch<React.SetStateAction<boolean>>,
+        id: number,
+        e: React.MouseEvent
+    ) => {
+        e.stopPropagation();
 
-        setPosts(updatePosts);
+        const addLike = (id: number) => {
+            const updatePosts = posts.map((post) => {
+                if (post.id === id) {
+                    return { ...post, liked: true, likes: post.likes + 1 };
+                }
+                return post;
+            });
+
+            setPosts(updatePosts);
+        };
+
+        const removeLike = (id: number) => {
+            const updatePosts = posts.map((post) => {
+                if (post.id === id) {
+                    return { ...post, liked: false, likes: post.likes - 1 };
+                }
+                return post;
+            });
+
+            setPosts(updatePosts);
+        };
+
+        liked ? removeLike(id) : addLike(id);
+        setLiked(!liked);
     };
 
-    const removeLike = (id: number) => {
-        const updatePosts = posts.map((post) => {
-            if (post.id === id) {
-                return { ...post, liked: false, likes: post.likes - 1 };
-            }
-            return post;
-        });
+    const likeComment = (
+        liked: boolean,
+        setLiked: React.Dispatch<React.SetStateAction<boolean>>,
+        commentId: number,
+        postId: number
+    ) => {
+        const addLikeComment = (commentId: number, postId: number) => {
+            const updatedPosts = posts.map((post) => {
+                if (post.id === postId) {
+                    const updatedComments = post.comments?.map((comment) => {
+                        if (comment.id === commentId) {
+                            return {
+                                ...comment,
+                                liked: true,
+                                likes: comment.likes + 1,
+                            };
+                        }
+                        return comment;
+                    });
 
-        setPosts(updatePosts);
-    };
+                    return {
+                        ...post,
+                        comments: updatedComments,
+                    };
+                }
+                return post;
+            });
 
-    const addLikeComment = (commentId: number, postId: number) => {
-        const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-                const updatedComments = post.comments?.map((comment) => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            liked: true,
-                            likes: comment.likes + 1,
-                        };
-                    }
-                    return comment;
-                });
+            setPosts(updatedPosts);
+        };
 
-                return {
-                    ...post,
-                    comments: updatedComments,
-                };
-            }
-            return post;
-        });
+        const removeLikeComment = (commentId: number, postId: number) => {
+            const updatedPosts = posts.map((post) => {
+                if (post.id === postId) {
+                    const updatedComments = post.comments?.map((comment) => {
+                        if (comment.id === commentId) {
+                            return {
+                                ...comment,
+                                liked: false,
+                                likes: comment.likes - 1,
+                            };
+                        }
+                        return comment;
+                    });
 
-        setPosts(updatedPosts);
-    };
+                    return {
+                        ...post,
+                        comments: updatedComments,
+                    };
+                }
+                return post;
+            });
 
-    const removeLikeComment = (commentId: number, postId: number) => {
-        const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-                const updatedComments = post.comments?.map((comment) => {
-                    if (comment.id === commentId) {
-                        return {
-                            ...comment,
-                            liked: false,
-                            likes: comment.likes - 1,
-                        };
-                    }
-                    return comment;
-                });
+            setPosts(updatedPosts);
+        };
 
-                return {
-                    ...post,
-                    comments: updatedComments,
-                };
-            }
-            return post;
-        });
-
-        setPosts(updatedPosts);
+        liked
+            ? removeLikeComment(commentId, postId)
+            : addLikeComment(commentId, postId);
+        setLiked(!liked);
     };
 
     const deletePost = (id: number, authorId: number) => {
@@ -112,11 +136,9 @@ export const usePostAction = (username: string) => {
     };
 
     return {
-        addLike,
-        removeLike,
+        likePost,
+        likeComment,
         deletePost,
-        addLikeComment,
-        removeLikeComment,
         deleteComment,
     };
 };

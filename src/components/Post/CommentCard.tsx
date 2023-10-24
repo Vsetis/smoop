@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
     IconDots,
@@ -8,8 +8,7 @@ import {
 } from '@tabler/icons-react';
 
 import Dropdown from '../RadixUI/Dropdown';
-import { useUser } from '@/utils/atom';
-import { users } from '@/mock/user';
+import { useUser, useUsers } from '@/utils/atom';
 
 import { usePostAction } from '@/hooks/usePostAction';
 import Avatar from '../UI/Avatar';
@@ -33,17 +32,15 @@ export default function CommentCard({
 }) {
     const [liked, setLike] = useState(isLiked);
     const [user, setUser] = useUser();
+    const [users, setUsers] = useUsers();
 
-    const userFound = users.find((u) => u.id === authorId);
-
-    const { addLikeComment, removeLikeComment, deleteComment } = usePostAction(
-        userFound!.username
+    const userFound = useMemo(
+        () => users.find((u) => u.id === authorId),
+        [users]
     );
 
-    const handleLike = () => {
-        liked ? removeLikeComment(id, postId) : addLikeComment(id, postId);
-        setLike(!liked);
-    };
+    const { likeComment, deleteComment } = usePostAction();
+
     return (
         <div>
             <div className="flex w-full md:gap-2 p-4 border-y border-white/20">
@@ -108,7 +105,9 @@ export default function CommentCard({
                     </div>
                     <div className="flex gap-4">
                         <button
-                            onClick={handleLike}
+                            onClick={() =>
+                                likeComment(liked, setLike, id, postId)
+                            }
                             className="flex gap-2 items-center"
                         >
                             <IconHeart
