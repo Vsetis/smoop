@@ -76,7 +76,8 @@ export default function CommentCard({
                             }
                         >
                             <>
-                                {user!.id === postAuthorId ? (
+                                {user!.id === postAuthorId ||
+                                user!.id === authorId ? (
                                     <Button
                                         onClick={() =>
                                             deleteComment(

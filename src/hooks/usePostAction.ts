@@ -12,15 +12,16 @@ export const usePostAction = () => {
         if (user && postValue !== '') {
             const newPostId = faker.string.uuid();
 
-            const newPost = {
-                id: newPostId,
-                userId: user.id,
-                content: postValue,
-                liked: false,
-                likes: 0,
-            };
-
-            setPosts([...posts, newPost]);
+            setPosts([
+                ...posts,
+                {
+                    id: newPostId,
+                    userId: user.id,
+                    content: postValue,
+                    liked: false,
+                    likes: 0,
+                },
+            ]);
             setValue('');
         }
     };
@@ -30,22 +31,33 @@ export const usePostAction = () => {
         value: string,
         setValue: React.Dispatch<React.SetStateAction<string>>
     ) => {
-        const helper = posts.find((p) => p && p.id === postId);
         const newCommentId = faker.string.uuid();
-        const newComment = {
-            id: newCommentId,
-            userId: user!.id,
-            content: value,
-            liked: false,
-            likes: 0,
-        };
 
         const postFound = posts.find((post) => post && post.id === postId);
 
         if (postFound) {
             postFound.comments = postFound.comments || [];
-            postFound.comments.push(newComment);
-            setPosts([...posts]);
+
+            setPosts((prevPosts) => {
+                return prevPosts.map((post) => {
+                    if (post?.id === postId) {
+                        return {
+                            ...post,
+                            comments: [
+                                ...(post?.comments ?? []),
+                                {
+                                    id: newCommentId,
+                                    userId: user!.id,
+                                    content: value,
+                                    liked: false,
+                                    likes: 0,
+                                },
+                            ],
+                        };
+                    }
+                    return post;
+                });
+            });
 
             setValue('');
         }
@@ -60,25 +72,25 @@ export const usePostAction = () => {
         e.stopPropagation();
 
         const addLike = (id: string) => {
-            const updatePosts = posts.map((post) => {
-                if (post && post.id === id) {
-                    return { ...post, liked: true, likes: post.likes + 1 };
-                }
-                return post;
-            });
-
-            setPosts(updatePosts);
+            setPosts(
+                posts.map((post) => {
+                    if (post && post.id === id) {
+                        return { ...post, liked: true, likes: post.likes + 1 };
+                    }
+                    return post;
+                })
+            );
         };
 
         const removeLike = (id: string) => {
-            const updatePosts = posts.map((post) => {
-                if (post && post.id === id) {
-                    return { ...post, liked: false, likes: post.likes - 1 };
-                }
-                return post;
-            });
-
-            setPosts(updatePosts);
+            setPosts(
+                posts.map((post) => {
+                    if (post && post.id === id) {
+                        return { ...post, liked: false, likes: post.likes - 1 };
+                    }
+                    return post;
+                })
+            );
         };
 
         liked ? removeLike(id) : addLike(id);
@@ -92,53 +104,51 @@ export const usePostAction = () => {
         postId: string
     ) => {
         const addLikeComment = (commentId: string, postId: string) => {
-            const updatedPosts = posts.map((post) => {
-                if (post && post.id === postId) {
-                    const updatedComments = post.comments?.map((comment) => {
-                        if (comment.id === commentId) {
-                            return {
-                                ...comment,
-                                liked: true,
-                                likes: comment.likes + 1,
-                            };
-                        }
-                        return comment;
-                    });
+            setPosts((prevPosts) => {
+                return prevPosts.map((post) => {
+                    if (post?.id === postId) {
+                        const updatedComments = (post.comments || []).map(
+                            (comment) => {
+                                if (comment.id === commentId) {
+                                    return {
+                                        ...comment,
+                                        liked: true,
+                                        likes: comment.likes + 1,
+                                    };
+                                }
+                                return comment;
+                            }
+                        );
 
-                    return {
-                        ...post,
-                        comments: updatedComments,
-                    };
-                }
-                return post;
+                        return { ...post, comments: updatedComments };
+                    }
+                    return post;
+                });
             });
-
-            setPosts(updatedPosts);
         };
 
         const removeLikeComment = (commentId: string, postId: string) => {
-            const updatedPosts = posts.map((post) => {
-                if (post && post.id === postId) {
-                    const updatedComments = post.comments?.map((comment) => {
-                        if (comment.id === commentId) {
-                            return {
-                                ...comment,
-                                liked: false,
-                                likes: comment.likes - 1,
-                            };
-                        }
-                        return comment;
-                    });
+            setPosts((prevPosts) => {
+                return prevPosts.map((post) => {
+                    if (post?.id === postId) {
+                        const updatedComments = (post.comments || []).map(
+                            (comment) => {
+                                if (comment.id === commentId) {
+                                    return {
+                                        ...comment,
+                                        liked: false,
+                                        likes: comment.likes - 1,
+                                    };
+                                }
+                                return comment;
+                            }
+                        );
 
-                    return {
-                        ...post,
-                        comments: updatedComments,
-                    };
-                }
-                return post;
+                        return { ...post, comments: updatedComments };
+                    }
+                    return post;
+                });
             });
-
-            setPosts(updatedPosts);
         };
 
         liked
@@ -148,12 +158,7 @@ export const usePostAction = () => {
     };
 
     const deletePost = (id: string, authorId: string) => {
-        if (authorId === user!.id) {
-            const updatePosts = posts.filter((p) => p && p.id !== id);
-            setPosts(updatePosts);
-        } else {
-            console.log('error');
-        }
+        setPosts(posts.filter((p) => authorId === p?.userId && p?.id !== id));
     };
 
     const deleteComment = (
@@ -162,24 +167,20 @@ export const usePostAction = () => {
         userId: string,
         postAuthorId: string
     ) => {
-        const updatedPosts = posts.map((post) => {
-            if (post && post.id === postId) {
-                const updatedComments = post.comments?.filter((comment) => {
-                    return comment.id !== id;
-                });
-
-                if (updatedComments?.length !== post.comments?.length) {
-                    return {
-                        ...post,
-                        comments: updatedComments,
-                    };
+        setPosts((prevPosts) => {
+            return prevPosts.map((post) => {
+                if (
+                    post?.id === postId &&
+                    (userId || postAuthorId === user!.id)
+                ) {
+                    const updatedComments = (post.comments || []).filter(
+                        (comment) => comment.id !== id
+                    );
+                    return { ...post, comments: updatedComments };
                 }
-            }
-            return post;
+                return post;
+            });
         });
-
-        (user!.id === userId || postAuthorId === user!.id) &&
-            setPosts(updatedPosts);
     };
 
     return {
