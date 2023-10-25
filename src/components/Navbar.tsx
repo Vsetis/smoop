@@ -98,6 +98,7 @@ export default function Navbar() {
                                         (user: User) =>
                                             user && (
                                                 <SearchCard
+                                                    key={user.username}
                                                     avatar={null}
                                                     username={user.username}
                                                     name={user.name}
