@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { useUser } from '@/utils/atom';
+import { useUser, useUsers } from '@/utils/atom';
 
 import * as Tabs from '@radix-ui/react-tabs';
 import * as Switch from '@radix-ui/react-switch';
@@ -25,6 +25,7 @@ function InputButton({
 }) {
     const [inputValue, setValue] = useState(value);
     const [user, setUser] = useUser();
+    const [users, setUsers] = useUsers();
     const [disabled, setDisabled] = useState(true);
     const inputRef = useRef<HTMLInputElement>(null);
     const [isCurrent, setCurrent] = useState('');
@@ -47,28 +48,35 @@ function InputButton({
         onClick();
 
         if (user) {
-            const updatedUser = { ...user };
-            switch (type) {
-                case 'username':
-                    updatedUser.username = inputValue;
-                    break;
-                case 'name':
-                    updatedUser.name = inputValue.replace('@', '');
-                    break;
-                case 'email':
-                    updatedUser.email = inputValue;
-                    break;
-                case 'phone':
-                    break;
-                default:
-                    break;
-            }
-
             if (inputValue.length > 3) {
-                setUser(updatedUser);
+                setUsers((prevUsers) => {
+                    return prevUsers.map((u) => {
+                        if (u?.id === user.id) {
+                            switch (type) {
+                                case 'username':
+                                    setUser({ ...user, username: inputValue });
+                                    return { ...u, username: inputValue };
+                                case 'name':
+                                    setUser({ ...user, name: inputValue });
+                                    return {
+                                        ...u,
+                                        name: inputValue.replace('@', ''),
+                                    };
+                                case 'email':
+                                    setUser({ ...user, email: inputValue });
+                                    return { ...u, email: inputValue };
+                                case 'phone':
+                                    setUser({ ...user, phone: inputValue });
+                                default:
+                                    return u;
+                            }
+                        }
+                        return u;
+                    });
+                });
                 setDisabled(true);
             } else {
-                alert(`${type} must have atleast 3 characters!`);
+                alert(`${type} must have at least 3 characters!`);
             }
         }
     };
