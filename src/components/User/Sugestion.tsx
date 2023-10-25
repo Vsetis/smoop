@@ -32,9 +32,6 @@ export default function Sugestion() {
                             <FollowCard
                                 key={user.id}
                                 userId={user.id}
-                                username={user.username}
-                                avatar={user.avatar || null}
-                                name={user.name}
                                 following={false}
                             />
                         )

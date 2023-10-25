@@ -6,36 +6,66 @@ export const useUserAction = (userId: string) => {
 
     const follow = (following: boolean) => {
         const follow = () => {
-            console.log('follow');
+            setUser({
+                ...user!,
+                followed: [],
+                following: [...(user?.following ?? []), { userId }],
+            });
 
-            setUser({ ...user!, followed: [], following: [{ userId }] });
-            setUsers(
-                users.map((u) => ({
-                    ...u!,
-                    followed: [...(u?.followed ?? []), { userId: user!.id }],
-                    following: [...(u?.following ?? [])],
-                }))
+            setUsers((users) =>
+                users.map((u) => {
+                    if (u && u.id === user!.id) {
+                        return {
+                            ...u,
+                            followed: [...(u.followed ?? [])],
+                            following: [...(u.following ?? []), { userId }],
+                        };
+                    } else if (u && u.id === userId) {
+                        return {
+                            ...u,
+                            followed: [
+                                ...(u.followed ?? []),
+                                { userId: user!.id },
+                            ],
+                            following: [...(u.following ?? [])],
+                        };
+                    }
+                    return u;
+                })
             );
         };
 
         const unfollow = () => {
-            console.log('unfollow');
-
             setUser({
                 ...user!,
                 followed: [...(user?.followed ?? [])],
                 following:
                     user?.following.filter((f) => f.userId !== userId) ?? [],
             });
-            setUsers(
-                users.map((u) => ({
-                    ...u!,
-                    followed:
-                        u?.followed.filter((f) => f.userId !== user!.id) ?? [],
-                    following: [...(u?.following ?? [])],
-                }))
-            );
         };
+
+        setUsers((users) =>
+            users.map((u) => {
+                if (u && u.id === user!.id) {
+                    return {
+                        ...u,
+                        followed: [...(u.followed ?? [])],
+                        following: u.following?.filter(
+                            (f) => f.userId !== userId
+                        ),
+                    };
+                } else if (u && u.id === userId) {
+                    return {
+                        ...u,
+                        followed: u.followed?.filter(
+                            (f) => f.userId !== user!.id
+                        ),
+                        following: [...(u.following ?? [])],
+                    };
+                }
+                return u;
+            })
+        );
 
         following ? unfollow() : follow();
     };

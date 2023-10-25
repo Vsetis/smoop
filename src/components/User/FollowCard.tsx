@@ -6,15 +6,9 @@ import { useUserAction } from '@/hooks/useUserAction';
 
 export default function FollowCard({
     userId,
-    username,
-    avatar,
-    name,
     following,
 }: {
     userId: string;
-    username: string;
-    avatar: string | null;
-    name: string;
     following: boolean;
 }) {
     const [user, setUser] = useUser();
@@ -22,22 +16,30 @@ export default function FollowCard({
 
     const { follow } = useUserAction(userId);
 
+    const findUser = users.find((u) => u && u.id === userId);
+
     return (
         <>
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Avatar size="md" avatar={avatar} username={username} />
+                    <Avatar
+                        size="md"
+                        avatar={findUser!.avatar || null}
+                        username={findUser!.username}
+                    />
                     <div>
                         <Link
-                            href={`/${username}`}
+                            href={`/${findUser!.username}`}
                             className="font-semibold text-white/80 hover:underline"
                         >
-                            {username}
+                            {findUser!.username}
                         </Link>
-                        <p className="text-[12px] text-white/60">@{name}</p>
+                        <p className="text-[12px] text-white/60">
+                            @{findUser!.name}
+                        </p>
                     </div>
                 </div>
-                {user!.username !== username && (
+                {user!.username !== findUser!.username && (
                     <>
                         <Button
                             outline

@@ -27,7 +27,6 @@ export default function ProfileCard({
     posts: number;
 }) {
     const [user, setUser] = useUser();
-    const [users, setUsers] = useUsers();
     const [followingOpen, setFollowingOpen] = useState(false);
     const [followedOpen, setFollowedOpen] = useState(false);
 
@@ -38,10 +37,6 @@ export default function ProfileCard({
             return u ? true : false;
         }
     });
-
-    const filteredUsers = users.filter((u) =>
-        u?.followed.some((followedUser) => followedUser.userId === userId)
-    );
 
     return (
         <div className="w-full flex flex-col items-center justify-between h-max p-4 border border-white/20 rounded min-h-[250px]">
@@ -91,15 +86,15 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4 ">
-                            {filteredUsers.map(
-                                (user) =>
-                                    user && (
+                            {followed.map(
+                                (f) =>
+                                    f && (
                                         <FollowCard
-                                            userId={user.id}
-                                            username={user.username}
-                                            avatar={null}
-                                            name={user.name}
-                                            following={false}
+                                            key={f.userId}
+                                            userId={f.userId}
+                                            following={
+                                                isFollowing ? true : false
+                                            }
                                         />
                                     )
                             )}
@@ -119,9 +114,19 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4">
-                            <p className="pt-2 text-lg text-white/80">
-                                0 Followers
-                            </p>
+                            {following.length > 0 ? (
+                                following.map((f) => (
+                                    <FollowCard
+                                        key={f.userId}
+                                        userId={f.userId}
+                                        following={true}
+                                    />
+                                ))
+                            ) : (
+                                <p className="pt-2 text-lg text-white/80">
+                                    0 Followers
+                                </p>
+                            )}
                         </div>
                     </Modal>
                 </div>
