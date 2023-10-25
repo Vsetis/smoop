@@ -33,7 +33,6 @@ export default function TabMenu({
                         value={t.tab}
                     >
                         {t.title}
-                        {tabs[i].tab}
                     </Tabs.Trigger>
                 ))}
             </Tabs.List>

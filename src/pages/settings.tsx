@@ -335,7 +335,7 @@ export default function SettingsPage() {
                 setTab={setTab}
                 tabs={[
                     {
-                        title: 'Account',
+                        title: 'My Account',
                         tab: '1',
                         children: (
                             <SettingsProfile
