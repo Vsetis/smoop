@@ -1,11 +1,7 @@
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { useSearch } from '@/hooks/useSearch';
-
-import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
-import Button from './UI/Button';
+import { useSearch } from '@/hooks/useSearch';
 import { useUsers } from '@/utils/atom';
 
 type User = {
@@ -63,47 +59,16 @@ function SearchCard({
 export default function Navbar() {
     const [users] = useUsers();
     const { push } = useRouter();
-    const { getItems, setItems, removeItem } = useLocalStorage('value', []);
-
-    const updatedHistory = users.filter((u) =>
-        getItems().includes(u?.username)
-    );
 
     const searchingArea = useRef<HTMLDivElement>(null);
     const [isSearching, setSearching] = useState(false);
     const [value, setValue] = useState('');
-    const [history, setHistory] = useState<User[]>(updatedHistory);
 
     useSearch(searchingArea, setSearching);
 
     const searchQuery = users
-        .filter((u) => (u!.username || u!.name).includes(value))
-        .slice(0, 5);
-
-    const handleRemove = (username: string) => {
-        (e: React.MouseEvent) => {
-            e.stopPropagation();
-        };
-
-        removeItem(username);
-        setHistory([...history.filter((h) => h && h.username !== username)]);
-    };
-
-    const handleSearch = (s: {
-        username: string;
-        avatar?: string | null;
-        name: string;
-    }) => {
-        push(`/${s.username}`);
-        const items = getItems();
-
-        if (!items.includes(s.username)) {
-            items.push(s.username);
-            setItems(items);
-
-            setHistory([...history, s]);
-        }
-    };
+        .filter((u) => u && u.username.includes(value))
+        .slice(0, 7);
 
     return (
         <>
@@ -128,68 +93,31 @@ export default function Navbar() {
                             } bg-black rounded border border-white/20 mt-2`}
                         >
                             {value !== '' ? (
-                                searchQuery.map(
-                                    (s) =>
-                                        s && (
-                                            <SearchCard
-                                                key={s.id}
-                                                avatar={s.avatar || null}
-                                                username={s.username}
-                                                name={s.name}
-                                                onClick={() => handleSearch(s)}
-                                            />
-                                        )
+                                searchQuery.length > 0 ? (
+                                    searchQuery.map(
+                                        (user: User) =>
+                                            user && (
+                                                <SearchCard
+                                                    avatar={null}
+                                                    username={user.username}
+                                                    name={user.name}
+                                                    onClick={() =>
+                                                        push(
+                                                            `/${user.username}`
+                                                        )
+                                                    }
+                                                />
+                                            )
+                                    )
+                                ) : (
+                                    <p className="p-4 text-white/80">
+                                        User not found!
+                                    </p>
                                 )
                             ) : (
-                                <div className="flex flex-col">
-                                    {history.length > 0 ? (
-                                        <>
-                                            <p className="p-2 text-white/70 font-semibold text-sm">
-                                                Recently searched
-                                            </p>
-                                            {history.map(
-                                                (u) =>
-                                                    u && (
-                                                        <div
-                                                            key={u.username}
-                                                            className="flex items-center justify-between"
-                                                        >
-                                                            <SearchCard
-                                                                avatar={
-                                                                    u.avatar ||
-                                                                    null
-                                                                }
-                                                                username={
-                                                                    u.username
-                                                                }
-                                                                name={u.name}
-                                                                onClick={() => {
-                                                                    push(
-                                                                        `/${u.username}`
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Button
-                                                                    transparent
-                                                                    onClick={() =>
-                                                                        handleRemove(
-                                                                            u.username
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <IconX className="text-white/80 transition-all  hover:text-red-500/50 rounded" />
-                                                                </Button>
-                                                            </SearchCard>
-                                                        </div>
-                                                    )
-                                            )}
-                                        </>
-                                    ) : (
-                                        <p className="p-2 text-white/70 font-semibold text-sm">
-                                            Try searching for people.
-                                        </p>
-                                    )}
-                                </div>
+                                <p className="p-4 text-white/80">
+                                    Try search for some people!
+                                </p>
                             )}
                         </div>
                     </div>
