@@ -24,20 +24,24 @@ export default function UserPage() {
                     <>
                         {postQuery &&
                             postQuery
-                                .map((p) => (
-                                    <PostCard
-                                        key={p?.id}
-                                        id={p?.id}
-                                        userId={userFind!.id}
-                                        content={p?.content}
-                                        count={{
-                                            likes: p?.likes,
-                                            comments: p?.comments?.length || 0,
-                                        }}
-                                        isLiked={p?.liked}
-                                        postRouter={true}
-                                    />
-                                ))
+                                .map(
+                                    (p) =>
+                                        p && (
+                                            <PostCard
+                                                key={p.id}
+                                                id={p.id}
+                                                userId={userFind!.id}
+                                                content={p.content}
+                                                count={{
+                                                    likes: p.likes,
+                                                    comments:
+                                                        p.comments?.length || 0,
+                                                }}
+                                                isLiked={p.liked}
+                                                postRouter={true}
+                                            />
+                                        )
+                                )
                                 .reverse()}
                     </>
                 ) : (

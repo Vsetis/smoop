@@ -9,7 +9,7 @@ export default function CreateComment({
     post,
 }: {
     replyingTo: { username: string; name: string };
-    post: { id: number; content: string };
+    post: { id: string; content: string };
 }) {
     const [user, setUser] = useUser();
 

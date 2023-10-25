@@ -17,7 +17,7 @@ type Post = {
     }[];
 } | null;
 
-type User = {
+export type User = {
     id: string;
     username: string;
     name: string;
@@ -29,22 +29,10 @@ type User = {
     following: { userId: string }[];
 } | null;
 
-type Users = {
-    id: string;
-    username: string;
-    name: string;
-    email?: string;
-    phone?: string;
-    avatar?: string | null;
-    bio?: string;
-    followed: { userId: string }[];
-    following: { userId: string }[];
-};
-
 type Notification = {
     id: string;
-    forUserId: number;
-    userId: number;
+    forUserId: string;
+    userId: string;
     like?: boolean;
     follow?: boolean;
     postId?: string;
@@ -75,8 +63,8 @@ const USERS: User[] = faker.helpers.multiple(createRandomUser, {
 function addFollowers(users: User[]): void {
     users.forEach((user) => {
         if (user) {
-            const followingCount = faker.number.int(100);
-            const followedCount = faker.number.int(100);
+            const followingCount = faker.number.int(5);
+            const followedCount = faker.number.int(5);
 
             for (let i = 0; i < followingCount; i++) {
                 const randomUser = users[faker.number.int(users.length - 1)];
@@ -124,11 +112,25 @@ function createRandomPosts(users: User[], count: number) {
     return posts;
 }
 
-const POSTS: Post[] = createRandomPosts(USERS, 20000);
+const initialUsers = [
+    {
+        id: '0ffaafa4-4b9e-4a46-81c8-64e1a6bb4db80xcvdsfsdf',
+        username: 'guest',
+        name: 'guest',
+        email: 'guest@smoop.cz',
+        avatar: null,
+        bio: 'amazing!',
+        followed: [],
+        following: [],
+    },
+    ...USERS,
+];
+
+const POSTS: Post[] = createRandomPosts(USERS, 10);
 
 const userAtom = atom<User>(null);
 const postAtom = atom<Post[]>(POSTS);
-const usersAtom = atom<Users[]>(USERS);
+const usersAtom = atom<User[]>(initialUsers);
 const notificationAtom = atom<Notification[]>([]);
 
 export const useUser = () => useAtom(userAtom);

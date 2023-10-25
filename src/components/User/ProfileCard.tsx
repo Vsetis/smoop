@@ -2,7 +2,7 @@ import Avatar from '../UI/Avatar';
 import Modal from '../RadixUI/Modal';
 import { useState } from 'react';
 import FollowCard from './FollowCard';
-import { useUser, useUsers } from '@/utils/atom';
+import { User, useUser, useUsers } from '@/utils/atom';
 import { IconEdit } from '@tabler/icons-react';
 import Button from '../UI/Button';
 import { useUserAction } from '@/hooks/useUserAction';
@@ -22,8 +22,8 @@ export default function ProfileCard({
     username: string;
     name: string;
     bio?: string;
-    following?: { userId: string }[];
-    followed?: { userId: string }[];
+    following: { userId: string }[];
+    followed: { userId: string }[];
     posts: number;
 }) {
     const [user, setUser] = useUser();
@@ -31,25 +31,18 @@ export default function ProfileCard({
     const [followingOpen, setFollowingOpen] = useState(false);
     const [followedOpen, setFollowedOpen] = useState(false);
 
-    const followingQuery = following?.map((f) => f.userId);
-    const followedQuery = followed?.map((f) => f.userId);
-
-    const followingUsers = users.filter(
-        (u) => u && followingQuery && followingQuery.includes(u.id)
-    );
-    const followedUsers = users.filter(
-        (u) => u && followedQuery && followedQuery.includes(u.id)
-    );
-
-    const myFollowingList = user?.following?.map((u) => u.userId);
-
-    const showNames = users.filter((u) => u && myFollowingList?.includes(u.id));
-
-    const isFollowing = myFollowingList?.some((id) => id === userId);
-
-    followedUsers.map((u) => console.log(u.username));
-
     const { follow } = useUserAction(userId);
+
+    const isFollowing = user?.following.find((u) => {
+        if (u.userId === userId) {
+            return u ? true : false;
+        }
+    });
+
+    const filteredUsers = users.filter((u) =>
+        u?.followed.some((followedUser) => followedUser.userId === userId)
+    );
+
     return (
         <div className="w-full flex flex-col items-center justify-between h-max p-4 border border-white/20 rounded min-h-[250px]">
             {user!.username === username && (
@@ -70,7 +63,7 @@ export default function ProfileCard({
                 {user!.username !== username && (
                     <div className="mb-4">
                         <Button
-                            onClick={() => follow(isFollowing!)}
+                            onClick={() => follow(isFollowing ? true : false)}
                             outline
                             size="sm"
                         >
@@ -98,27 +91,17 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4 ">
-                            {followedUsers.length > 0 ? (
-                                followedUsers.map((u) => {
-                                    const isFollowing = showNames.some(
-                                        (f) => f!.id === u!.id
-                                    );
-
-                                    return (
+                            {filteredUsers.map(
+                                (user) =>
+                                    user && (
                                         <FollowCard
-                                            key={u!.id}
-                                            userId={u!.id}
-                                            following={isFollowing}
-                                            username={u!.username}
-                                            avatar={u!.avatar || null}
-                                            name={u!.name}
+                                            userId={user.id}
+                                            username={user.username}
+                                            avatar={null}
+                                            name={user.name}
+                                            following={false}
                                         />
-                                    );
-                                })
-                            ) : (
-                                <p className="pt-2 text-lg text-white/80">
-                                    0 Followers
-                                </p>
+                                    )
                             )}
                         </div>
                     </Modal>
@@ -136,27 +119,9 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4">
-                            {followingUsers.length > 0 ? (
-                                followingUsers.map((u) => {
-                                    const isFollowing = showNames.some(
-                                        (f) => f!.id === u!.id
-                                    );
-                                    return (
-                                        <FollowCard
-                                            key={u!.id}
-                                            userId={u!.id}
-                                            following={isFollowing}
-                                            username={u!.username}
-                                            avatar={u!.avatar || null}
-                                            name={u!.name}
-                                        />
-                                    );
-                                })
-                            ) : (
-                                <p className="pt-2 text-lg text-white/80">
-                                    0 Followers
-                                </p>
-                            )}
+                            <p className="pt-2 text-lg text-white/80">
+                                0 Followers
+                            </p>
                         </div>
                     </Modal>
                 </div>

@@ -12,7 +12,7 @@ function NotificationCard({
     like,
 }: {
     userId: string;
-    postId?: number;
+    postId?: string;
     follow?: boolean;
     like?: boolean;
 }) {
@@ -60,12 +60,15 @@ export default function NotificationPage() {
     const [notification, setNotification] = useNotification();
 
     useEffect(() => {
-        const updatedNotification = notification.map((n) => ({
-            ...n,
-            seen: true,
-        }));
+        const updatedNotification = notification.map(
+            (n) =>
+                n && {
+                    ...n,
+                    seen: true,
+                }
+        );
 
-        setNotification(updatedNotification);
+        updatedNotification && setNotification(updatedNotification);
     }, []);
 
     return (
@@ -77,15 +80,18 @@ export default function NotificationPage() {
             </div>
             <div className="md:w-1/2">
                 {!!notification &&
-                    notification.map((n) => (
-                        <NotificationCard
-                            key={n.id}
-                            postId={n.postId}
-                            userId={n.userId}
-                            like={n.like}
-                            follow={n.follow}
-                        />
-                    ))}
+                    notification.map(
+                        (n) =>
+                            n && (
+                                <NotificationCard
+                                    key={n.id}
+                                    postId={n.postId}
+                                    userId={n.userId}
+                                    like={n.like}
+                                    follow={n.follow}
+                                />
+                            )
+                    )}
             </div>
         </div>
     );

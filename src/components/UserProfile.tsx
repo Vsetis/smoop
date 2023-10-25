@@ -7,13 +7,13 @@ export default function UserProfile({
     posts,
 }: {
     user: {
-        id: number;
+        id: string;
         username: string;
         avatar?: string | null;
         name: string;
         bio?: string;
-        following?: { userId: number }[];
-        followed?: { userId: number }[];
+        following: { userId: string }[];
+        followed: { userId: string }[];
     };
     posts: number;
     children: React.ReactNode;

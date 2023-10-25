@@ -18,11 +18,11 @@ export default function PostPage() {
     const [users, setUsers] = useUsers();
     const [post, setPost] = usePosts();
 
-    const userFound = users.find((user) => user.username === username);
+    const userFound = users.find((user) => user && user.username === username);
     const postFound = post.find(
         (p) => p!.id.toString() === postId && userFound!.id === p!.userId
     );
-    const postLength = post.filter((p) => p.userId === userFound!.id);
+    const postLength = post.filter((p) => p && p.userId === userFound!.id);
 
     return user ? (
         <UserProfile user={userFound!} posts={postLength.length || 0}>

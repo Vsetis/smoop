@@ -8,14 +8,15 @@ export default function Sugestion() {
     const followingQuery = user?.following?.map((f) => f.userId);
 
     const isFollowing = users.filter(
-        (u) => followingQuery && followingQuery.includes(u.id)
+        (u) => u && followingQuery && followingQuery.includes(u.id)
     );
 
     const suggestedQuery = users
         .filter(
             (u) =>
+                u &&
                 u.id !== user?.id &&
-                !isFollowing.some((f) => f.username === u.username)
+                !isFollowing.some((f) => f && f.username === u.username)
         )
         .slice(0, 7);
 
@@ -25,16 +26,19 @@ export default function Sugestion() {
                 Who to follow
             </p>
             <div className="flex flex-col gap-4">
-                {suggestedQuery.map((user) => (
-                    <FollowCard
-                        key={user.id}
-                        userId={user.id}
-                        username={user.username}
-                        avatar={user.avatar || null}
-                        name={user.name}
-                        following={false}
-                    />
-                ))}
+                {suggestedQuery.map(
+                    (user) =>
+                        user && (
+                            <FollowCard
+                                key={user.id}
+                                userId={user.id}
+                                username={user.username}
+                                avatar={user.avatar || null}
+                                name={user.name}
+                                following={false}
+                            />
+                        )
+                )}
             </div>
         </div>
     );

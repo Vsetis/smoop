@@ -1,4 +1,5 @@
 import { usePosts, useUser } from '@/utils/atom';
+import { faker } from '@faker-js/faker';
 
 export const usePostAction = () => {
     const [posts, setPosts] = usePosts();
@@ -9,8 +10,10 @@ export const usePostAction = () => {
         setValue: React.Dispatch<React.SetStateAction<string>>
     ) => {
         if (user && postValue !== '') {
+            const newPostId = faker.string.uuid();
+
             const newPost = {
-                id: posts.length + 1,
+                id: newPostId,
                 userId: user.id,
                 content: postValue,
                 liked: false,
@@ -23,21 +26,21 @@ export const usePostAction = () => {
     };
 
     const createComment = (
-        postId: number,
+        postId: string,
         value: string,
         setValue: React.Dispatch<React.SetStateAction<string>>
     ) => {
-        const helper = posts.find((p) => p.id === postId);
-
+        const helper = posts.find((p) => p && p.id === postId);
+        const newCommentId = faker.string.uuid();
         const newComment = {
-            id: helper?.comments ? helper?.comments.length + 1 : 1,
+            id: newCommentId,
             userId: user!.id,
             content: value,
             liked: false,
             likes: 0,
         };
 
-        const postFound = posts.find((post) => post.id === postId);
+        const postFound = posts.find((post) => post && post.id === postId);
 
         if (postFound) {
             postFound.comments = postFound.comments || [];
@@ -58,7 +61,7 @@ export const usePostAction = () => {
 
         const addLike = (id: string) => {
             const updatePosts = posts.map((post) => {
-                if (post.id === id) {
+                if (post && post.id === id) {
                     return { ...post, liked: true, likes: post.likes + 1 };
                 }
                 return post;
@@ -69,7 +72,7 @@ export const usePostAction = () => {
 
         const removeLike = (id: string) => {
             const updatePosts = posts.map((post) => {
-                if (post.id === id) {
+                if (post && post.id === id) {
                     return { ...post, liked: false, likes: post.likes - 1 };
                 }
                 return post;
@@ -90,7 +93,7 @@ export const usePostAction = () => {
     ) => {
         const addLikeComment = (commentId: string, postId: string) => {
             const updatedPosts = posts.map((post) => {
-                if (post.id === postId) {
+                if (post && post.id === postId) {
                     const updatedComments = post.comments?.map((comment) => {
                         if (comment.id === commentId) {
                             return {
@@ -115,7 +118,7 @@ export const usePostAction = () => {
 
         const removeLikeComment = (commentId: string, postId: string) => {
             const updatedPosts = posts.map((post) => {
-                if (post.id === postId) {
+                if (post && post.id === postId) {
                     const updatedComments = post.comments?.map((comment) => {
                         if (comment.id === commentId) {
                             return {
@@ -146,7 +149,7 @@ export const usePostAction = () => {
 
     const deletePost = (id: string, authorId: string) => {
         if (authorId === user!.id) {
-            const updatePosts = posts.filter((p) => p.id !== id);
+            const updatePosts = posts.filter((p) => p && p.id !== id);
             setPosts(updatePosts);
         } else {
             console.log('error');
@@ -160,7 +163,7 @@ export const usePostAction = () => {
         postAuthorId: string
     ) => {
         const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
+            if (post && post.id === postId) {
                 const updatedComments = post.comments?.filter((comment) => {
                     return comment.id !== id;
                 });

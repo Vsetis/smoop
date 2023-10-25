@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { usePosts, useUser } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 import Button from '../UI/Button';
+import { faker } from '@faker-js/faker';
 
 export default function CreateCommentCard({
     username,
@@ -20,8 +21,10 @@ export default function CreateCommentCard({
     const createComment = (postId: string) => {
         const helper = post.find((p) => p?.id === postId);
 
+        const newCommentId = faker.string.uuid();
+
         const newComment = {
-            id: helper?.comments ? helper?.comments.length + 1 : 1,
+            id: newCommentId,
             userId: user!.id,
             content: value,
             liked: false,

@@ -97,7 +97,7 @@ function SidebarLink({
             >
                 <div className="relative rounded p-1.5 bg-purple-800/20">
                     {label === 'Notifications' &&
-                        notification.some((n) => !n.seen) && (
+                        notification.some((n) => n?.seen) && (
                             <div className="absolute w-3 h-3 bg-red-500 rounded-full top-0 right-0 translate-x-[8px] translate-y-[-8px] animate-pulse" />
                         )}
                     {icon}

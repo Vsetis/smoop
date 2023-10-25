@@ -1,4 +1,4 @@
-import { useUser, useUsers } from '@/utils/atom';
+import { User, useUser, useUsers } from '@/utils/atom';
 
 export const useUserAction = (userId: string) => {
     const [users, setUsers] = useUsers();
@@ -6,57 +6,35 @@ export const useUserAction = (userId: string) => {
 
     const follow = (following: boolean) => {
         const follow = () => {
-            if (user && users) {
-                const followData = { userId };
-                const followedData = { userId: user!.id };
+            console.log('follow');
 
-                const updatedUser = {
-                    ...user,
-                    following: [...(user.following ?? []), followData],
-                };
-
-                setUser(updatedUser);
-
-                const updatedUsers = users.map((u) => {
-                    if (u!.id === userId) {
-                        return {
-                            ...u,
-                            followed: [...(u?.followed ?? []), followedData],
-                        };
-                    }
-                    return u;
-                });
-
-                setUsers(updatedUsers);
-            }
+            setUser({ ...user!, followed: [], following: [{ userId }] });
+            setUsers(
+                users.map((u) => ({
+                    ...u!,
+                    followed: [...(u?.followed ?? []), { userId: user!.id }],
+                    following: [...(u?.following ?? [])],
+                }))
+            );
         };
 
         const unfollow = () => {
-            if (user && users) {
-                const updatedFollowing = user.following?.filter(
-                    (f) => f.userId !== userId
-                );
-                const updatedUser = {
-                    ...user,
-                    following: updatedFollowing,
-                };
-                setUser(updatedUser);
+            console.log('unfollow');
 
-                const updatedUsers = users.map((u) => {
-                    const updatedFollowed = u!.followed?.filter(
-                        (f) => f.userId !== user.id
-                    );
-
-                    if (u!.id === userId) {
-                        return {
-                            ...u,
-                            followed: updatedFollowed,
-                        };
-                    }
-                    return u;
-                });
-                setUsers(updatedUsers);
-            }
+            setUser({
+                ...user!,
+                followed: [...(user?.followed ?? [])],
+                following:
+                    user?.following.filter((f) => f.userId !== userId) ?? [],
+            });
+            setUsers(
+                users.map((u) => ({
+                    ...u!,
+                    followed:
+                        u?.followed.filter((f) => f.userId !== user!.id) ?? [],
+                    following: [...(u?.following ?? [])],
+                }))
+            );
         };
 
         following ? unfollow() : follow();
