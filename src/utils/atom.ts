@@ -57,7 +57,7 @@ function createRandomUser(): User {
 }
 
 const USERS: User[] = faker.helpers.multiple(createRandomUser, {
-    count: 5000,
+    count: 20,
 });
 
 function addFollowers(users: User[]): void {
@@ -125,6 +125,8 @@ const initialUsers = [
     },
     ...USERS,
 ];
+
+console.log(initialUsers, 'initialusers');
 
 const POSTS: Post[] = createRandomPosts(USERS, 10);
 

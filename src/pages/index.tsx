@@ -8,9 +8,10 @@ export default function Home() {
     const [user, setUser] = useUser();
     const { push } = useRouter();
 
+    const foundUser = users.find((u) => u && u.username === 'guest');
+
     if (!!user) {
-        users.push(user);
-        push('/home');
+        push('/test');
     }
 
     return (
@@ -31,18 +32,7 @@ export default function Home() {
                 </p>
                 <Button
                     size="md"
-                    onClick={() =>
-                        setUser({
-                            id: '0ffaafa4-4b9e-4a46-81c8-64e1a6bb4db80xcvdsfsdf',
-                            username: 'guest',
-                            name: 'guest',
-                            email: 'guest@smoop.cz',
-                            avatar: null,
-                            bio: 'amazing!',
-                            followed: [],
-                            following: [],
-                        })
-                    }
+                    onClick={() => foundUser && setUser(foundUser)}
                 >
                     Continue
                 </Button>
