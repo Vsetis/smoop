@@ -11,7 +11,7 @@ export default function Home() {
     const foundUser = users.find((u) => u && u.username === 'guest');
 
     if (!!user) {
-        push('/test');
+        push('/home');
     }
 
     return (
