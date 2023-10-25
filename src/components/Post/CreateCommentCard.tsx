@@ -9,7 +9,7 @@ export default function CreateCommentCard({
     id,
 }: {
     username: string;
-    id: number;
+    id: string;
 }) {
     const [value, setValue] = useState('');
     const [isReplying, setRyplying] = useState(false);
@@ -17,8 +17,8 @@ export default function CreateCommentCard({
     const [post, setPost] = usePosts();
     const [user, setUser] = useUser();
 
-    const createComment = (postId: number) => {
-        const helper = post.find((p) => p.id === postId);
+    const createComment = (postId: string) => {
+        const helper = post.find((p) => p?.id === postId);
 
         const newComment = {
             id: helper?.comments ? helper?.comments.length + 1 : 1,
@@ -28,7 +28,7 @@ export default function CreateCommentCard({
             likes: 0,
         };
 
-        const postFound = post.find((post) => post.id === postId);
+        const postFound = post.find((post) => post?.id === postId);
 
         if (postFound) {
             postFound.comments = postFound.comments || [];

@@ -7,6 +7,7 @@ export default function UserProfile({
     posts,
 }: {
     user: {
+        id: number;
         username: string;
         avatar?: string | null;
         name: string;
@@ -22,6 +23,7 @@ export default function UserProfile({
             <div className="w-full md:w-1/2 2xl:w-max grow md:grow-0">
                 {!!user && (
                     <ProfileCard
+                        userId={user!.id}
                         username={user!.username}
                         name={user!.name}
                         bio={user?.bio}

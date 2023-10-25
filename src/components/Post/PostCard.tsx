@@ -29,8 +29,8 @@ export default function PostCard({
     count,
     reply,
 }: {
-    id: number;
-    userId: number;
+    id: string;
+    userId: string;
     content: string;
     isLiked: boolean;
     children?: React.ReactNode;
@@ -46,7 +46,7 @@ export default function PostCard({
     const { push } = useRouter();
 
     const userFound = useMemo(
-        () => users.find((u) => u.id === userId),
+        () => users.find((u) => u?.id === userId),
         [users]
     );
 
@@ -65,7 +65,7 @@ export default function PostCard({
             >
                 <Avatar
                     size="md"
-                    avatar={userFound!.avatar || null}
+                    avatar={userFound?.avatar || null}
                     username={userFound!.username}
                 />
                 <div className="rounded mx-2 w-full ">

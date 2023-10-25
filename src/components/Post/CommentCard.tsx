@@ -23,10 +23,10 @@ export default function CommentCard({
     isLiked,
     likes,
 }: {
-    id: number;
-    postId: number;
-    authorId: number;
-    postAuthorId: number;
+    id: string;
+    postId: string;
+    authorId: string;
+    postAuthorId: string;
     content: string;
     isLiked: boolean;
     likes: number;
@@ -36,7 +36,7 @@ export default function CommentCard({
     const [users, setUsers] = useUsers();
 
     const userFound = useMemo(
-        () => users.find((u) => u.id === authorId),
+        () => users.find((u) => u?.id === authorId),
         [users]
     );
 

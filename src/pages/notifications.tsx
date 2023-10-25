@@ -1,7 +1,7 @@
 import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
-import { users } from '@/mock/user';
-import { useNotification } from '@/utils/atom';
+
+import { useNotification, useUsers } from '@/utils/atom';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -11,12 +11,14 @@ function NotificationCard({
     follow,
     like,
 }: {
-    userId: number;
+    userId: string;
     postId?: number;
     follow?: boolean;
     like?: boolean;
 }) {
-    const findUser = users.find((user) => user.id === userId);
+    const [users, setUsers] = useUsers();
+
+    const findUser = users.find((user) => user!.id === userId);
     const { push } = useRouter();
     return (
         <div

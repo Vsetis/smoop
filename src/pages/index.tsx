@@ -1,17 +1,17 @@
 import { useRouter } from 'next/router';
-import { useUser } from '@/utils/atom';
-import { users } from '@/mock/user';
+import { useUser, useUsers } from '@/utils/atom';
+
 import Button from '@/components/UI/Button';
 
 export default function Home() {
+    const [users, setUsers] = useUsers();
     const [user, setUser] = useUser();
     const { push } = useRouter();
 
     if (!!user) {
+        users.push(user);
         push('/home');
     }
-
-    const guest = users.find((u) => u.username === 'guest');
 
     return (
         <div className="h-screen container mx-auto flex flex-col justify-center items-center ">
@@ -31,7 +31,18 @@ export default function Home() {
                 </p>
                 <Button
                     size="md"
-                    onClick={() => (guest ? setUser(guest) : setUser(null))}
+                    onClick={() =>
+                        setUser({
+                            id: '0ffaafa4-4b9e-4a46-81c8-64e1a6bb4db80xcvdsfsdf',
+                            username: 'guest',
+                            name: 'guest',
+                            email: 'guest@smoop.cz',
+                            avatar: null,
+                            bio: 'amazing!',
+                            followed: [],
+                            following: [],
+                        })
+                    }
                 >
                     Continue
                 </Button>

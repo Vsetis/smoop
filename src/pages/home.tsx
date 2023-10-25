@@ -5,7 +5,6 @@ import MainSection from '@/components/User/MainSection';
 import UserProfile from '@/components/UserProfile';
 
 import { usePosts, useUser } from '@/utils/atom';
-
 import { useReducer } from 'react';
 
 type State = {
@@ -44,10 +43,10 @@ export default function Home() {
         error: null,
     });
 
-    const postCount = post.filter((p) => p.userId === user?.id);
+    const postCount = post.filter((p) => p?.userId === user?.id);
 
     const postQuery = post
-        .filter((p) => p.userId !== user!.id)
+        .filter((p) => p?.userId !== user!.id)
         .reverse()
         .slice(0, state.postPerPage);
 
@@ -59,18 +58,22 @@ export default function Home() {
             <MainSection title="Home">
                 <div>
                     {postQuery.map((post) => (
-                        <PostCard
-                            key={post.id}
-                            id={post.id}
-                            userId={post.userId}
-                            content={post.content}
-                            isLiked={post.liked}
-                            postRouter={true}
-                            count={{
-                                likes: post.likes,
-                                comments: post.comments?.length || 0,
-                            }}
-                        />
+                        <>
+                            {post && (
+                                <PostCard
+                                    key={post.id}
+                                    id={post.id}
+                                    userId={post.userId}
+                                    content={post.content}
+                                    isLiked={post.liked}
+                                    postRouter={true}
+                                    count={{
+                                        likes: post.likes,
+                                        comments: post.comments?.length || 0,
+                                    }}
+                                />
+                            )}
+                        </>
                     ))}
                     {state.error ? (
                         <p>There is nothing new!</p>

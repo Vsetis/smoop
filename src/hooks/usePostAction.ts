@@ -51,12 +51,12 @@ export const usePostAction = () => {
     const likePost = (
         liked: boolean,
         setLiked: React.Dispatch<React.SetStateAction<boolean>>,
-        id: number,
+        id: string,
         e: React.MouseEvent
     ) => {
         e.stopPropagation();
 
-        const addLike = (id: number) => {
+        const addLike = (id: string) => {
             const updatePosts = posts.map((post) => {
                 if (post.id === id) {
                     return { ...post, liked: true, likes: post.likes + 1 };
@@ -67,7 +67,7 @@ export const usePostAction = () => {
             setPosts(updatePosts);
         };
 
-        const removeLike = (id: number) => {
+        const removeLike = (id: string) => {
             const updatePosts = posts.map((post) => {
                 if (post.id === id) {
                     return { ...post, liked: false, likes: post.likes - 1 };
@@ -85,10 +85,10 @@ export const usePostAction = () => {
     const likeComment = (
         liked: boolean,
         setLiked: React.Dispatch<React.SetStateAction<boolean>>,
-        commentId: number,
-        postId: number
+        commentId: string,
+        postId: string
     ) => {
-        const addLikeComment = (commentId: number, postId: number) => {
+        const addLikeComment = (commentId: string, postId: string) => {
             const updatedPosts = posts.map((post) => {
                 if (post.id === postId) {
                     const updatedComments = post.comments?.map((comment) => {
@@ -113,7 +113,7 @@ export const usePostAction = () => {
             setPosts(updatedPosts);
         };
 
-        const removeLikeComment = (commentId: number, postId: number) => {
+        const removeLikeComment = (commentId: string, postId: string) => {
             const updatedPosts = posts.map((post) => {
                 if (post.id === postId) {
                     const updatedComments = post.comments?.map((comment) => {
@@ -144,7 +144,7 @@ export const usePostAction = () => {
         setLiked(!liked);
     };
 
-    const deletePost = (id: number, authorId: number) => {
+    const deletePost = (id: string, authorId: string) => {
         if (authorId === user!.id) {
             const updatePosts = posts.filter((p) => p.id !== id);
             setPosts(updatePosts);
@@ -154,10 +154,10 @@ export const usePostAction = () => {
     };
 
     const deleteComment = (
-        id: number,
-        postId: number,
-        userId: number,
-        postAuthorId: number
+        id: string,
+        postId: string,
+        userId: string,
+        postAuthorId: string
     ) => {
         const updatedPosts = posts.map((post) => {
             if (post.id === postId) {

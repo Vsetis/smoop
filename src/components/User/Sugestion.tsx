@@ -1,9 +1,9 @@
-import { useUser } from '@/utils/atom';
-import { users } from '@/mock/user';
+import { useUser, useUsers } from '@/utils/atom';
 import FollowCard from './FollowCard';
 
 export default function Sugestion() {
     const [user, setUser] = useUser();
+    const [users] = useUsers();
 
     const followingQuery = user?.following?.map((f) => f.userId);
 

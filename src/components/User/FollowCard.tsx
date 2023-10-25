@@ -2,6 +2,7 @@ import { useUser, useUsers } from '@/utils/atom';
 import Avatar from '../UI/Avatar';
 import Link from 'next/link';
 import Button from '../UI/Button';
+import { useUserAction } from '@/hooks/useUserAction';
 
 export default function FollowCard({
     userId,
@@ -10,7 +11,7 @@ export default function FollowCard({
     name,
     following,
 }: {
-    userId: number;
+    userId: string;
     username: string;
     avatar: string | null;
     name: string;
@@ -19,48 +20,7 @@ export default function FollowCard({
     const [user, setUser] = useUser();
     const [users, setUsers] = useUsers();
 
-    const handleFollow = (userId: number) => {
-        const follow = () => {
-            if (user && users) {
-                const followData = { userId };
-                const updatedUser = {
-                    ...user,
-                    following: [...(user.following ?? []), followData],
-                };
-                setUser(updatedUser);
-
-                const updatedUsers = users.map((u) => {
-                    if (u.id === user.id) {
-                        return updatedUser;
-                    }
-                    return u;
-                });
-
-                setUsers(updatedUsers);
-            }
-        };
-
-        const unfollow = () => {
-            if (user) {
-                const updatedFollowing = user.following?.filter(
-                    (f) => f.userId !== userId
-                );
-                const updatedUser = { ...user, following: updatedFollowing };
-                setUser(updatedUser);
-
-                const updatedUsers = users.map((u) => {
-                    if (u.id === user.id) {
-                        return updatedUser;
-                    }
-                    return u;
-                });
-
-                setUsers(updatedUsers);
-            }
-        };
-
-        following ? unfollow() : follow();
-    };
+    const { follow } = useUserAction(userId);
 
     return (
         <>
@@ -81,7 +41,7 @@ export default function FollowCard({
                     <>
                         <Button
                             outline
-                            onClick={() => handleFollow(userId)}
+                            onClick={() => follow(following)}
                             size="xs"
                         >
                             {following ? 'Unfollow' : 'Follow'}

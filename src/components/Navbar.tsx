@@ -1,11 +1,12 @@
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useSearch } from '@/hooks/useSearch';
-import { users } from '@/mock/user';
+
 import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import Button from './UI/Button';
+import { useUsers } from '@/utils/atom';
 
 interface User {
     username: string;
@@ -60,10 +61,13 @@ function SearchCard({
 }
 
 export default function Navbar() {
+    const [users] = useUsers();
     const { push } = useRouter();
     const { getItems, setItems, removeItem } = useLocalStorage('value', []);
 
-    const updatedHistory = users.filter((u) => getItems().includes(u.username));
+    const updatedHistory = users.filter((u) =>
+        getItems().includes(u?.username)
+    );
 
     const searchingArea = useRef<HTMLDivElement>(null);
     const [isSearching, setSearching] = useState(false);

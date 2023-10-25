@@ -4,8 +4,11 @@ import { useState } from 'react';
 import FollowCard from './FollowCard';
 import { useUser, useUsers } from '@/utils/atom';
 import { IconEdit } from '@tabler/icons-react';
+import Button from '../UI/Button';
+import { useUserAction } from '@/hooks/useUserAction';
 
 export default function ProfileCard({
+    userId,
     avatar,
     username,
     name,
@@ -14,12 +17,13 @@ export default function ProfileCard({
     followed,
     posts,
 }: {
+    userId: string;
     avatar: string | null;
     username: string;
     name: string;
     bio?: string;
-    following?: { userId: number }[];
-    followed?: { userId: number }[];
+    following?: { userId: string }[];
+    followed?: { userId: string }[];
     posts: number;
 }) {
     const [user, setUser] = useUser();
@@ -31,16 +35,21 @@ export default function ProfileCard({
     const followedQuery = followed?.map((f) => f.userId);
 
     const followingUsers = users.filter(
-        (u) => followingQuery && followingQuery.includes(u.id)
+        (u) => u && followingQuery && followingQuery.includes(u.id)
     );
     const followedUsers = users.filter(
-        (u) => followedQuery && followedQuery.includes(u.id)
+        (u) => u && followedQuery && followedQuery.includes(u.id)
     );
 
     const myFollowingList = user?.following?.map((u) => u.userId);
 
-    const showNames = users.filter((u) => myFollowingList?.includes(u.id));
+    const showNames = users.filter((u) => u && myFollowingList?.includes(u.id));
 
+    const isFollowing = myFollowingList?.some((id) => id === userId);
+
+    followedUsers.map((u) => console.log(u.username));
+
+    const { follow } = useUserAction(userId);
     return (
         <div className="w-full flex flex-col items-center justify-between h-max p-4 border border-white/20 rounded min-h-[250px]">
             {user!.username === username && (
@@ -58,6 +67,17 @@ export default function ProfileCard({
                 <p className="mb-4 font-semibold text-sm text-white/60">
                     @{name}
                 </p>
+                {user!.username !== username && (
+                    <div className="mb-4">
+                        <Button
+                            onClick={() => follow(isFollowing!)}
+                            outline
+                            size="sm"
+                        >
+                            {isFollowing ? 'Unfollow' : 'Follow'}
+                        </Button>
+                    </div>
+                )}
                 {bio && <p className="mb-8 text-white/80">{bio}</p>}
             </div>
             <div className="grid grid-cols-3 min-w-[280px]">
@@ -78,19 +98,20 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4 ">
-                            {followedUsers.length ? (
+                            {followedUsers.length > 0 ? (
                                 followedUsers.map((u) => {
                                     const isFollowing = showNames.some(
-                                        (f) => f.id === u.id
+                                        (f) => f!.id === u!.id
                                     );
+
                                     return (
                                         <FollowCard
-                                            key={u.id}
-                                            userId={u.id}
+                                            key={u!.id}
+                                            userId={u!.id}
                                             following={isFollowing}
-                                            username={u.username}
-                                            avatar={u.avatar || null}
-                                            name={u.name}
+                                            username={u!.username}
+                                            avatar={u!.avatar || null}
+                                            name={u!.name}
                                         />
                                     );
                                 })
@@ -115,19 +136,19 @@ export default function ProfileCard({
                         }
                     >
                         <div className="flex flex-col gap-4">
-                            {followingUsers.length ? (
+                            {followingUsers.length > 0 ? (
                                 followingUsers.map((u) => {
                                     const isFollowing = showNames.some(
-                                        (f) => f.id === u.id
+                                        (f) => f!.id === u!.id
                                     );
                                     return (
                                         <FollowCard
-                                            key={u.id}
-                                            userId={u.id}
+                                            key={u!.id}
+                                            userId={u!.id}
                                             following={isFollowing}
-                                            username={u.username}
-                                            avatar={u.avatar || null}
-                                            name={u.name}
+                                            username={u!.username}
+                                            avatar={u!.avatar || null}
+                                            name={u!.name}
                                         />
                                     );
                                 })
