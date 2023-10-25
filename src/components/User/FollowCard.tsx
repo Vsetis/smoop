@@ -11,8 +11,8 @@ export default function FollowCard({
     userId: string;
     following: boolean;
 }) {
-    const [user, setUser] = useUser();
-    const [users, setUsers] = useUsers();
+    const [user] = useUser();
+    const [users] = useUsers();
 
     const { follow } = useUserAction(userId);
 

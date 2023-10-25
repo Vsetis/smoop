@@ -5,7 +5,7 @@ import { usePostAction } from '@/hooks/usePostAction';
 import Button from '../UI/Button';
 
 export default function CreatePost() {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
 
     const [postValue, setValue] = useState('');
     const { createPost } = usePostAction();

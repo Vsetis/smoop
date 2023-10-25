@@ -11,7 +11,7 @@ export default function CreateComment({
     replyingTo: { username: string; name: string };
     post: { id: string; content: string };
 }) {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
 
     const [value, setValue] = useState('');
     const { createComment } = usePostAction();

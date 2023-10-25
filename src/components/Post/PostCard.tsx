@@ -39,8 +39,8 @@ export default function PostCard({
     count: { likes: number; comments?: number };
 }) {
     const [liked, setLike] = useState(isLiked);
-    const [user, setUser] = useUser();
-    const [users, setUsers] = useUsers();
+    const [user] = useUser();
+    const [users] = useUsers();
     const [open, setOpen] = useState(false);
 
     const { push } = useRouter();

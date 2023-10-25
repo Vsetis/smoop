@@ -85,7 +85,7 @@ function SidebarLink({
     icon: React.ReactNode;
 }) {
     const [hover, setHover] = useState(false);
-    const [notification, setNotification] = useNotification();
+    const [notification] = useNotification();
     return (
         <>
             <Link
@@ -117,7 +117,7 @@ function SidebarLink({
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
-    const [user, setUser] = useUser();
+    const [user] = useUser();
 
     return (
         <div className="h-screen border-r border-white/20 top-0 left-0 2xl:min-w-[300px] pb-4 hidden sm:flex flex-col justify-between sticky z-50 bg-black">

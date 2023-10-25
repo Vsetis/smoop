@@ -1,10 +1,7 @@
-import { SetStateAction, useEffect, useRef, useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import { useUser, useUsers } from '@/utils/atom';
 
-import * as Tabs from '@radix-ui/react-tabs';
 import * as Switch from '@radix-ui/react-switch';
-
 import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
 import { useKey } from '@/hooks/useKey';
@@ -325,7 +322,7 @@ function Privacy() {
 }
 
 export default function SettingsPage() {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
     const [tab, setTab] = useState('1');
 
     return (

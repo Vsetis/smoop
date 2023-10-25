@@ -14,9 +14,9 @@ export default function PostPage() {
     const username = query.username;
     const postId = query.postId as string;
 
-    const [user, setUser] = useUser();
-    const [users, setUsers] = useUsers();
-    const [post, setPost] = usePosts();
+    const [user] = useUser();
+    const [users] = useUsers();
+    const [post] = usePosts();
 
     const userFound = users.find((user) => user && user.username === username);
     const postFound = post.find(

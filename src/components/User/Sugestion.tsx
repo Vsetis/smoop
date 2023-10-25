@@ -2,7 +2,7 @@ import { useUser, useUsers } from '@/utils/atom';
 import FollowCard from './FollowCard';
 
 export default function Sugestion() {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
     const [users] = useUsers();
 
     const followingQuery = user?.following?.map((f) => f.userId);

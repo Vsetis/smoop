@@ -6,7 +6,7 @@ import MobileSidebar from '@/components/Mobile/MobileSidebar';
 import MobileNav from '@/components/Mobile/MobileNav';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
     const { push } = useRouter();
 
     if (!user) {

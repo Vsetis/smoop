@@ -1,4 +1,4 @@
-import { User, useUser, useUsers } from '@/utils/atom';
+import { useUser, useUsers } from '@/utils/atom';
 
 export const useUserAction = (userId: string) => {
     const [users, setUsers] = useUsers();

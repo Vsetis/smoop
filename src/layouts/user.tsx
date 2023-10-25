@@ -10,7 +10,7 @@ export default function UserLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
     const { push } = useRouter();
 
     if (!user) {

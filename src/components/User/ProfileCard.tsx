@@ -2,7 +2,7 @@ import Avatar from '../UI/Avatar';
 import Modal from '../RadixUI/Modal';
 import { useState } from 'react';
 import FollowCard from './FollowCard';
-import { User, useUser, useUsers } from '@/utils/atom';
+import { useUser } from '@/utils/atom';
 import { IconEdit } from '@tabler/icons-react';
 import Button from '../UI/Button';
 import { useUserAction } from '@/hooks/useUserAction';
@@ -26,7 +26,7 @@ export default function ProfileCard({
     followed: { userId: string }[];
     posts: number;
 }) {
-    const [user, setUser] = useUser();
+    const [user] = useUser();
     const [followingOpen, setFollowingOpen] = useState(false);
     const [followedOpen, setFollowedOpen] = useState(false);
 

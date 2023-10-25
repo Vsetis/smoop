@@ -16,7 +16,7 @@ function NotificationCard({
     follow?: boolean;
     like?: boolean;
 }) {
-    const [users, setUsers] = useUsers();
+    const [users] = useUsers();
 
     const findUser = users.find((user) => user!.id === userId);
     const { push } = useRouter();

@@ -32,8 +32,8 @@ export default function CommentCard({
     likes: number;
 }) {
     const [liked, setLike] = useState(isLiked);
-    const [user, setUser] = useUser();
-    const [users, setUsers] = useUsers();
+    const [user] = useUser();
+    const [users] = useUsers();
 
     const userFound = useMemo(
         () => users.find((u) => u?.id === authorId),

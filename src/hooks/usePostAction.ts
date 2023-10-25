@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 export const usePostAction = () => {
     const [posts, setPosts] = usePosts();
-    const [user, setUser] = useUser();
+    const [user] = useUser();
 
     const createPost = (
         postValue: string,

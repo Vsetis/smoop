@@ -4,7 +4,7 @@ import { useUser, useUsers } from '@/utils/atom';
 import Button from '@/components/UI/Button';
 
 export default function Home() {
-    const [users, setUsers] = useUsers();
+    const [users] = useUsers();
     const [user, setUser] = useUser();
     const { push } = useRouter();
 
