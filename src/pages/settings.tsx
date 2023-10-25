@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { useUser } from '@/utils/atom';
 
@@ -8,6 +8,7 @@ import * as Switch from '@radix-ui/react-switch';
 import Avatar from '@/components/UI/Avatar';
 import Button from '@/components/UI/Button';
 import { useKey } from '@/hooks/useKey';
+import TabMenu from '@/components/RadixUI/TabMenu';
 
 function InputButton({
     title,
@@ -317,61 +318,34 @@ function Privacy() {
 
 export default function SettingsPage() {
     const [user, setUser] = useUser();
-    const [tab, setTab] = useState('tab1');
+    const [tab, setTab] = useState('1');
 
     return (
         <>
-            <Tabs.Root
-                defaultValue={tab}
-                className="flex w-full min-h-[600px] gap-12"
-            >
-                <Tabs.List
-                    className={`${
-                        tab === '' ? '' : 'hidden sm:flex flex-col'
-                    } sticky w-full top-0 left-0 min-h-screen border-r  border-white/20 sm:w-1/2 xl:w-[30%]`}
-                    aria-label="Manage your account"
-                >
-                    <Tabs.Trigger
-                        onClick={() => setTab('tab1')}
-                        className="bg-black h-[45px] text-start flex items-center p-8 text-[15px] data-[state=active]:border-r-[2px] data-[state=active]:bg-white/5 border-purple-800 w-full"
-                        value="tab1"
-                    >
-                        My Account
-                    </Tabs.Trigger>
-                    <Tabs.Trigger
-                        onClick={() => setTab('tab2')}
-                        className="bg-black h-[45px] text-start flex items-center p-8 text-[15px] data-[state=active]:border-r-[2px] data-[state=active]:bg-white/5 border-purple-800 w-full"
-                        value="tab2"
-                    >
-                        Privacy
-                    </Tabs.Trigger>
-                </Tabs.List>
-
-                <div
-                    className={`${
-                        tab === '' ? 'hidden sm:flex' : ''
-                    } my-8  w-full px-4 md:px-8 xl:max-w-[700px]`}
-                >
-                    <Tabs.Content
-                        className="w-full flex flex-col gap-8 "
-                        value="tab1"
-                    >
-                        <SettingsProfile
-                            username={user!.username}
-                            name={user!.name}
-                            avatar={user!.avatar || null}
-                            email={user!.email}
-                            phone={user!.phone}
-                        />
-                    </Tabs.Content>
-                    <Tabs.Content
-                        className="w-full flex flex-col gap-4"
-                        value="tab2"
-                    >
-                        <Privacy />
-                    </Tabs.Content>
-                </div>
-            </Tabs.Root>
+            <TabMenu
+                tab={tab}
+                setTab={setTab}
+                tabs={[
+                    {
+                        title: 'Account',
+                        tab: '1',
+                        children: (
+                            <SettingsProfile
+                                username={user!.username}
+                                name={user!.name}
+                                avatar={user!.avatar || null}
+                                email={user!.email}
+                                phone={user!.phone}
+                            />
+                        ),
+                    },
+                    {
+                        title: 'Privacy',
+                        tab: '2',
+                        children: <Privacy />,
+                    },
+                ]}
+            />
         </>
     );
 }
