@@ -70,11 +70,13 @@ function addFollowers(users: User[]): void {
                 const randomUser = users[faker.number.int(users.length - 1)];
                 if (
                     randomUser &&
+                    randomUser.id !== user.id &&
                     !user.following.find(
-                        (user) => user.userId === randomUser.id
+                        (followed) => followed.userId === randomUser.id
                     )
                 ) {
                     user.following.push({ userId: randomUser.id });
+                    randomUser.followed.push({ userId: user.id });
                 }
             }
 
@@ -82,9 +84,13 @@ function addFollowers(users: User[]): void {
                 const randomUser = users[faker.number.int(users.length - 1)];
                 if (
                     randomUser &&
-                    !user.followed.find((user) => user.userId === randomUser.id)
+                    randomUser.id !== user.id &&
+                    !user.followed.find(
+                        (following) => following.userId === randomUser.id
+                    )
                 ) {
                     user.followed.push({ userId: randomUser.id });
+                    randomUser.following.push({ userId: user.id });
                 }
             }
         }
@@ -125,8 +131,6 @@ const initialUsers = [
     },
     ...USERS,
 ];
-
-console.log(initialUsers, 'initialusers');
 
 const POSTS: Post[] = createRandomPosts(USERS, 10);
 
